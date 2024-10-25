@@ -13,15 +13,19 @@ const userController = (socket: FakeSOSocket, JWT_SECRET: string) => {
    *
    * @returns `true` if the user is valid, otherwise `false`.
    */
-  const isUserBodyValid = (user: User): boolean =>
-    user.username !== undefined &&
-    user.username !== '' &&
-    user.email !== undefined &&
-    user.email !== '' &&
-    user.password !== undefined &&
-    user.password !== '' &&
-    user.creationDateTime !== undefined &&
-    user.creationDateTime !== null;
+  const isUserBodyValid = (user: User): boolean => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return (
+      user.username !== undefined &&
+      user.username !== '' &&
+      user.email !== undefined &&
+      emailRegex.test(user.email) &&
+      user.password !== undefined &&
+      user.password !== '' &&
+      user.creationDateTime !== undefined &&
+      user.creationDateTime !== null
+    );
+  };
 
   /**
    * Handles adding a new user. The user is first validated and then saved, with a token generated.
