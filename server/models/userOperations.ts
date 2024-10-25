@@ -1,4 +1,5 @@
 import bcrypt from 'bcrypt';
+import { MongoServerError } from 'mongodb';
 import UserModel from './users';
 import { User, UserResponse } from '../types';
 
@@ -9,12 +10,12 @@ import { User, UserResponse } from '../types';
  *
  * @returns `true` if the error is a duplicate key error, otherwise `false`.
  */
-function isMongoDuplicateKeyError(error: unknown): error is { code: number; keyValue: any } {
+function isMongoDuplicateKeyError(error: unknown): boolean {
   return (
     typeof error === 'object' &&
     error !== null &&
     'code' in error &&
-    (error as any).code === 11000
+    (error as MongoServerError).code === 11000
   );
 }
 

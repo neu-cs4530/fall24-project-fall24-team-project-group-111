@@ -1,6 +1,7 @@
 import { Request } from 'express';
 import { ObjectId } from 'mongodb';
 import { Server } from 'socket.io';
+import { JwtPayload } from 'jsonwebtoken';
 
 export type FakeSOSocket = Server<ServerToClientEvents>;
 
@@ -252,4 +253,12 @@ export interface LoginUserRequest extends Request {
     username: string;
     password: string;
   };
+}
+
+export interface AuthenticatedRequest extends Request {
+  user?: User;
+}
+
+export interface DecodedToken extends JwtPayload {
+  userId: string;
 }
