@@ -13,9 +13,16 @@ import answerController from './controller/answer';
 import questionController from './controller/question';
 import tagController from './controller/tag';
 import commentController from './controller/comment';
+import userController from './controller/user';
 import { FakeSOSocket } from './types';
 
 dotenv.config();
+
+const JWT_SECRET = process.env.JWT_SECRET;
+if (!JWT_SECRET) {
+  console.error('JWT_SECRET is not defined in environment variables');
+  process.exit(1);
+}
 
 const MONGO_URL = `${process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017'}/fake_so`;
 const CLIENT_URL = process.env.CLIENT_URL || 'http://localhost:3000';
@@ -72,6 +79,7 @@ app.use('/question', questionController(socket));
 app.use('/tag', tagController());
 app.use('/answer', answerController(socket));
 app.use('/comment', commentController(socket));
+app.use('/user', userController(socket, JWT_SECRET));
 
 // Export the app instance
 export { app, server, startServer };

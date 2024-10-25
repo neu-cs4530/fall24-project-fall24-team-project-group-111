@@ -1,12 +1,9 @@
 import express, { Response } from 'express';
 import jwt from 'jsonwebtoken';
-import { ObjectId } from 'mongodb';
 import { User, AddUserRequest, LoginUserRequest, FakeSOSocket } from '../types';
 import { saveUser, loginUser } from '../models/userOperations';
 
-const { JWT_SECRET } = process.env;
-
-const userController = (socket: FakeSOSocket) => {
+const userController = (socket: FakeSOSocket, JWT_SECRET: string) => {
   const router = express.Router();
 
   /**
@@ -45,12 +42,11 @@ const userController = (socket: FakeSOSocket) => {
     try {
       const userFromDb = await saveUser(user);
       if ('error' in userFromDb) {
-        res.status(500).send(userFromDb.error);
-        return;
-      }
-      if (!JWT_SECRET) {
-        res.status(500).send('JWT secret not set');
-        return;
+        if (userFromDb.error === 'Username is already taken') {
+          res.status(409).send(userFromDb.error);
+          return;
+        }
+        throw new Error(userFromDb.error);
       }
       const token = jwt.sign({ userId: userFromDb._id }, JWT_SECRET, { expiresIn: '1h' });
       res.json({ message: 'User created successfully', token });
@@ -72,37 +68,35 @@ const userController = (socket: FakeSOSocket) => {
    *
    * @returns A Promise that resolves to void.
    */
-    const loginUserRoute = async (req: LoginUserRequest, res: Response): Promise<void> => {
-      if (!req.body.username || !req.body.password) {
-        res.status(400).send('Invalid request');
-        return;
-      }
-      const { username, password } = req.body;
+  const loginUserRoute = async (req: LoginUserRequest, res: Response): Promise<void> => {
+    if (!req.body.username || !req.body.password) {
+      res.status(400).send('Invalid request');
+      return;
+    }
+    const { username, password } = req.body;
 
-      try {
-        const userFromDb = await loginUser(username, password);
-        if ('error' in userFromDb) {
-          if (userFromDb.error === 'Username does not exist' || userFromDb.error === 'Incorrect password') {
-            res.status(401).send(userFromDb.error);
-          } else {
-            res.status(500).send(userFromDb.error);
-          }
+    try {
+      const userFromDb = await loginUser(username, password);
+      if ('error' in userFromDb) {
+        if (
+          userFromDb.error === 'Username does not exist' ||
+          userFromDb.error === 'Incorrect password'
+        ) {
+          res.status(401).send(userFromDb.error);
           return;
         }
-        if (!JWT_SECRET) {
-          res.status(500).send('JWT secret not set');
-          return;
-        }
-        const token = jwt.sign({ userId: userFromDb._id }, JWT_SECRET, { expiresIn: '1h' });
-        res.json({ message: 'Login successful', token });
-      } catch (err: unknown) {
-        if (err instanceof Error) {
-          res.status(500).send(`Error when logging in: ${err.message}`);
-        } else {
-          res.status(500).send(`Error when logging in`);
-        }
+        throw new Error(userFromDb.error);
       }
-    };
+      const token = jwt.sign({ userId: userFromDb._id }, JWT_SECRET, { expiresIn: '1h' });
+      res.json({ message: 'Login successful', token });
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        res.status(500).send(`Error when logging in: ${err.message}`);
+      } else {
+        res.status(500).send(`Error when logging in`);
+      }
+    }
+  };
 
   router.post('/addUser', addUserRoute);
   router.post('/loginUser', loginUserRoute);

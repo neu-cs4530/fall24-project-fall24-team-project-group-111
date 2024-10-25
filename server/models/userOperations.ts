@@ -3,6 +3,22 @@ import UserModel from './users';
 import { User, UserResponse } from '../types';
 
 /**
+ * Checks if the error is a duplicate key error.
+ *
+ * @param error - The error to check.
+ *
+ * @returns `true` if the error is a duplicate key error, otherwise `false`.
+ */
+function isMongoDuplicateKeyError(error: unknown): error is { code: number; keyValue: any } {
+  return (
+    typeof error === 'object' &&
+    error !== null &&
+    'code' in error &&
+    (error as any).code === 11000
+  );
+}
+
+/**
  * Saves a new user in the database.
  *
  * @param {User} user - The user to save
@@ -17,6 +33,9 @@ export const saveUser = async (user: User): Promise<UserResponse> => {
     const result = await UserModel.create(user);
     return result;
   } catch (error) {
+    if (isMongoDuplicateKeyError(error)) {
+      return { error: 'Username is already taken' };
+    }
     return { error: 'Error when creating a user' };
   }
 };
