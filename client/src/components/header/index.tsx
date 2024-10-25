@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import useHeader from '../../hooks/useHeader';
 import './index.css';
 
@@ -9,6 +10,14 @@ import './index.css';
  */
 const Header = () => {
   const { val, handleInputChange, handleKeyDown } = useHeader();
+  const navigate = useNavigate();
+
+  /**
+   * Function to handle navigation to the "New Question" page.
+   */
+  const handleNavigateSetting = () => {
+    navigate('/settings');
+  };
 
   return (
     <div id='header' className='header'>
@@ -22,6 +31,13 @@ const Header = () => {
         onChange={handleInputChange}
         onKeyDown={handleKeyDown}
       />
+      <button
+        className='bluebtn'
+        onClick={() => {
+          handleNavigateSetting();
+        }}>
+        Settings
+      </button>
     </div>
   );
 };
