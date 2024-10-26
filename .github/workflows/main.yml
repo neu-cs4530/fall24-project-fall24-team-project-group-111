@@ -45,6 +45,7 @@ jobs:
         env:
           # Pass the environmental variables for the backend tests to use
           MONGODB_URI: mongodb://localhost:27017
+          JWT_SECRET: ${{ secrets.JWT_SECRET }}
         run: |
           cd server
 
