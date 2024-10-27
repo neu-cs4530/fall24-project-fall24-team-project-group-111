@@ -1,6 +1,7 @@
 import { Request } from 'express';
 import { ObjectId } from 'mongodb';
 import { Server } from 'socket.io';
+import { JwtPayload } from 'jsonwebtoken';
 
 export type FakeSOSocket = Server<ServerToClientEvents>;
 
@@ -209,4 +210,55 @@ export interface ServerToClientEvents {
   viewsUpdate: (question: QuestionResponse) => void;
   voteUpdate: (vote: VoteUpdatePayload) => void;
   commentUpdate: (comment: CommentUpdatePayload) => void;
+}
+
+
+/**
+ * Interface representing a User, which contains:
+ * - _id - The unique identifier for the user. Optional field.
+ * - username - The username of the user.
+ * - email - The email address of the user.
+ * - password - The password of the user.
+ * - creationDateTime - The date and time when the user was created.
+ *
+ */
+export interface User {
+  _id?: ObjectId;
+  username: string;
+  email: string;
+  password: string;
+  creationDateTime: Date;
+}
+
+/**
+ * Type representing the possible responses for a User-related operation.
+ */
+export type UserResponse = User | { error: string };
+
+/**
+ * Interface for the request body when adding a new user.
+ * - body - The user being added.
+ */
+export interface AddUserRequest extends Request {
+  body: User;
+}
+
+/**
+ * Interface extending the request body when logging in a user, which contains:
+ * - username - The username of the user logging in.
+ * - password - The password to check.
+ */
+export interface LoginUserRequest extends Request {
+  body: {
+    username: string;
+    password: string;
+  };
+}
+
+export interface AuthenticatedRequest extends Request {
+  user?: User;
+}
+
+export interface DecodedToken extends JwtPayload {
+  userId: string;
 }
