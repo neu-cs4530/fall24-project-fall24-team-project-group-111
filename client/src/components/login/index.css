@@ -16,6 +16,12 @@
   margin: 10px 0;
 }
 
+.container form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 .input-text {
   padding: 10px;
   font-size: 16px;
@@ -50,4 +56,23 @@
 
 .login-button:active {
   background-color: #003f7f;
+}
+
+.login-input-container {
+  min-height: 30vh;
+  /* display: flex; */
+}
+
+.link-button {
+  background: none;
+  border: none;
+  color: #007bff;
+  text-decoration: underline;
+  cursor: pointer;
+  font-size: 16px;
+  padding: 0;
+}
+
+.link-button:hover {
+  color: #0056b3;
 }

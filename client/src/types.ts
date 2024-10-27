@@ -4,9 +4,17 @@ export type FakeSOSocket = Socket<ServerToClientEvents>;
 
 /**
  * Represents a user in the application.
+ *
+ * @property username - The username of the user, or a generic name for a non-logged in user.
+ * @property email - The email address of a logged in user. Optional field.
+ * @property password - The password of a logged in user. Optional field.
+ * @property creationDateTime - The date and time when a logged in user was created. Optional field.
  */
 export interface User {
   username: string;
+  email?: string;
+  password?: string;
+  creationDateTime?: Date;
 }
 
 /**
