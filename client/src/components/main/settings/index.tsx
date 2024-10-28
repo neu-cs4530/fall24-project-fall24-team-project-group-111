@@ -4,8 +4,25 @@ const SettingsPage = () => {
   type ThemeTypes = 'LightMode' | 'DarkMode';
   const [theme, setTheme] = useState<ThemeTypes>();
 
+  //state variables
+  const [textSize, setTextSize] = useState('medium'); 
+  const [textBoldness, setTextBoldness] = useState('normal');
+  const [font, setFont] = useState('Arial'); 
+
   const handleThemeChange = (Event: { target: { value: unknown } }) => {
     setTheme(Event.target.value as ThemeTypes);
+  };
+
+  const handleTextSizeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setTextSize(event.target.value);
+  };
+
+  const handleTextBoldnessChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setTextBoldness(event.target.value);
+  };
+
+  const handleFontChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setFont(event.target.value);
   };
 
   return (
@@ -36,6 +53,63 @@ const SettingsPage = () => {
           <option value='light'>LightMode</option>
           <option value='dark'>DarkMode</option>
         </select>
+      </div>
+
+      <div
+        style={{ display: 'flex', alignItems: 'center', marginBottom: '20px', marginLeft: '20px' }}>
+        <label htmlFor='text-size-select' style={{ marginRight: '10px' }}>
+          Text Size:
+        </label>
+        <select
+          id='text-size-select'
+          value={textSize}
+          onChange={handleTextSizeChange}
+          style={{ padding: '5px', fontSize: '16px' }}
+        >
+          <option value='small'>Small</option>
+          <option value='medium'>Medium</option>
+          <option value='large'>Large</option>
+        </select>
+      </div>
+
+      <div
+        style={{ display: 'flex', alignItems: 'center', marginBottom: '20px', marginLeft: '20px' }}
+      >
+        <label htmlFor='text-boldness-select' style={{ marginRight: '10px' }}>
+          Text Boldness:
+        </label>
+        <select
+          id='text-boldness-select'
+          value={textBoldness}
+          onChange={handleTextBoldnessChange}
+          style={{ padding: '5px', fontSize: '16px' }}
+        >
+          <option value='normal'>Normal</option>
+          <option value='bold'>Bold</option>
+        </select>
+      </div>
+
+      <div
+        style={{ display: 'flex', alignItems: 'center', marginBottom: '20px', marginLeft: '20px' }}
+      >
+        <label htmlFor='font-select' style={{ marginRight: '10px' }}>
+          Font:
+        </label>
+        <select
+          id='font-select'
+          value={font}
+          onChange={handleFontChange}
+          style={{ padding: '5px', fontSize: '16px' }}
+        >
+          <option value='Arial'>Arial</option>
+          <option value='Times New Roman'>Times New Roman</option>
+          <option value='Courier New'>Courier New</option>
+        </select>
+      </div>
+
+      {/* Preview text based on selected settings */}
+      <div style={{ fontSize: textSize, fontWeight: textBoldness, fontFamily: font }}>
+        Sample text preview
       </div>
     </>
   );
