@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import './index.css';
-import useLogin from '../../hooks/useLogin';
+import useGuestLogin from '../../hooks/useGuestLogin';
 import SignIn from './signInComponent';
 import AddUser from './addUserComponent';
 
@@ -10,7 +10,7 @@ import AddUser from './addUserComponent';
  */
 const Login = () => {
   const [isSignIn, setIsSignIn] = useState(true);
-  const { handleSubmit } = useLogin();
+  const { handleSubmit } = useGuestLogin();
 
   const handleSwitch = () => {
     setIsSignIn(!isSignIn);

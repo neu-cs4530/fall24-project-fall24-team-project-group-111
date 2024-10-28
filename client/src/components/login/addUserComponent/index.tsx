@@ -1,30 +1,61 @@
 import React from 'react';
-import './index.css';
-import useLogin from '../../../hooks/useLogin';
+import { useNavigate } from 'react-router-dom';
+import useAddUser from '../../../hooks/useAddUser';
+import LoginInput from '../inputComponent';
 
 const AddUser = ({ onSwitch }: { onSwitch: () => void }) => {
-  const { username, handleSubmit, handleInputChange } = useLogin();
+  const navigate = useNavigate();
+  const {
+    username,
+    setUsername,
+    email,
+    setEmail,
+    password,
+    setPassword,
+    usernameErr,
+    emailErr,
+    passwordErr,
+    postUserErr,
+    postNewUser,
+  } = useAddUser();
+
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const postSuccessful = await postNewUser();
+    if (postSuccessful) {
+      navigate('/home');
+    }
+  };
 
   return (
-    <div>
-      <form onSubmit={handleSubmit} className='login-input-container'>
-        <input
-          type='text'
-          value={username}
-          onChange={handleInputChange}
-          placeholder='Username'
-          required
-          className='input-text'
+    <div className='login-input-container'>
+      <h3>Create an account</h3>
+      <form onSubmit={handleSubmit}>
+        <LoginInput
+          title={'Username'}
           id={'usernameInput'}
+          val={username}
+          setState={setUsername}
+          err={usernameErr}
+          type='text'
         />
-        <input
-          type='password'
-          placeholder='Password'
-          required
-          className='input-text'
+        <LoginInput
+          title={'Email'}
+          id={'emailInput'}
+          val={email}
+          setState={setEmail}
+          err={emailErr}
+          type='text'
+        />
+        <LoginInput
+          title={'Password'}
           id={'passwordInput'}
+          val={password}
+          setState={setPassword}
+          err={passwordErr}
+          type='password'
         />
-        <input type='text' placeholder='Email' required className='input-text' id={'emailInput'} />
+        {postUserErr && <div className='error-text'>{postUserErr}</div>}
         <button type='submit' className='login-button'>
           Sign up
         </button>

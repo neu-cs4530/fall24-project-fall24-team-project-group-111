@@ -1,29 +1,49 @@
 import React from 'react';
-import './index.css';
-import useLogin from '../../../hooks/useLogin';
+import { useNavigate } from 'react-router-dom';
+import useLoginUser from '../../../hooks/useLoginUser';
+import LoginInput from '../inputComponent';
 
 const SignIn = ({ onSwitch }: { onSwitch: () => void }) => {
-  const { username, handleSubmit, handleInputChange } = useLogin();
+  const navigate = useNavigate();
+  const {
+    username,
+    setUsername,
+    password,
+    setPassword,
+    usernameErr,
+    passwordErr,
+    postLoginErr,
+    postLoginUser,
+  } = useLoginUser();
+
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const loginSuccessful = await postLoginUser();
+    if (loginSuccessful) {
+      navigate('/home');
+    }
+  };
 
   return (
-    <div>
-      <form onSubmit={handleSubmit} className='login-input-container'>
-        <input
-          type='text'
-          value={username}
-          onChange={handleInputChange}
-          placeholder='Username'
-          required
-          className='input-text'
+    <div className='login-input-container'>
+      <form onSubmit={handleSubmit}>
+        <LoginInput
+          title={'Username'}
           id={'usernameInput'}
+          val={username}
+          setState={setUsername}
+          err={usernameErr}
+          type='text'
         />
-        <input
-          type='password'
-          placeholder='Password'
-          required
-          className='input-text'
+        <LoginInput
+          title={'Password'}
           id={'passwordInput'}
+          val={password}
+          setState={setPassword}
+          err={passwordErr}
+          type='password'
         />
+        {postLoginErr && <div className='error-text'>{postLoginErr}</div>}
         <button type='submit' className='login-button'>
           Sign In
         </button>
