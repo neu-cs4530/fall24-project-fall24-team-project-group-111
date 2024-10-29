@@ -3,6 +3,11 @@ import { useNavigate } from 'react-router-dom';
 import useLoginUser from '../../../hooks/useLoginUser';
 import LoginInput from '../inputComponent';
 
+/**
+ * Component that allows users to sign in to their account.
+ *
+ * @param onSwitch - Function to switch between login and signup.
+ */
 const SignIn = ({ onSwitch }: { onSwitch: () => void }) => {
   const navigate = useNavigate();
   const {
@@ -16,6 +21,11 @@ const SignIn = ({ onSwitch }: { onSwitch: () => void }) => {
     postLoginUser,
   } = useLoginUser();
 
+  /**
+   * Function to handle the form submission event.
+   *
+   * @param event - the form event object.
+   */
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const loginSuccessful = await postLoginUser();
@@ -26,6 +36,7 @@ const SignIn = ({ onSwitch }: { onSwitch: () => void }) => {
 
   return (
     <div className='login-input-container'>
+      <h3>Sign in to your account</h3>
       <form onSubmit={handleSubmit}>
         <LoginInput
           title={'Username'}

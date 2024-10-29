@@ -3,6 +3,11 @@ import { useNavigate } from 'react-router-dom';
 import useAddUser from '../../../hooks/useAddUser';
 import LoginInput from '../inputComponent';
 
+/**
+ * Component that allows users to create an account.
+ *
+ * @param onSwitch - Function to switch between login and signup.
+ */
 const AddUser = ({ onSwitch }: { onSwitch: () => void }) => {
   const navigate = useNavigate();
   const {
@@ -19,6 +24,11 @@ const AddUser = ({ onSwitch }: { onSwitch: () => void }) => {
     postNewUser,
   } = useAddUser();
 
+  /**
+   * Function to handle the form submission event.
+   *
+   * @param event - the form event object.
+   */
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const postSuccessful = await postNewUser();

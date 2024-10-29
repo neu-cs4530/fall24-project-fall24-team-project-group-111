@@ -5,13 +5,16 @@ import SignIn from './signInComponent';
 import AddUser from './addUserComponent';
 
 /**
- * Login Component contains a form that allows the user to input their username, which is then submitted
- * to the application's context through the useLoginContext hook.
+ * Login Component contains forms that allow the user sign in or create a user,
+ * which is then submitted to the application's context through the useLoginContext hook.
  */
 const Login = () => {
   const [isSignIn, setIsSignIn] = useState(true);
   const { handleSubmit } = useGuestLogin();
 
+  /**
+   * Function to switch between the sign in and add user forms.
+   */
   const handleSwitch = () => {
     setIsSignIn(!isSignIn);
   };

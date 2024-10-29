@@ -32,6 +32,7 @@ interface InputProps {
  * @param val The current value of the input field.
  * @param setState Callback function to update the value of the input field.
  * @param err Optional error message to display below the input field.
+ * @param type The type of input field, either 'text' or 'password'.
  */
 const LoginInput = ({ title, hint, id, val, setState, err, type }: InputProps) => (
   <>

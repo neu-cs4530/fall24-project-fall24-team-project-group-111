@@ -8,8 +8,9 @@
 }
 
 .container h2,
+.container h3,
+.container h5,
 .container p,
-.container h4,
 .container form {
   text-align: center;
   width: 100%;
