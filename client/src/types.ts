@@ -9,6 +9,8 @@ export interface User {
   username: string;
 }
 
+export type ThemeType = 'LightMode' | 'DarkMode';
+
 /**
  * Enum representing the possible ordering options for questions.
  * and their display names.

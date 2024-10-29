@@ -11,6 +11,7 @@ import NewQuestionPage from './main/newQuestion';
 import NewAnswerPage from './main/newAnswer';
 import AnswerPage from './main/answerPage';
 import SettingsPage from './main/settings';
+import { ThemeProvider } from '../contexts/ThemeContext';
 
 const ProtectedRoute = ({
   user,
@@ -36,29 +37,31 @@ const FakeStackOverflow = ({ socket }: { socket: FakeSOSocket | null }) => {
   const [user, setUser] = useState<User | null>(null);
 
   return (
-    <LoginContext.Provider value={{ setUser }}>
-      <Routes>
-        {/* Public Route */}
-        <Route path='/' element={<Login />} />
+    <ThemeProvider>
+      <LoginContext.Provider value={{ setUser }}>
+        <Routes>
+          {/* Public Route */}
+          <Route path='/' element={<Login />} />
 
-        {/* Protected Routes */}
-        {
-          <Route
-            element={
-              <ProtectedRoute user={user} socket={socket}>
-                <Layout />
-              </ProtectedRoute>
-            }>
-            <Route path='/home' element={<QuestionPage />} />
-            <Route path='tags' element={<TagPage />} />
-            <Route path='/question/:qid' element={<AnswerPage />} />
-            <Route path='/new/question' element={<NewQuestionPage />} />
-            <Route path='/new/answer/:qid' element={<NewAnswerPage />} />
-            <Route path='/settings' element={<SettingsPage />} />
-          </Route>
-        }
-      </Routes>
-    </LoginContext.Provider>
+          {/* Protected Routes */}
+          {
+            <Route
+              element={
+                <ProtectedRoute user={user} socket={socket}>
+                  <Layout />
+                </ProtectedRoute>
+              }>
+              <Route path='/home' element={<QuestionPage />} />
+              <Route path='tags' element={<TagPage />} />
+              <Route path='/question/:qid' element={<AnswerPage />} />
+              <Route path='/new/question' element={<NewQuestionPage />} />
+              <Route path='/new/answer/:qid' element={<NewAnswerPage />} />
+              <Route path='/settings' element={<SettingsPage />} />
+            </Route>
+          }
+        </Routes>
+      </LoginContext.Provider>
+    </ThemeProvider>
   );
 };
 

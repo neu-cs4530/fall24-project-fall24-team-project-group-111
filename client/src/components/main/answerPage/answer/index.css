@@ -2,11 +2,12 @@
 .answer {
   display: flex;
   flex-direction: row;
-  border-bottom: #000000 1px dashed;
+  border-bottom: var(--text-color) 1px dashed;
 }
 
 .answerText {
   width: 75%;
+  color: var(--text-color);
 }
 
 .answerAuthor {
@@ -14,5 +15,5 @@
 }
 
 .answer_author {
-  color: green;
+  color: var(--secondary-color);
 }
