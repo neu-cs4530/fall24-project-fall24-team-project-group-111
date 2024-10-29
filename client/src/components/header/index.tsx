@@ -13,7 +13,7 @@ const Header = () => {
   const navigate = useNavigate();
 
   /**
-   * Function to handle navigation to the "New Question" page.
+   * Function to handle navigation to the "Settings" page.
    */
   const handleNavigateSetting = () => {
     navigate('/settings');

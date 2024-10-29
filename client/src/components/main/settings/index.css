@@ -12,4 +12,28 @@ h1 {
   }
 
   
+  .settings-title {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    margin-left: 20px;
+    color: var(--text-color);
+  }
+  
+  .settings-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    margin-left: 20px;
+    color: var(--text-color);
+  }
+  
+  .theme-label {
+    margin-right: 10px;
+  }
+  
+  .theme-select {
+    padding: 5px;
+    font-size: 16px;
+  }
   

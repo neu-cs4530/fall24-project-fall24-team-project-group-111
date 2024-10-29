@@ -2,13 +2,13 @@
   margin: 0.5em;
   padding: 0.5em;
   border-radius: 6px;
-  background-color: #f9f9f9;
+  background-color: var(--comment-section-background);
   font-size: 0.9rem;
 }
 
 .toggle-button {
   background: none;
-  color: #007bff;
+  color: var(--text-color);
   border: none;
   font-size: 1rem;
   cursor: pointer;
@@ -17,7 +17,7 @@
 }
 
 .toggle-button:hover {
-  color: #0056b3;
+  color: var(--secondary-color);
 }
 
 .comments-container {
@@ -31,7 +31,7 @@
 }
 
 .comment-item {
-  background-color: #fff;
+  background-color: var(--comment-item-background);
   padding: 0.5em;
   margin-bottom: 0.25em;
   border-radius: 4px;
@@ -41,11 +41,12 @@
 .comment-text {
   font-size: 0.85rem;
   margin-bottom: 0.25em;
+  color: var(--text-color);
 }
 
 .comment-meta {
   font-size: 0.75rem;
-  color: #666;
+  color: var(--text-color);
 }
 
 .no-comments {
@@ -86,6 +87,12 @@
   border-radius: 4px;
   font-size: 0.85rem;
   resize: none;
+  background-color:  var(--comment-text-area-color);
+  color: var(--text-color);
+}
+
+.comment-textarea::placeholder {
+  color: var(--text-color);
 }
 
 .comment-textarea:focus {
@@ -95,7 +102,7 @@
 
 .add-comment-button {
   flex: 1;
-  background-color: #28a745;
+  background-color: var(--button-background);
   color: white;
   padding: 0.25em 0.5em;
   border: none;
@@ -105,7 +112,7 @@
 }
 
 .add-comment-button:hover {
-  background-color: #218838;
+  background-color: var(--button-hover);
 }
 
 .error {

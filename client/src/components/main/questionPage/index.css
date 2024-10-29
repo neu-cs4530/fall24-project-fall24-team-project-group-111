@@ -3,5 +3,9 @@
 }
 
 .question_list:last-child {
-  border-bottom: #000000 1px dashed;
+  border-bottom: var(--text-color) 1px dashed;
+}
+
+.count_label {
+  color: var(--text-color);
 }

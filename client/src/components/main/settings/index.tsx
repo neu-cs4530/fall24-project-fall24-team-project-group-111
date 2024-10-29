@@ -1,13 +1,15 @@
 import { useState } from 'react';
+import { useTheme } from '../../../contexts/ThemeContext';
+import './index.css';
 
 const SettingsPage = () => {
   type ThemeTypes = 'LightMode' | 'DarkMode';
-  const [theme, setTheme] = useState<ThemeTypes>();
+  const { theme, setTheme } = useTheme();
 
-  //state variables
-  const [textSize, setTextSize] = useState('medium'); 
+  // state variables
+  const [textSize, setTextSize] = useState('medium');
   const [textBoldness, setTextBoldness] = useState('normal');
-  const [font, setFont] = useState('Arial'); 
+  const [font, setFont] = useState('Arial');
 
   const handleThemeChange = (Event: { target: { value: unknown } }) => {
     setTheme(Event.target.value as ThemeTypes);
@@ -27,31 +29,22 @@ const SettingsPage = () => {
 
   return (
     <>
-      <h1
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          marginBottom: '20px',
-          marginLeft: '20px',
-        }}>
-        Settings
-      </h1>
+      <h1 className='settings-title'>Settings</h1>
 
-      <div
-        style={{ display: 'flex', alignItems: 'center', marginBottom: '20px', marginLeft: '20px' }}>
-        <label htmlFor='theme-select' style={{ marginRight: '10px' }}>
+      <div className='settings-container'>
+        <label htmlFor='theme-select' className='theme-label'>
           Change theme
         </label>
         <select
           id='theme-select'
           value={theme}
           onChange={handleThemeChange}
-          style={{ padding: '5px', fontSize: '16px' }}>
+          className='theme-select'>
           <option value='' disabled>
             Select a theme
           </option>
-          <option value='light'>LightMode</option>
-          <option value='dark'>DarkMode</option>
+          <option value='LightMode'>Light Mode</option>
+          <option value='DarkMode'>Dark Mode</option>
         </select>
       </div>
 
@@ -64,8 +57,7 @@ const SettingsPage = () => {
           id='text-size-select'
           value={textSize}
           onChange={handleTextSizeChange}
-          style={{ padding: '5px', fontSize: '16px' }}
-        >
+          style={{ padding: '5px', fontSize: '16px' }}>
           <option value='small'>Small</option>
           <option value='medium'>Medium</option>
           <option value='large'>Large</option>
@@ -73,8 +65,7 @@ const SettingsPage = () => {
       </div>
 
       <div
-        style={{ display: 'flex', alignItems: 'center', marginBottom: '20px', marginLeft: '20px' }}
-      >
+        style={{ display: 'flex', alignItems: 'center', marginBottom: '20px', marginLeft: '20px' }}>
         <label htmlFor='text-boldness-select' style={{ marginRight: '10px' }}>
           Text Boldness:
         </label>
@@ -82,16 +73,14 @@ const SettingsPage = () => {
           id='text-boldness-select'
           value={textBoldness}
           onChange={handleTextBoldnessChange}
-          style={{ padding: '5px', fontSize: '16px' }}
-        >
+          style={{ padding: '5px', fontSize: '16px' }}>
           <option value='normal'>Normal</option>
           <option value='bold'>Bold</option>
         </select>
       </div>
 
       <div
-        style={{ display: 'flex', alignItems: 'center', marginBottom: '20px', marginLeft: '20px' }}
-      >
+        style={{ display: 'flex', alignItems: 'center', marginBottom: '20px', marginLeft: '20px' }}>
         <label htmlFor='font-select' style={{ marginRight: '10px' }}>
           Font:
         </label>
@@ -99,8 +88,7 @@ const SettingsPage = () => {
           id='font-select'
           value={font}
           onChange={handleFontChange}
-          style={{ padding: '5px', fontSize: '16px' }}
-        >
+          style={{ padding: '5px', fontSize: '16px' }}>
           <option value='Arial'>Arial</option>
           <option value='Times New Roman'>Times New Roman</option>
           <option value='Courier New'>Courier New</option>
@@ -114,6 +102,7 @@ const SettingsPage = () => {
     </>
   );
 };
+
 export default SettingsPage;
 
 // git test
