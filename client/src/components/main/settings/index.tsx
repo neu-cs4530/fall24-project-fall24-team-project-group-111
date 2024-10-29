@@ -48,61 +48,10 @@ const SettingsPage = () => {
         </select>
       </div>
 
-      <div
-        style={{ display: 'flex', alignItems: 'center', marginBottom: '20px', marginLeft: '20px' }}>
-        <label htmlFor='text-size-select' style={{ marginRight: '10px' }}>
-          Text Size:
-        </label>
-        <select
-          id='text-size-select'
-          value={textSize}
-          onChange={handleTextSizeChange}
-          style={{ padding: '5px', fontSize: '16px' }}>
-          <option value='small'>Small</option>
-          <option value='medium'>Medium</option>
-          <option value='large'>Large</option>
-        </select>
-      </div>
-
-      <div
-        style={{ display: 'flex', alignItems: 'center', marginBottom: '20px', marginLeft: '20px' }}>
-        <label htmlFor='text-boldness-select' style={{ marginRight: '10px' }}>
-          Text Boldness:
-        </label>
-        <select
-          id='text-boldness-select'
-          value={textBoldness}
-          onChange={handleTextBoldnessChange}
-          style={{ padding: '5px', fontSize: '16px' }}>
-          <option value='normal'>Normal</option>
-          <option value='bold'>Bold</option>
-        </select>
-      </div>
-
-      <div
-        style={{ display: 'flex', alignItems: 'center', marginBottom: '20px', marginLeft: '20px' }}>
-        <label htmlFor='font-select' style={{ marginRight: '10px' }}>
-          Font:
-        </label>
-        <select
-          id='font-select'
-          value={font}
-          onChange={handleFontChange}
-          style={{ padding: '5px', fontSize: '16px' }}>
-          <option value='Arial'>Arial</option>
-          <option value='Times New Roman'>Times New Roman</option>
-          <option value='Courier New'>Courier New</option>
-        </select>
-      </div>
-
-      {/* Preview text based on selected settings */}
-      <div style={{ fontSize: textSize, fontWeight: textBoldness, fontFamily: font }}>
+      <div style={{ fontSize: textSize, fontWeight: textBoldness, fontFamily: font, marginTop: '20px', marginLeft: '20px' }}>
         Sample text preview
       </div>
     </>
   );
 };
-
 export default SettingsPage;
-
-// git test
