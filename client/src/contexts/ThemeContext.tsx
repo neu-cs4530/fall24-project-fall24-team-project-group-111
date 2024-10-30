@@ -9,6 +9,11 @@ import {
 } from 'react';
 import { ThemeType } from '../types';
 
+/**
+ * Context used to set the theme when the theme is changed
+ * Default to light mode.
+ * State used to track and set theme.
+ */
 type ThemeContextType = {
   theme: ThemeType;
   setTheme: Dispatch<SetStateAction<ThemeType>>;

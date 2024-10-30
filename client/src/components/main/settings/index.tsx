@@ -1,18 +1,20 @@
 import { useState } from 'react';
 import { useTheme } from '../../../contexts/ThemeContext';
 import './index.css';
+import { ThemeType } from '../../../types';
 
+/**
+ * Settings page component that displays the content of the settings page and handles
+ * adjusting theme, text boldness, size, and font
+ */
 const SettingsPage = () => {
-  type ThemeTypes = 'LightMode' | 'DarkMode';
   const { theme, setTheme } = useTheme();
-
-  // state variables
   const [textSize, setTextSize] = useState('medium');
   const [textBoldness, setTextBoldness] = useState('normal');
   const [font, setFont] = useState('Arial');
 
   const handleThemeChange = (Event: { target: { value: unknown } }) => {
-    setTheme(Event.target.value as ThemeTypes);
+    setTheme(Event.target.value as ThemeType);
   };
 
   const handleTextSizeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
