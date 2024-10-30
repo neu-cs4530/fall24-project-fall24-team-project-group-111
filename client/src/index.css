@@ -1,8 +1,37 @@
-/* Add CSS */
-
-/* Add global CSS here */
-/* Add CSS stylesheet */
-
+[data-theme='DarkMode'] {
+  --primary-color: #bb86fc;
+  --secondary-color: #03dac6;
+  --header-background: #2c2d5d; 
+  --background-color: #090822;
+  --text-color: #efefeff3;
+  --button-background: rgb(143, 98, 239);
+  --nav-button: #03dac6;
+  --button-hover: rgb(73, 43, 137);
+  --nav-selected: #2c2d5d;
+  --border-color: #efefeff3;
+  --order-button:#efefeff3;
+  --tags-page-border: #6751ae;
+  --comment-section-background: #2c2d5d; 
+  --comment-item-background: #505180;
+  --comment-text-area-color: #505180;
+}
+[data-theme='LightMode'] {
+  --primary-color: #3089e8;
+  --secondary-color: #0056b3;
+  --header-background: #b2b2b2; 
+  --background-color: #ffffff;
+  --text-color: #000000;
+  --button-background: #3090e2;
+  --nav-button: cornflowerblue;
+  --button-hover: #0056b3;
+  --nav-selected: #cccccc;
+  --border-color: #000000;
+  --order-button:#ffffff;
+  --tags-page-border: #000000;
+  --comment-section-background: #c2c2c2;
+  --comment-item-background: #fff;
+  --comment-text-area-color: #fff;
+}
 * {
   font-family: Arial, Helvetica, sans-serif;
 }
@@ -14,4 +43,5 @@ html {
 body,
 #root {
   height: 100%;
+  background-color: var(--background-color);
 }

@@ -1,11 +1,11 @@
 .question {
   display: flex;
   flex-direction: row;
-  border-top: #000000 1px dashed;
+  border-top: var(--text-color) 1px dashed;
 }
 
 .postStats {
-  color: #bbbbbb;
+  color: var(--text-color);
   text-align: center;
   width: 10%;
 }
@@ -15,7 +15,7 @@
 }
 
 .postTitle {
-  color: cornflowerblue;
+  color: var(--secondary-color);
 }
 
 .question_tags {
@@ -46,5 +46,5 @@
 }
 
 .question_meta {
-  color: #bbbbbb;
+  color: var(--text-color);
 }
