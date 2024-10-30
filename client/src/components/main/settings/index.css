@@ -22,6 +22,18 @@ h1 {
   
   .settings-container {
     display: flex;
+    flex-direction: column;
+    row-gap: 10px;
+    align-items: left;
+    margin-bottom: 20px;
+    margin-left: 20px;
+    color: var(--text-color);
+  }
+
+  .settings-row {
+    display: flex;
+    flex-direction: row;
+    column-gap: 10px;
     align-items: center;
     margin-bottom: 20px;
     margin-left: 20px;
