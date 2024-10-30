@@ -92,7 +92,7 @@ const userController = (socket: FakeSOSocket, JWT_SECRET: string) => {
         throw new Error(userFromDb.error);
       }
       const token = jwt.sign({ userId: userFromDb._id }, JWT_SECRET, { expiresIn: '1h' });
-      res.json({ message: 'Login successful', token });
+      res.json({ message: 'Login successful', token, user: userFromDb });
     } catch (err: unknown) {
       if (err instanceof Error) {
         res.status(500).send(`Error when logging in: ${err.message}`);

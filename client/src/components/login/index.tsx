@@ -1,30 +1,31 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './index.css';
-import useLogin from '../../hooks/useLogin';
+import useGuestLogin from '../../hooks/useGuestLogin';
+import SignIn from './signInComponent';
+import AddUser from './addUserComponent';
 
 /**
- * Login Component contains a form that allows the user to input their username, which is then submitted
- * to the application's context through the useLoginContext hook.
+ * Login Component contains forms that allow the user sign in or create a user,
+ * which is then submitted to the application's context through the useLoginContext hook.
  */
 const Login = () => {
-  const { username, handleSubmit, handleInputChange } = useLogin();
+  const [isSignIn, setIsSignIn] = useState(true);
+  const { handleSubmit } = useGuestLogin();
+
+  /**
+   * Function to switch between the sign in and add user forms.
+   */
+  const handleSwitch = () => {
+    setIsSignIn(!isSignIn);
+  };
 
   return (
     <div className='container'>
       <h2>Welcome to FakeStackOverflow!</h2>
-      <h4>Please enter your username.</h4>
+      {isSignIn ? <SignIn onSwitch={handleSwitch} /> : <AddUser onSwitch={handleSwitch} />}
       <form onSubmit={handleSubmit}>
-        <input
-          type='text'
-          value={username}
-          onChange={handleInputChange}
-          placeholder='Enter your username'
-          required
-          className='input-text'
-          id={'usernameInput'}
-        />
-        <button type='submit' className='login-button'>
-          Submit
+        <button type='submit' className='link-button'>
+          Continue as a guest
         </button>
       </form>
     </div>

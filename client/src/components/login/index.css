@@ -8,12 +8,19 @@
 }
 
 .container h2,
+.container h3,
+.container h5,
 .container p,
-.container h4,
 .container form {
   text-align: center;
   width: 100%;
   margin: 10px 0;
+}
+
+.container form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .input-text {
@@ -33,6 +40,11 @@
   box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
 }
 
+.error-text {
+  color: red;
+  margin-bottom: 10px;
+}
+
 .login-button {
   padding: 10px 20px;
   font-size: 16px;
@@ -41,7 +53,6 @@
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  margin-left: 20px;
 }
 
 .login-button:hover {
@@ -50,4 +61,25 @@
 
 .login-button:active {
   background-color: #003f7f;
+}
+
+.login-input-container {
+  min-height: 30vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.link-button {
+  background: none;
+  border: none;
+  color: #007bff;
+  text-decoration: underline;
+  cursor: pointer;
+  font-size: 16px;
+  padding: 0;
+}
+
+.link-button:hover {
+  color: #0056b3;
 }
