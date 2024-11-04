@@ -5,6 +5,7 @@
   border-right: dashed;
   padding: 4% 0 4% 0;
   align-items: center;
+  border-color: var(--text-color);
 }
 
 .menu_button:first-child {
@@ -18,9 +19,9 @@
   border-radius: 5px;
   text-align: center;
   line-height: 40px;
-  color: cornflowerblue;
+  color: var(--nav-button);
 }
 
 .menu_selected {
-  background: #cccccc;
+  background: var( --nav-selected);
 }

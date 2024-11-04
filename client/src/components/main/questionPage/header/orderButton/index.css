@@ -1,8 +1,8 @@
 .btn {
-  background: #ffffff;
+  background: var(--order-button);
   border: #000000 1px solid;
 }
 
 .btn:hover {
-  background-color: #007bff;
+  background-color: var(--primary-color);
 }

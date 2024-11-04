@@ -17,6 +17,8 @@ export interface User {
   creationDateTime?: Date;
 }
 
+export type ThemeType = 'LightMode' | 'DarkMode';
+
 /**
  * Enum representing the possible ordering options for questions.
  * and their display names.

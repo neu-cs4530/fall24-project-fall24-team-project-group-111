@@ -237,6 +237,5 @@ describe('userOperations', () => {
             }
 
         });
-
     });
 });
