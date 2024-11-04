@@ -86,7 +86,14 @@ const SettingsPage = () => {
         </select>
       </div>
 
-      <div style={{ fontSize: textSize, fontWeight: textBoldness, fontFamily: font, marginTop: '20px', marginLeft: '20px' }}>
+      <div
+        style={{
+          fontSize: textSize,
+          fontWeight: textBoldness,
+          fontFamily: font,
+          marginTop: '20px',
+          marginLeft: '20px',
+        }}>
         Sample text preview
       </div>
     </>
