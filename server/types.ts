@@ -236,6 +236,11 @@ export interface User {
 export type UserResponse = User | { error: string };
 
 /**
+ * Type representing the possible responses for a password reset operation.
+ */
+export type PasswordResetResponse = void | { error: string };
+
+/**
  * Interface for the request body when adding a new user.
  * - body - The user being added.
  */

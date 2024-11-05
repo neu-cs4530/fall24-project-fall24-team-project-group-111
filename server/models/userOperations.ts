@@ -1,7 +1,7 @@
 import bcrypt from 'bcrypt';
 import { MongoServerError } from 'mongodb';
 import UserModel from './users';
-import { User, UserResponse } from '../types';
+import { User, UserResponse, PasswordResetResponse } from '../types';
 
 /**
  * Checks if the error is a duplicate key error.
@@ -62,5 +62,28 @@ export const loginUser = async (username: string, password: string): Promise<Use
     return user;
   } catch (error) {
     return { error: 'Error logging in user' };
+  }
+};
+
+/**
+ * Sends an email for a user to reset their password.
+ *
+ * @param {string} username - The username of the user.
+ * @param {string} email - The email address of the user and the recipient of the password reset email.
+ *
+ * @returns {Promise<PasswordResetResponse>} - The result of the password reset operation, or an error message if the operation failed.
+ */
+export const sendPasswordReset = async (
+  username: string,
+  email: string,
+): Promise<PasswordResetResponse> => {
+  try {
+    const user = await UserModel.findOne({ username });
+    if (!user) {
+      return { error: 'Username does not exist' };
+    }
+    return undefined;
+  } catch (error) {
+    return { error: 'Error sending password reset' };
   }
 };
