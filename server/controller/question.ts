@@ -1,6 +1,5 @@
 import express, { Response } from 'express';
 import { ObjectId } from 'mongodb';
-// eslint-disable-next-line import/no-extraneous-dependencies
 import OpenAI from 'openai';
 import {
   Question,
