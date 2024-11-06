@@ -2,6 +2,7 @@ import { Request } from 'express';
 import { ObjectId } from 'mongodb';
 import { Server } from 'socket.io';
 import { JwtPayload } from 'jsonwebtoken';
+import type { SentMessageInfo } from 'nodemailer';
 
 export type FakeSOSocket = Server<ServerToClientEvents>;
 
@@ -220,6 +221,8 @@ export interface ServerToClientEvents {
  * - email - The email address of the user.
  * - password - The password of the user.
  * - creationDateTime - The date and time when the user was created.
+ * - resetPasswordToken - The token used to reset the user's password. Optional field.
+ * - resetPasswordExpires - The expiration date for the reset password token. Optional field.
  *
  */
 export interface User {
@@ -228,6 +231,8 @@ export interface User {
   email: string;
   password: string;
   creationDateTime: Date;
+  resetPasswordToken?: string;
+  resetPasswordExpires?: Date;
 }
 
 /**
@@ -238,7 +243,7 @@ export type UserResponse = User | { error: string };
 /**
  * Type representing the possible responses for a password reset operation.
  */
-export type PasswordResetResponse = void | { error: string };
+export type PasswordResetResponse = SentMessageInfo | { error: string };
 
 /**
  * Interface for the request body when adding a new user.
@@ -257,6 +262,28 @@ export interface LoginUserRequest extends Request {
   body: {
     username: string;
     password: string;
+  };
+}
+
+/**
+ * Interface extending the request body when requesting a password reset, which contains:
+ * - username - The username of the user for the password reset request.
+ */
+export interface SendPasswordResetRequest extends Request {
+  body: {
+    username: string;
+  };
+}
+
+/**
+ * Interface extending the request body when resetting a password, which contains:
+ * - token - The token used to reset the password.
+ * - newPassword - The new password to set.
+ */
+export interface ResetPasswordRequest extends Request {
+  body: {
+    token: string;
+    newPassword: string;
   };
 }
 

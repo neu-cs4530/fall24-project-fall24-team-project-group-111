@@ -1,7 +1,14 @@
 import express, { Response } from 'express';
 import jwt from 'jsonwebtoken';
-import { User, AddUserRequest, LoginUserRequest, FakeSOSocket } from '../types';
-import { saveUser, loginUser } from '../models/userOperations';
+import {
+  User,
+  AddUserRequest,
+  LoginUserRequest,
+  SendPasswordResetRequest,
+  ResetPasswordRequest,
+  FakeSOSocket,
+} from '../types';
+import { saveUser, loginUser, sendPasswordReset, resetPassword } from '../models/userOperations';
 
 const userController = (socket: FakeSOSocket, JWT_SECRET: string) => {
   const router = express.Router();
@@ -102,8 +109,83 @@ const userController = (socket: FakeSOSocket, JWT_SECRET: string) => {
     }
   };
 
+  /**
+   * Handles sending a password reset request for a user.
+   * If there is an error, the HTTP response's status is updated.
+   *
+   * @param req The SendPasswordResetRequest object containing the query parameter `username`.
+   * @param res The HTTP response object used to send back the result of the operation.
+   *
+   * @returns A Promise that resolves to void.
+   */
+  const sendPasswordResetRoute = async (
+    req: SendPasswordResetRequest,
+    res: Response,
+  ): Promise<void> => {
+    if (!req.body.username) {
+      res.status(400).send('Invalid request');
+      return;
+    }
+    const { username } = req.body;
+
+    try {
+      const result = await sendPasswordReset(username);
+      if ('error' in result) {
+        if (result.error === 'Username does not exist') {
+          res.status(401).send(result.error);
+          return;
+        }
+        throw new Error(result.error);
+      }
+      res.json({ message: 'Password reset email successfully sent', result });
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        res.status(500).send(`Error when sending password reset: ${err.message}`);
+      } else {
+        res.status(500).send(`Error when sending password reset`);
+      }
+    }
+  };
+
+  /**
+   * Handles resetting a user's password.
+   * If there is an error, the HTTP response's status is updated.
+   *
+   * @param req The ResetPasswordRequest object containing the query parameters `token` and `newPassword`.
+   * @param res The HTTP response object used to send back the result of the operation.
+   *
+   * @returns A Promise that resolves to void.
+   */
+  const resetPasswordRoute = async (req: ResetPasswordRequest, res: Response): Promise<void> => {
+    if (!req.body.token || !req.body.newPassword) {
+      res.status(400).send('Invalid request');
+      return;
+    }
+    const { token, newPassword } = req.body;
+
+    try {
+      const result = await resetPassword(token, newPassword);
+      if ('error' in result) {
+        if (result.error === 'Password reset token is invalid or has expired') {
+          res.status(401).send(result.error);
+          return;
+        }
+        throw new Error(result.error);
+      }
+      res.json({ message: 'Password reset successfully', result });
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        res.status(500).send(`Error when resetting password: ${err.message}`);
+      } else {
+        res.status(500).send(`Error when resetting password`);
+      }
+    }
+  };
+
   router.post('/addUser', addUserRoute);
   router.post('/loginUser', loginUserRoute);
+  router.post('/sendPasswordReset', sendPasswordResetRoute);
+  router.post('/resetPassword', resetPasswordRoute);
 
   return router;
 };

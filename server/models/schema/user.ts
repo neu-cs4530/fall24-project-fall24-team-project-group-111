@@ -25,6 +25,12 @@ const userSchema: Schema = new Schema(
     creationDateTime: {
       type: Date,
     },
+    resetPasswordToken: {
+      type: String,
+    },
+    resetPasswordExpires: {
+      type: Date,
+    },
   },
   { collection: 'User' },
 );
