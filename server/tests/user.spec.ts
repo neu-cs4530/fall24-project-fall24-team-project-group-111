@@ -12,6 +12,8 @@ const mockingoose = require('mockingoose');
 
 const saveUserSpy = jest.spyOn(util, 'saveUser');
 const loginUserSpy = jest.spyOn(util, 'loginUser');
+const sendPasswordResetSpy = jest.spyOn(util, 'sendPasswordReset');
+const resetPasswordSpy = jest.spyOn(util, 'resetPassword');
 const jwtSignSpy = jest.spyOn(jwt, 'sign');
 
 describe('POST /addUser', () => {
@@ -56,6 +58,7 @@ describe('POST /addUser', () => {
     const response = await supertest(app).post('/user/addUser').send(mockReqBody);
 
     expect(response.status).toBe(400);
+    expect(response.text).toBe('Invalid request');
   });
 
   it('it should return a 409 error if the saveUser method throws and error', async () => {
@@ -113,6 +116,7 @@ describe('POST /addUser', () => {
     const response = await supertest(app).post('/user/loginUser').send(mockLoginRequest);
 
     expect(response.status).toBe(400);
+    expect(response.text).toBe('Invalid request');
   });
 
   it('it should return a 409 error if the loginUser method throws and error', async () => {
@@ -231,5 +235,177 @@ describe('userOperations', () => {
         expect(false).toBeTruthy();
       }
     });
+  });
+});
+
+describe('POST /sendPasswordReset', () => {
+  afterEach(async () => {
+    await mongoose.connection.close(); // Ensure the connection is properly closed
+  });
+
+  afterAll(async () => {
+    await mongoose.disconnect(); // Ensure mongoose is disconnected after all tests
+  });
+
+  it('should send a successful password reset', async () => {
+    const mockReqBody = {
+      username: 'fakeUser',
+    };
+
+    sendPasswordResetSpy.mockResolvedValueOnce({ result: 'Email successfully sent' });
+
+    const response = await supertest(app).post('/user/sendPasswordReset').send(mockReqBody);
+    expect(response.status).toBe(200);
+    expect(response.body.message).toBe('Password reset email successfully sent');
+  });
+
+  it('should return a bad request error if the request body is missing', async () => {
+    const response = await supertest(app).post('/user/sendPasswordReset');
+    expect(response.status).toBe(400);
+    expect(response.text).toBe('Invalid request');
+  });
+
+  it('should return a bad request error if the username string is empty', async () => {
+    const mockReqBody = {
+      username: '',
+    };
+
+    const response = await supertest(app).post('/user/sendPasswordReset').send(mockReqBody);
+    expect(response.status).toBe(400);
+    expect(response.text).toBe('Invalid request');
+  });
+
+  it('should return a 404 not found error if the sendPasswordReset method does not find the username', async () => {
+    const mockReqBody = {
+      username: 'fakeUser',
+    };
+
+    sendPasswordResetSpy.mockResolvedValueOnce({ error: 'Username does not exist' });
+    const response = await supertest(app).post('/user/sendPasswordReset').send(mockReqBody);
+    expect(response.status).toBe(404);
+    expect(response.text).toBe('Error when sending password reset: Username does not exist');
+  });
+
+  it('should return error in response if sendPasswordReset method throws an error', async () => {
+    const mockReqBody = {
+      username: 'fakeUser',
+    };
+
+    sendPasswordResetSpy.mockResolvedValueOnce({ error: 'Error sending password reset email' });
+
+    const response = await supertest(app).post('/user/sendPasswordReset').send(mockReqBody);
+
+    expect(response.status).toBe(500);
+    expect(response.text).toBe(
+      'Error when sending password reset: Error sending password reset email',
+    );
+  });
+});
+
+describe('POST /sendPasswordReset', () => {
+  afterEach(async () => {
+    await mongoose.connection.close(); // Ensure the connection is properly closed
+  });
+
+  afterAll(async () => {
+    await mongoose.disconnect(); // Ensure mongoose is disconnected after all tests
+  });
+
+  it('should successfully reset a password', async () => {
+    const mockReqBody = {
+      token: 'fakeToken',
+      newPassword: 'newPassword',
+    };
+
+    const mockResponse = {
+      username: 'fakeUser',
+      email: 'fakeEmail@email.com',
+      password: 'newPassword',
+      creationDateTime: new Date('2024-06-06'),
+    };
+
+    resetPasswordSpy.mockResolvedValueOnce(mockResponse);
+
+    const response = await supertest(app).post('/user/resetPassword').send(mockReqBody);
+    expect(response.status).toBe(200);
+    expect(response.body.message).toBe('Password reset successfully');
+  });
+
+  it('should return a bad request error if the request body is missing', async () => {
+    const response = await supertest(app).post('/user/resetPassword');
+    expect(response.status).toBe(400);
+    expect(response.text).toBe('Invalid request');
+  });
+
+  it('should return bad request error if token property missing', async () => {
+    const mockReqBody = {
+      newPassword: 'newPassword',
+    };
+
+    const response = await supertest(app).post('/user/resetPassword').send(mockReqBody);
+    expect(response.status).toBe(400);
+    expect(response.text).toBe('Invalid request');
+  });
+
+  it('should return bad request error if newPassword property missing', async () => {
+    const mockReqBody = {
+      token: 'fakeToken',
+    };
+
+    const response = await supertest(app).post('/user/resetPassword').send(mockReqBody);
+    expect(response.status).toBe(400);
+    expect(response.text).toBe('Invalid request');
+  });
+
+  it('should return bad request error if token property is empty', async () => {
+    const mockReqBody = {
+      token: 'newPassword',
+      newPassword: '',
+    };
+
+    const response = await supertest(app).post('/user/resetPassword').send(mockReqBody);
+    expect(response.status).toBe(400);
+    expect(response.text).toBe('Invalid request');
+  });
+
+  it('should return bad request error if newPassword property is empty', async () => {
+    const mockReqBody = {
+      token: 'fakeToken',
+      newPassword: '',
+    };
+
+    const response = await supertest(app).post('/user/resetPassword').send(mockReqBody);
+    expect(response.status).toBe(400);
+    expect(response.text).toBe('Invalid request');
+  });
+
+  it('should return a 401 unauthorized error if the resetPassword method determines the token is invalid or expired', async () => {
+    const mockReqBody = {
+      token: 'fakeToken',
+      newPassword: 'newPassword',
+    };
+
+    resetPasswordSpy.mockResolvedValueOnce({
+      error: 'Password reset token is invalid or has expired',
+    });
+    const response = await supertest(app).post('/user/resetPassword').send(mockReqBody);
+    expect(response.status).toBe(401);
+    expect(response.text).toBe(
+      'Error when resetting password: Password reset token is invalid or has expired',
+    );
+  });
+
+  it('should return error in response if sendPasswordReset method throws an error', async () => {
+    const mockReqBody = {
+      token: 'fakeToken',
+      newPassword: 'newPassword',
+    };
+
+    resetPasswordSpy.mockResolvedValueOnce({ error: 'Error resetting password' });
+
+    const response = await supertest(app).post('/user/resetPassword').send(mockReqBody);
+
+    expect(response.status).toBe(500);
+    expect(response.text).toBe('Error when resetting password: Error resetting password');
   });
 });

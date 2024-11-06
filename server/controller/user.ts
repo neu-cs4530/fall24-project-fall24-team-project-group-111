@@ -45,7 +45,7 @@ const userController = (socket: FakeSOSocket, JWT_SECRET: string) => {
    */
   const addUserRoute = async (req: AddUserRequest, res: Response): Promise<void> => {
     if (!isUserBodyValid(req.body)) {
-      res.status(400).send('Invalid user body');
+      res.status(400).send('Invalid request');
       return;
     }
     const user: User = req.body;
@@ -132,7 +132,7 @@ const userController = (socket: FakeSOSocket, JWT_SECRET: string) => {
       const result = await sendPasswordReset(username);
       if ('error' in result) {
         if (result.error === 'Username does not exist') {
-          res.status(401).send(result.error);
+          res.status(404).send(`Error when sending password reset: ${result.error}`);
           return;
         }
         throw new Error(result.error);
@@ -167,7 +167,7 @@ const userController = (socket: FakeSOSocket, JWT_SECRET: string) => {
       const result = await resetPassword(token, newPassword);
       if ('error' in result) {
         if (result.error === 'Password reset token is invalid or has expired') {
-          res.status(401).send(result.error);
+          res.status(401).send(`Error when resetting password: ${result.error}`);
           return;
         }
         throw new Error(result.error);
