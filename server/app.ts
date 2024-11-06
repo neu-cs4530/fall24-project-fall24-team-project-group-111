@@ -24,6 +24,8 @@ if (!JWT_SECRET) {
   process.exit(1);
 }
 
+const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
+
 const MONGO_URL = `${process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017'}/fake_so`;
 const CLIENT_URL = process.env.CLIENT_URL || 'http://localhost:3000';
 const port = parseInt(process.env.PORT || '8000');
@@ -82,4 +84,4 @@ app.use('/comment', commentController(socket));
 app.use('/user', userController(socket, JWT_SECRET));
 
 // Export the app instance
-export { app, server, startServer };
+export { app, server, startServer, OPENAI_API_KEY };
