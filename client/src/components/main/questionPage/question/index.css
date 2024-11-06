@@ -42,7 +42,7 @@
 }
 
 .question_author {
-  color: red;
+  color: var( --question-author);
 }
 
 .question_meta {

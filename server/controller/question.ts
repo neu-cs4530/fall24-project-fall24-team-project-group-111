@@ -1,5 +1,7 @@
 import express, { Response } from 'express';
 import { ObjectId } from 'mongodb';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import OpenAI from 'openai';
 import {
   Question,
   FindQuestionRequest,
@@ -113,7 +115,42 @@ const questionController = (socket: FakeSOSocket) => {
     question.askedBy !== '' &&
     question.askDateTime !== undefined &&
     question.askDateTime !== null;
-
+  /**
+   * Function to call openAI API to get an ai generated answer. Gets called automatically when creating a question.
+   * @param text is the string that will be passed to the API to generate an answer for
+   * @returns a promise that resolves to a string
+   */
+  const generateAIAnswer = async (text: string): Promise<string> => {
+    const openai = new OpenAI({
+      organization: 'org-ILR5PGHDz2TMN7TbELizo9ld',
+      project: 'proj_HRv67erRpJfTx2bUo3Qt7htF',
+      apiKey: process.env.OPENAI_API_KEY,
+    });
+    try {
+      const aiAnswer = await openai.chat.completions.create({
+        model: 'gpt-4o-mini',
+        messages: [
+          {
+            role: 'system',
+            content: 'You are answering a question on a question and answer platform',
+          },
+          {
+            role: 'user',
+            content: text,
+          },
+        ],
+      });
+      if (!aiAnswer || !aiAnswer.choices || !aiAnswer.choices[0] || !aiAnswer.choices[0].message) {
+        throw new Error('Invalid response structure from OpenAI API');
+      }
+      return aiAnswer.choices[0].message.content as unknown as string;
+    } catch (error) {
+      if (error instanceof Error) {
+        return 'Error: Failed to generate AI answer. Please try again later.';
+      }
+      return 'Error: An unexpected issue occurred while generating the answer.';
+    }
+  };
   /**
    * Adds a new question to the database. The question is first validated and then saved.
    * If the tags are invalid or saving the question fails, the HTTP response status is updated.
@@ -137,6 +174,11 @@ const questionController = (socket: FakeSOSocket) => {
       if (questionswithtags.tags.length === 0) {
         throw new Error('Invalid tags');
       }
+      const chatAnswer = await generateAIAnswer(question.text);
+      if (chatAnswer.startsWith('Error:')) {
+        throw new Error(chatAnswer);
+      }
+      questionswithtags.aiGeneratedAnswer = chatAnswer;
       const result = await saveQuestion(questionswithtags);
       if ('error' in result) {
         throw new Error(result.error);

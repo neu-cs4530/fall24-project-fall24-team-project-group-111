@@ -1,4 +1,6 @@
 import express, { Response } from 'express';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import OpenAI from 'openai';
 import { Answer, AnswerRequest, AnswerResponse, FakeSOSocket } from '../types';
 import { addAnswerToQuestion, populateDocument, saveAnswer } from '../models/application';
 
