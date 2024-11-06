@@ -2,6 +2,24 @@ import { Socket } from 'socket.io-client';
 
 export type FakeSOSocket = Socket<ServerToClientEvents>;
 
+export type ThemeType = 'LightMode' | 'DarkMode';
+
+/**
+ * Represents the settingsInfo in the application.
+ * @property theme - the currently selected color theme
+ * @property textSize - the currently selected size of the text
+ * @property textBoldness - the currently selcted text boldness
+ * @property font - the currently selcted font style for text
+ * @property lineSpacing - the currently selcted line spacing for all text
+ */
+export interface SettingsInfo {
+  theme: ThemeType;
+  testSize: string;
+  textBoldness: string;
+  font: string;
+  lineSpacing: string;
+}
+
 /**
  * Represents a user in the application.
  *
@@ -9,15 +27,15 @@ export type FakeSOSocket = Socket<ServerToClientEvents>;
  * @property email - The email address of a logged in user. Optional field.
  * @property password - The password of a logged in user. Optional field.
  * @property creationDateTime - The date and time when a logged in user was created. Optional field.
+ * @property settings - the theme and text settings for the current user
  */
 export interface User {
   username: string;
   email?: string;
   password?: string;
   creationDateTime?: Date;
+  settings?: SettingsInfo;
 }
-
-export type ThemeType = 'LightMode' | 'DarkMode';
 
 /**
  * Enum representing the possible ordering options for questions.

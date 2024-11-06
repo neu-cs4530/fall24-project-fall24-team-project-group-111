@@ -212,6 +212,21 @@ export interface ServerToClientEvents {
   commentUpdate: (comment: CommentUpdatePayload) => void;
 }
 
+/**
+ * Interface representing the SettingsInfo, which contains:
+ * - theme - the currently selected color theme
+ * - textSize - the currently selected size of the text
+ * - textBoldness - the currently selcted text boldness
+ * - font - the currently selcted font style for text
+ * - lineSpacing - the currently selcted line spacing for all text
+ */
+export interface SettingsInfo {
+  theme: string;
+  textSize: string;
+  textBoldness: string;
+  font: string;
+  lineSpacing: string;
+}
 
 /**
  * Interface representing a User, which contains:

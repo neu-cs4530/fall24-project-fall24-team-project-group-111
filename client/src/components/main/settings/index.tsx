@@ -2,19 +2,23 @@ import { useState } from 'react';
 import { useTheme } from '../../../contexts/ThemeContext';
 import './index.css';
 import { ThemeType } from '../../../types';
+import useUserContext from '../../../hooks/useUserContext';
+import { changeTheme } from '../../../services/userAuthService';
 
 /**
  * Settings page component that displays the content of the settings page and handles
  * adjusting theme, text boldness, size, and font
  */
 const SettingsPage = () => {
+  const { user } = useUserContext();
   const { theme, setTheme } = useTheme();
   const [textSize, setTextSize] = useState('medium');
   const [textBoldness, setTextBoldness] = useState('normal');
   const [font, setFont] = useState('Arial');
 
-  const handleThemeChange = (Event: { target: { value: unknown } }) => {
+  const handleThemeChange = async (Event: { target: { value: unknown } }) => {
     setTheme(Event.target.value as ThemeType);
+    // await changeTheme(user.username, Event.target.value as ThemeType);
   };
 
   const handleTextSizeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
