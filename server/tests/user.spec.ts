@@ -158,68 +158,138 @@ describe('POST /addUser', () => {
   });
 });
 
-// describe('POST /loginUser', () => {
-//   afterEach(async () => {
-//     await mongoose.connection.close(); // Ensure the connection is properly closed
-//   });
+describe('POST /loginUser', () => {
+  afterEach(async () => {
+    await mongoose.connection.close(); // Ensure the connection is properly closed
+  });
 
-//   afterAll(async () => {
-//     await mongoose.disconnect(); // Ensure mongoose is disconnected after all tests
-//   });
+  afterAll(async () => {
+    await mongoose.disconnect(); // Ensure mongoose is disconnected after all tests
+  });
 
-//   it('should log into an existing user', async () => {
-//     // const mockUser = {
-//     //   username: 'fakeUser',
-//     //   email: 'j2002dl@gmail.com',
-//     //   password: 'fakepassword',
-//     //   creationDateTime: new Date('2024-06-03'),
-//     // };
+  it('should log into an existing user', async () => {
+    const mockLoginRequest = {
+      username: 'fakeUser',
+      password: 'fakepassword',
+    };
 
-//     const mockResponse = {
-//       message: 'Login successful',
-//       token: 'fakeToken',
-//       user: mockUser,
-//     };
+    loginUserSpy.mockResolvedValueOnce(mockUser);
+    (jwtSignSpy as jest.Mock).mockReturnValue('fakeToken');
 
-//     const mockLoginRequest = {
-//       username: 'fakeUser',
-//       password: 'fakepassword',
-//     };
+    const response = await supertest(app).post('/user/loginUser').send(mockLoginRequest);
+    expect(response.status).toBe(200);
+    expect(response.body.message).toBe('Login successful');
+    expect(response.body.token).toBe('fakeToken');
+    expect(response.body.user).toEqual({
+      ...mockUser,
+      creationDateTime: mockUser.creationDateTime.toISOString(),
+    });
+  });
 
-//     loginUserSpy.mockResolvedValueOnce(mockUser);
-//     (jwtSignSpy as jest.Mock).mockReturnValue('fakeToken');
+  it('should return a bad request error if the request body is missing', async () => {
+    const response = await supertest(app).post('/user/loginUser');
+    expect(response.status).toBe(400);
+    expect(response.text).toBe('Invalid request');
+  });
 
-//     const response = await supertest(app).post('/user/loginUser').send(mockLoginRequest);
+  it('should return bad request error if username property missing', async () => {
+    const mockReqBody = {
+      password: 'fakepassword',
+    };
 
-//     expect(response.status).toBe(200);
-//     expect(response.body.message).toBe('Login successful');
-//     expect(response.body.token).toBe(mockResponse.token);
-//   });
+    const response = await supertest(app).post('/user/loginUser').send(mockReqBody);
+    expect(response.status).toBe(400);
+    expect(response.text).toBe('Invalid request');
+  });
 
-//   it('it should return a bad request error if the login request is invalid', async () => {
-//     const mockLoginRequest = {
-//       username: 'fakeUser',
-//     };
+  it('should return bad request error if password property missing', async () => {
+    const mockReqBody = {
+      username: 'fakeUser',
+    };
 
-//     const response = await supertest(app).post('/user/loginUser').send(mockLoginRequest);
+    const response = await supertest(app).post('/user/loginUser').send(mockReqBody);
+    expect(response.status).toBe(400);
+    expect(response.text).toBe('Invalid request');
+  });
 
-//     expect(response.status).toBe(400);
-//     expect(response.text).toBe('Invalid request');
-//   });
+  it('should return bad request error if username property is empty', async () => {
+    const mockReqBody = {
+      username: '',
+      password: 'fakepassword',
+    };
 
-//   it('it should return a 409 error if the loginUser method throws and error', async () => {
-//     const mockLoginRequest = {
-//       username: 'fakeUser',
-//       password: 'fakepassword',
-//     };
+    const response = await supertest(app).post('/user/loginUser').send(mockReqBody);
+    expect(response.status).toBe(400);
+    expect(response.text).toBe('Invalid request');
+  });
 
-//     loginUserSpy.mockResolvedValueOnce({ error: 'Username does not exist' });
+  it('should return bad request error if password property is empty', async () => {
+    const mockReqBody = {
+      username: 'fakeUser',
+      password: '',
+    };
 
-//     const response = await supertest(app).post('/user/loginUser').send(mockLoginRequest);
+    const response = await supertest(app).post('/user/loginUser').send(mockReqBody);
+    expect(response.status).toBe(400);
+    expect(response.text).toBe('Invalid request');
+  });
 
-//     expect(response.status).toBe(401);
-//   });
-// });
+  it('should return a 401 unauthorized error if the loginUser method determines the user does not exist', async () => {
+    const mockLoginRequest = {
+      username: 'fakeUser',
+      password: 'fakepassword',
+    };
+
+    loginUserSpy.mockResolvedValueOnce({ error: 'Username does not exist' });
+
+    const response = await supertest(app).post('/user/loginUser').send(mockLoginRequest);
+    expect(response.status).toBe(401);
+    expect(response.text).toBe('Username does not exist');
+  });
+
+  it('should return a 401 unauthorized error if the loginUser method determines the password is incorrect', async () => {
+    const mockLoginRequest = {
+      username: 'fakeUser',
+      password: 'fakepassword',
+    };
+
+    loginUserSpy.mockResolvedValueOnce({ error: 'Incorrect password' });
+
+    const response = await supertest(app).post('/user/loginUser').send(mockLoginRequest);
+    expect(response.status).toBe(401);
+    expect(response.text).toBe('Incorrect password');
+  });
+
+  it('should return error in response if loginUser method throws an error', async () => {
+    const mockLoginRequest = {
+      username: 'fakeUser',
+      password: 'fakepassword',
+    };
+
+    loginUserSpy.mockResolvedValueOnce({ error: 'Error logging in user' });
+
+    const response = await supertest(app).post('/user/loginUser').send(mockLoginRequest);
+
+    expect(response.status).toBe(500);
+    expect(response.text).toBe('Error when logging in: Error logging in user');
+  });
+
+  it('should return error in response if jwt.sign method throws an error', async () => {
+    const mockLoginRequest = {
+      username: 'fakeUser',
+      password: 'fakepassword',
+    };
+
+    loginUserSpy.mockResolvedValueOnce(mockUser);
+    (jwtSignSpy as jest.Mock).mockImplementationOnce(() => {
+      throw new Error('Error signing token');
+    });
+
+    const response = await supertest(app).post('/user/loginUser').send(mockLoginRequest);
+    expect(response.status).toBe(500);
+    expect(response.text).toBe('Error when logging in: Error signing token');
+  });
+});
 
 describe('POST /sendPasswordReset', () => {
   afterEach(async () => {

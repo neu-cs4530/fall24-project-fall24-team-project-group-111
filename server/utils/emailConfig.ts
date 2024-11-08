@@ -74,14 +74,21 @@ const sendMail = async (
   subject: string,
   text: string,
 ): Promise<nodemailer.SentMessageInfo> => {
-  const transporter = await getTransporter();
-  const sentEmailInfo = await transporter.sendMail({
-    from: GMAIL_USER,
-    to,
-    subject,
-    text,
-  });
-  return sentEmailInfo;
+  try {
+    const transporter = await getTransporter();
+    const sentEmailInfo = await transporter.sendMail({
+      from: GMAIL_USER,
+      to,
+      subject,
+      text,
+    });
+    return sentEmailInfo;
+  } catch (error) {
+    if (error instanceof Error) {
+      throw new Error(`Error sending email: ${error.message}`);
+    }
+    throw new Error('Error sending email');
+  }
 };
 
 export default sendMail;
