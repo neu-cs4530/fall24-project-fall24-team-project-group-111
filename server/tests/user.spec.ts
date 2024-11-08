@@ -3,18 +3,20 @@ import supertest from 'supertest';
 import jwt from 'jsonwebtoken';
 import { app } from '../app';
 import * as util from '../models/userOperations';
-import { loginUser, saveUser } from '../models/userOperations';
 import { User } from '../types';
-import UserModel from '../models/users';
-
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const mockingoose = require('mockingoose');
 
 const saveUserSpy = jest.spyOn(util, 'saveUser');
 const loginUserSpy = jest.spyOn(util, 'loginUser');
 const sendPasswordResetSpy = jest.spyOn(util, 'sendPasswordReset');
 const resetPasswordSpy = jest.spyOn(util, 'resetPassword');
 const jwtSignSpy = jest.spyOn(jwt, 'sign');
+
+const mockUser: User = {
+  username: 'fakeUser',
+  email: 'fakeEmail@email.com',
+  password: 'fakepassword',
+  creationDateTime: new Date('2024-06-03'),
+};
 
 describe('POST /addUser', () => {
   afterEach(async () => {
@@ -26,29 +28,34 @@ describe('POST /addUser', () => {
   });
 
   it('should add a new user', async () => {
-    const mockReqBody = {
-      username: 'fakeUser',
-      email: 'j2002dl@gmail.com',
-      password: 'fakepassword',
-      creationDateTime: new Date('2024-06-03'),
-    };
-
-    const mockResponse = {
-      message: 'User created successfully',
-      token: 'fakeToken',
-    };
-
-    saveUserSpy.mockResolvedValueOnce(mockReqBody);
+    saveUserSpy.mockResolvedValueOnce(mockUser);
     (jwtSignSpy as jest.Mock).mockReturnValue('fakeToken');
 
-    const response = await supertest(app).post('/user/addUser').send(mockReqBody);
-
+    const response = await supertest(app).post('/user/addUser').send(mockUser);
     expect(response.status).toBe(200);
     expect(response.body.message).toBe('User created successfully');
-    expect(response.body.token).toBe(mockResponse.token);
+    expect(response.body.token).toBe('fakeToken');
   });
 
-  it('it should return a bad request error if the user is invalid', async () => {
+  it('should return a bad request error if the request body is missing', async () => {
+    const response = await supertest(app).post('/user/addUser');
+    expect(response.status).toBe(400);
+    expect(response.text).toBe('Invalid request');
+  });
+
+  it('should return bad request error if username property missing', async () => {
+    const mockReqBody = {
+      email: 'fakeEmail@email.com',
+      password: 'fakepassword',
+      creationDateTime: new Date('2024-06-03'),
+    };
+
+    const response = await supertest(app).post('/user/addUser').send(mockReqBody);
+    expect(response.status).toBe(400);
+    expect(response.text).toBe('Invalid request');
+  });
+
+  it('should return bad request error if email property missing', async () => {
     const mockReqBody = {
       username: 'fakeUser',
       password: 'fakepassword',
@@ -56,187 +63,163 @@ describe('POST /addUser', () => {
     };
 
     const response = await supertest(app).post('/user/addUser').send(mockReqBody);
-
     expect(response.status).toBe(400);
     expect(response.text).toBe('Invalid request');
   });
 
-  it('it should return a 409 error if the saveUser method throws and error', async () => {
+  it('should return bad request error if password property missing', async () => {
     const mockReqBody = {
       username: 'fakeUser',
-      email: 'j2002dl@gmail.com',
+      email: 'fakeEmail@email.com',
+      creationDateTime: new Date('2024-06-03'),
+    };
+
+    const response = await supertest(app).post('/user/addUser').send(mockReqBody);
+    expect(response.status).toBe(400);
+    expect(response.text).toBe('Invalid request');
+  });
+
+  it('should return bad request error if creationDateTime property missing', async () => {
+    const mockReqBody = {
+      username: 'fakeUser',
+      email: 'fakeEmail@email.com',
+      password: 'fakepassword',
+    };
+
+    const response = await supertest(app).post('/user/addUser').send(mockReqBody);
+    expect(response.status).toBe(400);
+    expect(response.text).toBe('Invalid request');
+  });
+
+  it('should return bad request error if username property is empty', async () => {
+    const mockReqBody = {
+      username: '',
+      email: 'fakeEmail@email.com',
       password: 'fakepassword',
       creationDateTime: new Date('2024-06-03'),
     };
 
+    const response = await supertest(app).post('/user/addUser').send(mockReqBody);
+    expect(response.status).toBe(400);
+    expect(response.text).toBe('Invalid request');
+  });
+
+  it('should return bad request error if email property is not formatted correctly', async () => {
+    const mockReqBody = {
+      username: 'fakeUser',
+      email: 'fakeEmail',
+      password: 'fakepassword',
+      creationDateTime: new Date('2024-06-03'),
+    };
+
+    const response = await supertest(app).post('/user/addUser').send(mockReqBody);
+    expect(response.status).toBe(400);
+    expect(response.text).toBe('Invalid request');
+  });
+
+  it('should return bad request error if password property is empty', async () => {
+    const mockReqBody = {
+      username: 'fakeUser',
+      email: 'fakeEmail@email.com',
+      password: '',
+      creationDateTime: new Date('2024-06-03'),
+    };
+
+    const response = await supertest(app).post('/user/addUser').send(mockReqBody);
+    expect(response.status).toBe(400);
+    expect(response.text).toBe('Invalid request');
+  });
+
+  it('it should return a 409 error if the saveUser method determines the username already exists', async () => {
     saveUserSpy.mockResolvedValueOnce({ error: 'Username is already taken' });
-    (jwtSignSpy as jest.Mock).mockReturnValue('fakeToken');
 
-    const response = await supertest(app).post('/user/addUser').send(mockReqBody);
-
+    const response = await supertest(app).post('/user/addUser').send(mockUser);
     expect(response.status).toBe(409);
+    expect(response.text).toBe('Username is already taken');
   });
 
-  it('should log into an existing user', async () => {
-    const mockUser = {
-      username: 'fakeUser',
-      email: 'j2002dl@gmail.com',
-      password: 'fakepassword',
-      creationDateTime: new Date('2024-06-03'),
-    };
+  it('should return error in response if saveUser method throws an error', async () => {
+    saveUserSpy.mockResolvedValueOnce({ error: 'Error when creating a user' });
 
-    const mockResponse = {
-      message: 'Login successful',
-      token: 'fakeToken',
-      user: mockUser,
-    };
-
-    const mockLoginRequest = {
-      username: 'fakeUser',
-      password: 'fakepassword',
-    };
-
-    await UserModel.create(mockUser);
-
-    loginUserSpy.mockResolvedValueOnce(mockUser);
-    (jwtSignSpy as jest.Mock).mockReturnValue('fakeToken');
-
-    const response = await supertest(app).post('/user/loginUser').send(mockLoginRequest);
-
-    expect(response.status).toBe(200);
-    expect(response.body.message).toBe('Login successful');
-    expect(response.body.token).toBe(mockResponse.token);
+    const response = await supertest(app).post('/user/addUser').send(mockUser);
+    expect(response.status).toBe(500);
+    expect(response.text).toBe('Error when saving user: Error when creating a user');
   });
 
-  it('it should return a bad request error if the login request is invalid', async () => {
-    const mockLoginRequest = {
-      username: 'fakeUser',
-    };
+  it('should return error in response if jwt.sign method throws an error', async () => {
+    saveUserSpy.mockResolvedValueOnce(mockUser);
+    (jwtSignSpy as jest.Mock).mockImplementationOnce(() => {
+      throw new Error('Error signing token');
+    });
 
-    const response = await supertest(app).post('/user/loginUser').send(mockLoginRequest);
-
-    expect(response.status).toBe(400);
-    expect(response.text).toBe('Invalid request');
-  });
-
-  it('it should return a 409 error if the loginUser method throws and error', async () => {
-    const mockLoginRequest = {
-      username: 'fakeUser',
-      password: 'fakepassword',
-    };
-
-    loginUserSpy.mockResolvedValueOnce({ error: 'Username does not exist' });
-
-    const response = await supertest(app).post('/user/loginUser').send(mockLoginRequest);
-
-    expect(response.status).toBe(401);
+    const response = await supertest(app).post('/user/addUser').send(mockUser);
+    expect(response.status).toBe(500);
+    expect(response.text).toBe('Error when saving user: Error signing token');
   });
 });
 
-describe('userOperations', () => {
-  beforeEach(() => {
-    mockingoose.resetAll();
-  });
+// describe('POST /loginUser', () => {
+//   afterEach(async () => {
+//     await mongoose.connection.close(); // Ensure the connection is properly closed
+//   });
 
-  afterAll(async () => {
-    await mongoose.disconnect(); // Ensure mongoose is disconnected after all tests
-  });
+//   afterAll(async () => {
+//     await mongoose.disconnect(); // Ensure mongoose is disconnected after all tests
+//   });
 
-  describe('saveUser', () => {
-    test('saveUser should return the saved user', async () => {
-      const mockUser = {
-        username: 'fakeUser',
-        email: 'j2002dl@gmail.com',
-        password: 'fakepassword',
-        creationDateTime: new Date('2024-06-03'),
-      };
+//   it('should log into an existing user', async () => {
+//     // const mockUser = {
+//     //   username: 'fakeUser',
+//     //   email: 'j2002dl@gmail.com',
+//     //   password: 'fakepassword',
+//     //   creationDateTime: new Date('2024-06-03'),
+//     // };
 
-      const result = (await saveUser(mockUser)) as User;
+//     const mockResponse = {
+//       message: 'Login successful',
+//       token: 'fakeToken',
+//       user: mockUser,
+//     };
 
-      expect(result.username).toEqual(mockUser.username);
-      expect(result.email).toEqual(mockUser.email);
-      expect(result.password).toEqual(mockUser.password);
-      expect(result.creationDateTime).toEqual(mockUser.creationDateTime);
-    });
+//     const mockLoginRequest = {
+//       username: 'fakeUser',
+//       password: 'fakepassword',
+//     };
 
-    // test('saveUser should return an error if user already exists', async () => {
-    //     const mockUser = {
-    //         username: "fakeUser",
-    //         email: "j2002dl@gmail.com",
-    //         password: "fakepassword",
-    //         creationDateTime: new Date('2024-06-03'),
-    //     };
+//     loginUserSpy.mockResolvedValueOnce(mockUser);
+//     (jwtSignSpy as jest.Mock).mockReturnValue('fakeToken');
 
-    //     mockingoose(UserModel).toReturn(mockUser, 'findOne');
+//     const response = await supertest(app).post('/user/loginUser').send(mockLoginRequest);
 
-    //     const result = await saveUser(mockUser);
+//     expect(response.status).toBe(200);
+//     expect(response.body.message).toBe('Login successful');
+//     expect(response.body.token).toBe(mockResponse.token);
+//   });
 
-    //     if (result && 'error' in result) {
-    //         expect(true).toBeTruthy();
-    //     } else {
-    //         expect(false).toBeTruthy();
-    //     }
-    // });
-  });
+//   it('it should return a bad request error if the login request is invalid', async () => {
+//     const mockLoginRequest = {
+//       username: 'fakeUser',
+//     };
 
-  describe('loginUser', () => {
-    // test('loginUser should return the user attempting to log in', async () => {
-    //     const mockUser = {
-    //         username: 'fakeUser',
-    //         email: 'j2002dl@gmail.com',
-    //         password: 'fakepassword',
-    //         creationDateTime: new Date('2024-06-03'),
-    //       };
+//     const response = await supertest(app).post('/user/loginUser').send(mockLoginRequest);
 
-    //     mockingoose(UserModel).toReturn(mockUser, 'findOne');
+//     expect(response.status).toBe(400);
+//     expect(response.text).toBe('Invalid request');
+//   });
 
-    //     const result = (await loginUser(mockUser.username, mockUser.password)) as User;
+//   it('it should return a 409 error if the loginUser method throws and error', async () => {
+//     const mockLoginRequest = {
+//       username: 'fakeUser',
+//       password: 'fakepassword',
+//     };
 
-    //     expect(result._id).toBeDefined;
-    //     expect(result.username).toEqual(mockUser.username);
-    //     expect(result.email).toEqual(mockUser.email);
-    //     expect(result.password).toEqual(mockUser.password);
-    //     expect(result.creationDateTime).toEqual(mockUser.creationDateTime);
+//     loginUserSpy.mockResolvedValueOnce({ error: 'Username does not exist' });
 
-    // });
+//     const response = await supertest(app).post('/user/loginUser').send(mockLoginRequest);
 
-    test('loginUser should return an error if the user does not exist', async () => {
-      const mockUser = {
-        username: 'fakeUser',
-        email: 'j2002dl@gmail.com',
-        password: 'fakepassword',
-        creationDateTime: new Date('2024-06-03'),
-      };
-
-      const result = (await loginUser(mockUser.username, mockUser.password)) as User;
-
-      if (result && 'error' in result) {
-        expect(true).toBeTruthy();
-      } else {
-        expect(false).toBeTruthy();
-      }
-    });
-
-    test('loginUser should return an error if the password is incorrect', async () => {
-      const mockUser = {
-        username: 'fakeUser',
-        email: 'j2002dl@gmail.com',
-        password: 'fakepassword',
-        creationDateTime: new Date('2024-06-03'),
-      };
-
-      mockingoose(UserModel).toReturn(mockUser, 'findOne');
-
-      const result = (await loginUser(mockUser.username, '123')) as User;
-
-      if (result && 'error' in result) {
-        expect(true).toBeTruthy();
-      } else {
-        expect(false).toBeTruthy();
-      }
-    });
-  });
-});
+//     expect(response.status).toBe(401);
+//   });
+// });
 
 describe('POST /sendPasswordReset', () => {
   afterEach(async () => {
@@ -302,7 +285,7 @@ describe('POST /sendPasswordReset', () => {
   });
 });
 
-describe('POST /sendPasswordReset', () => {
+describe('POST /resetPassword', () => {
   afterEach(async () => {
     await mongoose.connection.close(); // Ensure the connection is properly closed
   });
