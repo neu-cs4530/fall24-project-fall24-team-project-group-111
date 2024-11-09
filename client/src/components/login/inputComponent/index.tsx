@@ -5,6 +5,8 @@ import './index.css';
  * Interface representing the props for the LoginInput component.
  *
  * - title - The label to display
+ * - link - An optional link to display next to the title.
+ * - onLinkClick - An optional function to call when the link is clicked.
  * - hint - An optional hint or description displayed below the title.
  * - id - The unique identifier for the input field.
  * - val - The current value of the input field.
@@ -14,6 +16,8 @@ import './index.css';
  */
 interface InputProps {
   title: string;
+  link?: string;
+  onLinkClick?: () => void;
   hint?: string;
   id: string;
   val: string;
@@ -23,10 +27,12 @@ interface InputProps {
 }
 
 /**
- * LoginInput component that renders a labeled text input field with optional hint and error message.
+ * LoginInput component that renders a labeled text input field with optional hint, link, and error message.
  * It also displays an asterisk if the field is mandatory.
  *
  * @param title The label for the input field.
+ * @param link Optional link to display next to the title.
+ * @param onLinkClick Optional function to call when the link is clicked.
  * @param hint Optional hint or description for the input field.
  * @param id The unique identifier for the input field.
  * @param val The current value of the input field.
@@ -34,9 +40,24 @@ interface InputProps {
  * @param err Optional error message to display below the input field.
  * @param type The type of input field, either 'text' or 'password'.
  */
-const LoginInput = ({ title, hint, id, val, setState, err, type }: InputProps) => (
+const LoginInput = ({
+  title,
+  link,
+  onLinkClick,
+  hint,
+  id,
+  val,
+  setState,
+  err,
+  type,
+}: InputProps) => (
   <>
-    <div className='input_title'>{title}</div>
+    <div className='input_header'>
+      <div className='input_header_title'>{title}</div>
+      <button onClick={onLinkClick} className='input_header_link'>
+        {link}
+      </button>
+    </div>
     {hint && <div className='input_hint'>{hint}</div>}
     <input
       id={id}

@@ -41,4 +41,44 @@ const loginUser = async (
   return res.data;
 };
 
-export { addUser, loginUser };
+/**
+ * Function to send a password reset email, returning the recipient email address.
+ *
+ * @param username - The username of the user to sent the password reset email to.
+ * @throws Error if there is an issue sending the password reset email.
+ */
+const sendPasswordReset = async (
+  username: string,
+): Promise<{ message: string; emailRecipient: string }> => {
+  const res = await api.post(`${USER_API_URL}/sendPasswordReset`, { username });
+
+  if (res.status !== 200) {
+    const errorMessage = res.data?.message || 'Error sending password reset email';
+    throw new Error(errorMessage);
+  }
+
+  return res.data;
+};
+
+/**
+ * Function to reset a user's password, returning the updated user.
+ *
+ * @param token - The token used to determine which user to reset the password for.
+ * @param newPassword - The new password to set.
+ * @throws Error if there is an issue resetting the password.
+ */
+const resetPassword = async (
+  token: string,
+  newPassword: string,
+): Promise<{ message: string; user: User }> => {
+  const res = await api.post(`${USER_API_URL}/resetPassword`, { token, newPassword });
+
+  if (res.status !== 200) {
+    const errorMessage = res.data?.message || 'Error sending password reset email';
+    throw new Error(errorMessage);
+  }
+
+  return res.data;
+};
+
+export { addUser, loginUser, sendPasswordReset, resetPassword };
