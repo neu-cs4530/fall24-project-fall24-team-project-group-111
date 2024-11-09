@@ -102,7 +102,7 @@ export const sendPasswordReset = async (username: string): Promise<PasswordReset
     await sendMail(
       emailRecipient,
       'FakeStackOverflow Password Reset Request',
-      `A password reset was requested for ${username}. Click the link to reset your password: ${resetURL}`,
+      `A password reset was requested for ${username}. Click the link to reset your password: ${resetURL}. This link will expire in 1 hour.`,
     );
     return { emailRecipient };
   } catch (error) {
@@ -130,9 +130,8 @@ export const resetPassword = async (token: string, newPassword: string): Promise
         resetPasswordExpires: { $gt: Date.now() },
       },
       {
-        password: hashedPassword,
-        resetPasswordToken: undefined,
-        resetPasswordExpires: undefined,
+        $set: { password: hashedPassword },
+        $unset: { resetPasswordToken: '', resetPasswordExpires: '' },
       },
       { new: true },
     );
