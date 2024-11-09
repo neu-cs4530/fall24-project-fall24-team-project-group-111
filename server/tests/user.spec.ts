@@ -305,11 +305,12 @@ describe('POST /sendPasswordReset', () => {
       username: 'fakeUser',
     };
 
-    sendPasswordResetSpy.mockResolvedValueOnce({ result: 'Email successfully sent' });
+    sendPasswordResetSpy.mockResolvedValueOnce({ emailRecipient: 'fakeEmail@email.com' });
 
     const response = await supertest(app).post('/user/sendPasswordReset').send(mockReqBody);
     expect(response.status).toBe(200);
     expect(response.body.message).toBe('Password reset email successfully sent');
+    expect(response.body.emailRecipient).toBe('fakeEmail@email.com');
   });
 
   it('should return a bad request error if the request body is missing', async () => {
@@ -336,7 +337,7 @@ describe('POST /sendPasswordReset', () => {
     sendPasswordResetSpy.mockResolvedValueOnce({ error: 'Username does not exist' });
     const response = await supertest(app).post('/user/sendPasswordReset').send(mockReqBody);
     expect(response.status).toBe(404);
-    expect(response.text).toBe('Error when sending password reset: Username does not exist');
+    expect(response.text).toBe('Username does not exist');
   });
 
   it('should return error in response if sendPasswordReset method throws an error', async () => {
@@ -443,9 +444,7 @@ describe('POST /resetPassword', () => {
     });
     const response = await supertest(app).post('/user/resetPassword').send(mockReqBody);
     expect(response.status).toBe(401);
-    expect(response.text).toBe(
-      'Error when resetting password: Password reset token is invalid or has expired',
-    );
+    expect(response.text).toBe('Password reset token is invalid or has expired');
   });
 
   it('should return error in response if sendPasswordReset method throws an error', async () => {

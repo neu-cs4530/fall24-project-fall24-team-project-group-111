@@ -111,12 +111,12 @@ describe('User model', () => {
   });
 
   describe('sendPasswordReset', () => {
-    test('sendPasswordReset should return a confirmation message on success', async () => {
+    test('sendPasswordReset should return email address of the password reset recipient on success', async () => {
       mockingoose(UserModel).toReturn(mockUser, 'findOneAndUpdate');
       (sendMail as jest.Mock).mockResolvedValueOnce('Password reset email successfully sent');
 
       const result = await sendPasswordReset('fakeUser');
-      expect(result).toEqual('Password reset email successfully sent');
+      expect(result).toEqual({ emailRecipient: 'fakeEmail@email.com' });
     });
 
     test('sendPasswordReset should return an object with error if findOneAndUpdate returns null', async () => {
