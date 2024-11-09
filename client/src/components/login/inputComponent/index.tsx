@@ -1,5 +1,6 @@
 import React from 'react';
 import './index.css';
+import HoverToPlayTTSWrapper from '../../textToSpeech/textToSpeechComponent';
 
 /**
  * Interface representing the props for the LoginInput component.
@@ -36,7 +37,9 @@ interface InputProps {
  */
 const LoginInput = ({ title, hint, id, val, setState, err, type }: InputProps) => (
   <>
-    <div className='input_title'>{title}</div>
+    <HoverToPlayTTSWrapper text={title}>
+      <div className='input_title'>{title}</div>
+    </HoverToPlayTTSWrapper>
     {hint && <div className='input_hint'>{hint}</div>}
     <input
       id={id}

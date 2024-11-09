@@ -60,6 +60,7 @@ const HoverToPlayTTSWrapper = ({
             transition: 'opacity 0.3s',
           }}
           onClick={e => {
+            e.preventDefault();
             e.stopPropagation();
             handleButtonClick();
           }}>
