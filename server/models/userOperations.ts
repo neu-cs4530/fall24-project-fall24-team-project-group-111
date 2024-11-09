@@ -81,7 +81,7 @@ export const loginUser = async (username: string, password: string): Promise<Use
  *
  * @param {string} username - The username of the user.
  *
- * @returns {Promise<PasswordResetResponse>} - The result of the password reset email sending operation, or an error message if the operation failed.
+ * @returns {Promise<PasswordResetResponse>} - The email address that the password reset was sent to, or an error message if the operation failed.
  */
 export const sendPasswordReset = async (username: string): Promise<PasswordResetResponse> => {
   try {
@@ -97,13 +97,14 @@ export const sendPasswordReset = async (username: string): Promise<PasswordReset
       throw new Error('Username does not exist');
     }
 
+    const emailRecipient = updatedUser.email;
     const resetURL = `${process.env.CLIENT_URL}/reset-password/${resetToken}`;
-    const sentEmailInfo = await sendMail(
-      updatedUser.email,
+    await sendMail(
+      emailRecipient,
       'FakeStackOverflow Password Reset Request',
       `A password reset was requested for ${username}. Click the link to reset your password: ${resetURL}`,
     );
-    return sentEmailInfo;
+    return { emailRecipient };
   } catch (error) {
     if (error instanceof Error) {
       return { error: error.message };

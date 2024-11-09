@@ -132,12 +132,15 @@ const userController = (socket: FakeSOSocket, JWT_SECRET: string) => {
       const result = await sendPasswordReset(username);
       if ('error' in result) {
         if (result.error === 'Username does not exist') {
-          res.status(404).send(`Error when sending password reset: ${result.error}`);
+          res.status(404).send(result.error);
           return;
         }
         throw new Error(result.error);
       }
-      res.json({ message: 'Password reset email successfully sent', result });
+      res.json({
+        message: 'Password reset email successfully sent',
+        emailRecipient: result.emailRecipient,
+      });
     } catch (err: unknown) {
       if (err instanceof Error) {
         res.status(500).send(`Error when sending password reset: ${err.message}`);
@@ -164,15 +167,15 @@ const userController = (socket: FakeSOSocket, JWT_SECRET: string) => {
     const { token, newPassword } = req.body;
 
     try {
-      const result = await resetPassword(token, newPassword);
-      if ('error' in result) {
-        if (result.error === 'Password reset token is invalid or has expired') {
-          res.status(401).send(`Error when resetting password: ${result.error}`);
+      const userFromDb = await resetPassword(token, newPassword);
+      if ('error' in userFromDb) {
+        if (userFromDb.error === 'Password reset token is invalid or has expired') {
+          res.status(401).send(userFromDb.error);
           return;
         }
-        throw new Error(result.error);
+        throw new Error(userFromDb.error);
       }
-      res.json({ message: 'Password reset successfully', result });
+      res.json({ message: 'Password reset successfully', user: userFromDb });
     } catch (err: unknown) {
       if (err instanceof Error) {
         res.status(500).send(`Error when resetting password: ${err.message}`);

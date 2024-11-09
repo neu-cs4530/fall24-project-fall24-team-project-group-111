@@ -2,7 +2,6 @@ import { Request } from 'express';
 import { ObjectId } from 'mongodb';
 import { Server } from 'socket.io';
 import { JwtPayload } from 'jsonwebtoken';
-import type { SentMessageInfo } from 'nodemailer';
 
 export type FakeSOSocket = Server<ServerToClientEvents>;
 
@@ -243,7 +242,7 @@ export type UserResponse = User | { error: string };
 /**
  * Type representing the possible responses for a password reset operation.
  */
-export type PasswordResetResponse = SentMessageInfo | { error: string };
+export type PasswordResetResponse = { emailRecipient: string } | { error: string };
 
 /**
  * Interface for the request body when adding a new user.
