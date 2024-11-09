@@ -50,18 +50,18 @@ describe('POST /addQuestion', () => {
     await mongoose.disconnect(); // Ensure mongoose is disconnected after all tests
   });
 
-  // it('should add a new question', async () => {
-  //   jest.spyOn(util, 'processTags').mockResolvedValue([tag1, tag2] as Tag[]);
-  //   jest.spyOn(util, 'saveQuestion').mockResolvedValueOnce(mockQuestion as Question);
-  //   jest.spyOn(util, 'populateDocument').mockResolvedValueOnce(mockQuestion as Question);
+  it('should add a new question', async () => {
+    jest.spyOn(util, 'processTags').mockResolvedValue([tag1, tag2] as Tag[]);
+    jest.spyOn(util, 'saveQuestion').mockResolvedValueOnce(mockQuestion as Question);
+    jest.spyOn(util, 'populateDocument').mockResolvedValueOnce(mockQuestion as Question);
 
-  //   // Making the request
-  //   const response = await supertest(app).post('/question/addQuestion').send(mockQuestion);
+    // Making the request
+    const response = await supertest(app).post('/question/addQuestion').send(mockQuestion);
 
-  //   // Asserting the response
-  //   expect(response.status).toBe(200);
-  //   expect(response.body).toEqual(simplifyQuestion(mockQuestion));
-  // });
+    // Asserting the response
+    expect(response.status).toBe(200);
+    expect(response.body).toEqual(simplifyQuestion(mockQuestion));
+  });
 
   it('should return 500 if error occurs in `saveQuestion` while adding a new question', async () => {
     jest.spyOn(util, 'processTags').mockResolvedValue([tag1, tag2] as Tag[]);
@@ -142,50 +142,50 @@ describe('POST /addQuestion', () => {
     expect(response.text).toBe('Invalid question body');
   });
 
-  // it('should ensure only unique tags are added', async () => {
-  //   // Mock request body with duplicate tags
-  //   const mockQuestionDuplicates: Question = {
-  //     _id: new mongoose.Types.ObjectId('65e9b58910afe6e94fc6e6fe'),
-  //     title: 'New Question Title',
-  //     text: 'New Question Text',
-  //     tags: [tag1, tag1, tag2, tag2], // Duplicate tags
-  //     answers: [],
-  //     askedBy: 'question3_user',
-  //     askDateTime: new Date('2024-06-06'),
-  //     views: [],
-  //     upVotes: [],
-  //     downVotes: [],
-  //     comments: [],
-  //   };
+  it('should ensure only unique tags are added', async () => {
+    // Mock request body with duplicate tags
+    const mockQuestionDuplicates: Question = {
+      _id: new mongoose.Types.ObjectId('65e9b58910afe6e94fc6e6fe'),
+      title: 'New Question Title',
+      text: 'New Question Text',
+      tags: [tag1, tag1, tag2, tag2], // Duplicate tags
+      answers: [],
+      askedBy: 'question3_user',
+      askDateTime: new Date('2024-06-06'),
+      views: [],
+      upVotes: [],
+      downVotes: [],
+      comments: [],
+    };
 
-  //   const result: Question = {
-  //     _id: new mongoose.Types.ObjectId('65e9b58910afe6e94fc6e6fe'),
-  //     title: 'New Question Title',
-  //     text: 'New Question Text',
-  //     tags: [tag1, tag2], // Duplicate tags
-  //     answers: [],
-  //     askedBy: 'question3_user',
-  //     askDateTime: new Date('2024-06-06'),
-  //     views: [],
-  //     upVotes: [],
-  //     downVotes: [],
-  //     comments: [],
-  //   };
+    const result: Question = {
+      _id: new mongoose.Types.ObjectId('65e9b58910afe6e94fc6e6fe'),
+      title: 'New Question Title',
+      text: 'New Question Text',
+      tags: [tag1, tag2], // Duplicate tags
+      answers: [],
+      askedBy: 'question3_user',
+      askDateTime: new Date('2024-06-06'),
+      views: [],
+      upVotes: [],
+      downVotes: [],
+      comments: [],
+    };
 
-  //   // Set up the mock to resolve with unique tags
-  //   jest.spyOn(util, 'processTags').mockResolvedValue([tag1, tag2] as Tag[]);
-  //   jest.spyOn(util, 'saveQuestion').mockResolvedValueOnce({
-  //     ...mockQuestionDuplicates,
-  //     tags: [tag1, tag2], // Ensure only unique tags are saved
-  //   });
+    // Set up the mock to resolve with unique tags
+    jest.spyOn(util, 'processTags').mockResolvedValue([tag1, tag2] as Tag[]);
+    jest.spyOn(util, 'saveQuestion').mockResolvedValueOnce({
+      ...mockQuestionDuplicates,
+      tags: [tag1, tag2], // Ensure only unique tags are saved
+    });
 
-  //   jest.spyOn(util, 'populateDocument').mockResolvedValueOnce(result);
+    jest.spyOn(util, 'populateDocument').mockResolvedValueOnce(result);
 
-  //   // Making the request
-  //   const response = await supertest(app).post('/question/addQuestion').send(mockQuestion);
+    // Making the request
+    const response = await supertest(app).post('/question/addQuestion').send(mockQuestion);
 
-  //   // Asserting the response
-  //   expect(response.status).toBe(200);
-  //   expect(response.body).toEqual(simplifyQuestion(result)); // Expect only unique tags
-  // });
+    // Asserting the response
+    expect(response.status).toBe(200);
+    expect(response.body).toEqual(simplifyQuestion(result)); // Expect only unique tags
+  });
 });
