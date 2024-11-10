@@ -3,6 +3,7 @@ import { handleHyperlink } from '../../../../tool';
 import CommentSection from '../../commentSection';
 import './index.css';
 import { Comment } from '../../../../types';
+import HoverToPlayTTSWrapper from '../../../textToSpeech/textToSpeechComponent';
 
 /**
  * Interface representing the props for the AnswerView component.
@@ -31,17 +32,24 @@ interface AnswerProps {
  * @param comments An array of comments associated with the answer.
  * @param handleAddComment Function to handle adding a new comment.
  */
-const AnswerView = ({ text, ansBy, meta, comments, handleAddComment }: AnswerProps) => (
-  <div className='answer right_padding'>
-    <div id='answerText' className='answerText'>
-      {handleHyperlink(text)}
+const AnswerView = ({ text, ansBy, meta, comments, handleAddComment }: AnswerProps) => {
+  const answerTTS = `Answer by ${ansBy} on ${meta} saying ${text}`;
+  return (
+    <div className='answer right_padding'>
+      <div className='answerText'>
+        <HoverToPlayTTSWrapper text={answerTTS}>
+          <div id='answerText' className=''>
+            {handleHyperlink(text)}
+          </div>
+        </HoverToPlayTTSWrapper>
+      </div>
+      <div className='answerAuthor'>
+        <div className='answer_author'>{ansBy}</div>
+        <div className='answer_question_meta'>{meta}</div>
+      </div>
+      <CommentSection comments={comments} handleAddComment={handleAddComment} />
     </div>
-    <div className='answerAuthor'>
-      <div className='answer_author'>{ansBy}</div>
-      <div className='answer_question_meta'>{meta}</div>
-    </div>
-    <CommentSection comments={comments} handleAddComment={handleAddComment} />
-  </div>
-);
+  );
+};
 
 export default AnswerView;

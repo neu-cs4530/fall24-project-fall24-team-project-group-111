@@ -6,6 +6,7 @@
   padding: 4% 0 4% 0;
   align-items: center;
   border-color: var(--text-color);
+  gap: 50px;
 }
 
 .menu_button:first-child {
@@ -24,4 +25,5 @@
 
 .menu_selected {
   background: var( --nav-selected);
+  padding: 15px;
 }

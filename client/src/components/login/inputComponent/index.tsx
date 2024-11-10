@@ -1,5 +1,6 @@
 import React from 'react';
 import './index.css';
+import HoverToPlayTTSWrapper from '../../textToSpeech/textToSpeechComponent';
 
 /**
  * Interface representing the props for the LoginInput component.
@@ -53,7 +54,9 @@ const LoginInput = ({
 }: InputProps) => (
   <>
     <div className='input_header'>
-      <div className='input_header_title'>{title}</div>
+      <HoverToPlayTTSWrapper text={title}>
+        <div className='input_header_title'>{title}</div>
+      </HoverToPlayTTSWrapper>
       <button onClick={onLinkClick} className='input_header_link'>
         {link}
       </button>

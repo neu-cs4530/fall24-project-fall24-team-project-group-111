@@ -72,6 +72,7 @@ export interface Question {
   _id?: ObjectId;
   title: string;
   text: string;
+  aiGeneratedAnswer?: string;
   tags: Tag[];
   askedBy: string;
   askDateTime: Date;

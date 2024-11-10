@@ -42,9 +42,21 @@
 }
 
 .question_author {
-  color: red;
+  color: var( --question-author);
 }
 
 .question_meta {
+  color: var(--text-color);
+}
+
+.titleTTS {
+  display: flex;
+  gap: 10px;
+}
+
+.playTTSButton {
+  border: none;
+  font-size: 17px;
+  background-color: var(--background-color);
   color: var(--text-color);
 }
