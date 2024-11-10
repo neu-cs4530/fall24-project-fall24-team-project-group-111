@@ -5,6 +5,7 @@ import { app } from '../app';
 import * as util from '../models/userOperations';
 import { User } from '../types';
 
+const sendEmailVerificationSpy = jest.spyOn(util, 'sendEmailVerification');
 const saveUserSpy = jest.spyOn(util, 'saveUser');
 const loginUserSpy = jest.spyOn(util, 'loginUser');
 const sendPasswordResetSpy = jest.spyOn(util, 'sendPasswordReset');
@@ -18,7 +19,7 @@ const mockUser: User = {
   creationDateTime: new Date('2024-06-03'),
 };
 
-describe('POST /addUser', () => {
+describe('POST /emailVerification', () => {
   afterEach(async () => {
     await mongoose.connection.close(); // Ensure the connection is properly closed
   });
@@ -27,18 +28,17 @@ describe('POST /addUser', () => {
     await mongoose.disconnect(); // Ensure mongoose is disconnected after all tests
   });
 
-  it('should add a new user', async () => {
-    saveUserSpy.mockResolvedValueOnce(mockUser);
-    (jwtSignSpy as jest.Mock).mockReturnValue('fakeToken');
+  it('should send an email verification', async () => {
+    sendEmailVerificationSpy.mockResolvedValueOnce({ emailRecipient: 'fakeEmail@email.com' });
 
-    const response = await supertest(app).post('/user/addUser').send(mockUser);
+    const response = await supertest(app).post('/user/emailVerification').send(mockUser);
     expect(response.status).toBe(200);
-    expect(response.body.message).toBe('User created successfully');
-    expect(response.body.token).toBe('fakeToken');
+    expect(response.body.message).toBe('Email verification successfully sent');
+    expect(response.body.emailRecipient).toBe('fakeEmail@email.com');
   });
 
   it('should return a bad request error if the request body is missing', async () => {
-    const response = await supertest(app).post('/user/addUser');
+    const response = await supertest(app).post('/user/emailVerification');
     expect(response.status).toBe(400);
     expect(response.text).toBe('Invalid request');
   });
@@ -50,7 +50,7 @@ describe('POST /addUser', () => {
       creationDateTime: new Date('2024-06-03'),
     };
 
-    const response = await supertest(app).post('/user/addUser').send(mockReqBody);
+    const response = await supertest(app).post('/user/emailVerification').send(mockReqBody);
     expect(response.status).toBe(400);
     expect(response.text).toBe('Invalid request');
   });
@@ -62,7 +62,7 @@ describe('POST /addUser', () => {
       creationDateTime: new Date('2024-06-03'),
     };
 
-    const response = await supertest(app).post('/user/addUser').send(mockReqBody);
+    const response = await supertest(app).post('/user/emailVerification').send(mockReqBody);
     expect(response.status).toBe(400);
     expect(response.text).toBe('Invalid request');
   });
@@ -74,7 +74,7 @@ describe('POST /addUser', () => {
       creationDateTime: new Date('2024-06-03'),
     };
 
-    const response = await supertest(app).post('/user/addUser').send(mockReqBody);
+    const response = await supertest(app).post('/user/emailVerification').send(mockReqBody);
     expect(response.status).toBe(400);
     expect(response.text).toBe('Invalid request');
   });
@@ -86,7 +86,7 @@ describe('POST /addUser', () => {
       password: 'fakepassword',
     };
 
-    const response = await supertest(app).post('/user/addUser').send(mockReqBody);
+    const response = await supertest(app).post('/user/emailVerification').send(mockReqBody);
     expect(response.status).toBe(400);
     expect(response.text).toBe('Invalid request');
   });
@@ -99,7 +99,7 @@ describe('POST /addUser', () => {
       creationDateTime: new Date('2024-06-03'),
     };
 
-    const response = await supertest(app).post('/user/addUser').send(mockReqBody);
+    const response = await supertest(app).post('/user/emailVerification').send(mockReqBody);
     expect(response.status).toBe(400);
     expect(response.text).toBe('Invalid request');
   });
@@ -112,7 +112,7 @@ describe('POST /addUser', () => {
       creationDateTime: new Date('2024-06-03'),
     };
 
-    const response = await supertest(app).post('/user/addUser').send(mockReqBody);
+    const response = await supertest(app).post('/user/emailVerification').send(mockReqBody);
     expect(response.status).toBe(400);
     expect(response.text).toBe('Invalid request');
   });
@@ -125,7 +125,57 @@ describe('POST /addUser', () => {
       creationDateTime: new Date('2024-06-03'),
     };
 
-    const response = await supertest(app).post('/user/addUser').send(mockReqBody);
+    const response = await supertest(app).post('/user/emailVerification').send(mockReqBody);
+    expect(response.status).toBe(400);
+    expect(response.text).toBe('Invalid request');
+  });
+
+  it('it should return a 409 error if the sendEmailVerification method determines the username already exists', async () => {
+    sendEmailVerificationSpy.mockResolvedValueOnce({ error: 'Username is already taken' });
+
+    const response = await supertest(app).post('/user/emailVerification').send(mockUser);
+    expect(response.status).toBe(409);
+    expect(response.text).toBe('Username is already taken');
+  });
+
+  it('should return error in response if sendEmailVerification method throws an error', async () => {
+    sendEmailVerificationSpy.mockResolvedValueOnce({ error: 'Error sending email verification' });
+
+    const response = await supertest(app).post('/user/emailVerification').send(mockUser);
+    expect(response.status).toBe(500);
+    expect(response.text).toBe(
+      'Error when sending email verification: Error sending email verification',
+    );
+  });
+});
+
+describe('POST /addUser', () => {
+  afterEach(async () => {
+    await mongoose.connection.close(); // Ensure the connection is properly closed
+  });
+
+  afterAll(async () => {
+    await mongoose.disconnect(); // Ensure mongoose is disconnected after all tests
+  });
+
+  it('should add a new user', async () => {
+    saveUserSpy.mockResolvedValueOnce(mockUser);
+    (jwtSignSpy as jest.Mock).mockReturnValue('fakeJwtToken');
+
+    const response = await supertest(app).post('/user/addUser').send({ token: 'fakeToken' });
+    expect(response.status).toBe(200);
+    expect(response.body.message).toBe('User created successfully');
+    expect(response.body.token).toBe('fakeJwtToken');
+  });
+
+  it('should return a bad request error if the request body is missing', async () => {
+    const response = await supertest(app).post('/user/addUser');
+    expect(response.status).toBe(400);
+    expect(response.text).toBe('Invalid request');
+  });
+
+  it('should return bad request error if token property is empty', async () => {
+    const response = await supertest(app).post('/user/addUser').send({ token: '' });
     expect(response.status).toBe(400);
     expect(response.text).toBe('Invalid request');
   });
@@ -133,7 +183,7 @@ describe('POST /addUser', () => {
   it('it should return a 409 error if the saveUser method determines the username already exists', async () => {
     saveUserSpy.mockResolvedValueOnce({ error: 'Username is already taken' });
 
-    const response = await supertest(app).post('/user/addUser').send(mockUser);
+    const response = await supertest(app).post('/user/addUser').send({ token: 'fakeToken' });
     expect(response.status).toBe(409);
     expect(response.text).toBe('Username is already taken');
   });
@@ -141,7 +191,7 @@ describe('POST /addUser', () => {
   it('should return error in response if saveUser method throws an error', async () => {
     saveUserSpy.mockResolvedValueOnce({ error: 'Error when creating a user' });
 
-    const response = await supertest(app).post('/user/addUser').send(mockUser);
+    const response = await supertest(app).post('/user/addUser').send({ token: 'fakeToken' });
     expect(response.status).toBe(500);
     expect(response.text).toBe('Error when saving user: Error when creating a user');
   });
@@ -152,7 +202,7 @@ describe('POST /addUser', () => {
       throw new Error('Error signing token');
     });
 
-    const response = await supertest(app).post('/user/addUser').send(mockUser);
+    const response = await supertest(app).post('/user/addUser').send({ token: 'fakeToken' });
     expect(response.status).toBe(500);
     expect(response.text).toBe('Error when saving user: Error signing token');
   });
