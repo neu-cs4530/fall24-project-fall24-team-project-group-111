@@ -77,7 +77,7 @@ const useAddUser = () => {
 
     const defaultSettings: SettingsInfo = {
       theme: 'LightMode',
-      testSize: 'medium',
+      textSize: 'medium',
       textBoldness: 'normal',
       font: 'Arial',
       lineSpacing: 'normal',

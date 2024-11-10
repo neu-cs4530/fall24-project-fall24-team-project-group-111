@@ -12,7 +12,7 @@ export type FakeSOSocket = Socket<ServerToClientEvents>;
  */
 export interface SettingsInfo {
   theme: ThemeType;
-  testSize: string;
+  textSize: string;
   textBoldness: string;
   font: string;
   lineSpacing: string;
