@@ -11,11 +11,20 @@ const sendPasswordResetSpy = jest.spyOn(util, 'sendPasswordReset');
 const resetPasswordSpy = jest.spyOn(util, 'resetPassword');
 const jwtSignSpy = jest.spyOn(jwt, 'sign');
 
+const mockSettingsInfo = {
+  theme: 'LightMode',
+  textSize: 'medium',
+  textBoldness: 'normal',
+  font: 'Arial',
+  lineSpacing: 'normal',
+};
+
 const mockUser: User = {
   username: 'fakeUser',
   email: 'fakeEmail@email.com',
   password: 'fakepassword',
   creationDateTime: new Date('2024-06-03'),
+  settings: mockSettingsInfo,
 };
 
 describe('POST /addUser', () => {
@@ -110,6 +119,13 @@ describe('POST /addUser', () => {
       email: 'fakeEmail',
       password: 'fakepassword',
       creationDateTime: new Date('2024-06-03'),
+      settings: {
+        theme: 'LightMode',
+        textSize: 'medium',
+        textBoldness: 'normal',
+        font: 'Arial',
+        lineSpacing: 'normal',
+      },
     };
 
     const response = await supertest(app).post('/user/addUser').send(mockReqBody);
