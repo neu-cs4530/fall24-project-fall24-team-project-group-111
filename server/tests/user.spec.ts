@@ -24,11 +24,20 @@ describe('POST /addUser', () => {
   });
 
   it('should add a new user', async () => {
+    const mockSettingsInfo = {
+      theme: 'LightMode',
+      textSize: 'medium',
+      textBoldness: 'normal',
+      font: 'Arial',
+      lineSpacing: 'normal',
+    }
+    
     const mockReqBody = {
       username: 'fakeUser',
       email: 'j2002dl@gmail.com',
       password: 'fakepassword',
       creationDateTime: new Date('2024-06-03'),
+      settings: mockSettingsInfo
     };
 
     const mockResponse = {
@@ -80,6 +89,13 @@ describe('POST /addUser', () => {
       email: 'j2002dl@gmail.com',
       password: 'fakepassword',
       creationDateTime: new Date('2024-06-03'),
+      settings: {
+        theme: 'LightMode',
+        textSize: 'medium',
+        textBoldness: 'normal',
+        font: 'Arial',
+        lineSpacing: 'normal',
+      }
     };
 
     const mockResponse = {
@@ -145,6 +161,13 @@ describe('userOperations', () => {
         email: 'j2002dl@gmail.com',
         password: 'fakepassword',
         creationDateTime: new Date('2024-06-03'),
+        settings: {
+          theme: 'LightMode',
+          textSize: 'medium',
+          textBoldness: 'normal',
+          font: 'Arial',
+          lineSpacing: 'normal',
+        },
       };
 
       const result = (await saveUser(mockUser)) as User;

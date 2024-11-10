@@ -20,7 +20,7 @@ const useGuestLogin = () => {
     event.preventDefault();
     const defaultSettings: SettingsInfo = {
       theme: 'LightMode',
-      testSize: 'medium',
+      textSize: 'medium',
       textBoldness: 'normal',
       font: 'Arial',
       lineSpacing: 'normal',
