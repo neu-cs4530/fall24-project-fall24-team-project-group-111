@@ -30,14 +30,14 @@ describe('POST /addUser', () => {
       textBoldness: 'normal',
       font: 'Arial',
       lineSpacing: 'normal',
-    }
-    
+    };
+
     const mockReqBody = {
       username: 'fakeUser',
       email: 'j2002dl@gmail.com',
       password: 'fakepassword',
       creationDateTime: new Date('2024-06-03'),
-      settings: mockSettingsInfo
+      settings: mockSettingsInfo,
     };
 
     const mockResponse = {
@@ -95,7 +95,7 @@ describe('POST /addUser', () => {
         textBoldness: 'normal',
         font: 'Arial',
         lineSpacing: 'normal',
-      }
+      },
     };
 
     const mockResponse = {
