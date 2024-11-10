@@ -3,18 +3,36 @@ import { Socket } from 'socket.io-client';
 export type FakeSOSocket = Socket<ServerToClientEvents>;
 
 /**
+ * Represents the settingsInfo in the application.
+ * @property theme - the currently selected color theme
+ * @property textSize - the currently selected size of the text
+ * @property textBoldness - the currently selcted text boldness
+ * @property font - the currently selcted font style for text
+ * @property lineSpacing - the currently selcted line spacing for all text
+ */
+export interface SettingsInfo {
+  theme: ThemeType;
+  textSize: string;
+  textBoldness: string;
+  font: string;
+  lineSpacing: string;
+}
+
+/**
  * Represents a user in the application.
  *
  * @property username - The username of the user, or a generic name for a non-logged in user.
  * @property email - The email address of a logged in user. Optional field.
  * @property password - The password of a logged in user. Optional field.
  * @property creationDateTime - The date and time when a logged in user was created. Optional field.
+ * @property settings - the theme and text settings for the current user
  */
 export interface User {
   username: string;
   email?: string;
   password?: string;
   creationDateTime?: Date;
+  settings: SettingsInfo;
 }
 
 export type ThemeType = 'LightMode' | 'DarkMode' | 'Pastel' | 'Autumn';
