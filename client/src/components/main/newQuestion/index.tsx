@@ -1,9 +1,9 @@
 import React from 'react';
 import useNewQuestion from '../../../hooks/useNewQuestion';
 import Form from '../baseComponents/form';
-import Input from '../baseComponents/input';
 import TextArea from '../baseComponents/textarea';
 import './index.css';
+import HoverToPlayTTSWrapper from '../../textToSpeech/textToSpeechComponent';
 
 /**
  * NewQuestionPage component allows users to submit a new question with a title,
@@ -25,7 +25,7 @@ const NewQuestionPage = () => {
 
   return (
     <Form>
-      <Input
+      <TextArea
         title={'Question Title'}
         hint={'Limit title to 100 characters or less'}
         id={'formTitleInput'}
@@ -41,7 +41,7 @@ const NewQuestionPage = () => {
         setState={setText}
         err={textErr}
       />
-      <Input
+      <TextArea
         title={'Tags'}
         hint={'Add keywords separated by whitespace'}
         id={'formTagInput'}
@@ -50,13 +50,15 @@ const NewQuestionPage = () => {
         err={tagErr}
       />
       <div className='btn_indicator_container'>
-        <button
-          className='form_postBtn'
-          onClick={() => {
-            postQuestion();
-          }}>
-          Post Question
-        </button>
+        <HoverToPlayTTSWrapper text='Button to Post Question'>
+          <button
+            className='form_postBtn'
+            onClick={() => {
+              postQuestion();
+            }}>
+            Post Question
+          </button>
+        </HoverToPlayTTSWrapper>
         <div className='mandatory_indicator'>* indicates mandatory fields</div>
       </div>
     </Form>

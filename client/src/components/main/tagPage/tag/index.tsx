@@ -2,6 +2,7 @@ import React from 'react';
 import './index.css';
 import { TagData } from '../../../../types';
 import useTagSelected from '../../../../hooks/useTagSelected';
+import HoverToPlayTTSWrapper from '../../../textToSpeech/textToSpeechComponent';
 
 /**
  * Props for the Tag component.
@@ -31,7 +32,10 @@ const TagView = ({ t, clickTag }: TagProps) => {
       onClick={() => {
         clickTag(t.name);
       }}>
-      <div className='tagName'>{tag.name}</div>
+      <HoverToPlayTTSWrapper
+        text={`The tag ${tag.name} has description ${tag.description} and is referenced in ${t.qcnt} questions`}>
+        <div className='tagName'>{tag.name}</div>
+      </HoverToPlayTTSWrapper>
       <div className='tagDescription'>{tag.description}</div>
       <div>{t.qcnt} questions</div>
     </div>

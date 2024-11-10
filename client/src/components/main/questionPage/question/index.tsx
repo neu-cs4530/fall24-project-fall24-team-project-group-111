@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import './index.css';
 import { getMetaData } from '../../../../tool';
 import { Question } from '../../../../types';
+import HoverToPlayTTSWrapper from '../../../textToSpeech/textToSpeechComponent';
+import formatDateToHumanReadable from '../../../../utils/date.utils';
 
 /**
  * Interface representing the props for the Question component.
@@ -43,7 +45,10 @@ const QuestionView = ({ q }: QuestionProps) => {
   const handleAnswer = (questionID: string) => {
     navigate(`/question/${questionID}`);
   };
+  const qTagsNames = q.tags.map(tag => tag.name);
+  const concatTagName = qTagsNames.join(', ');
 
+  const questionTTS = `${q.askedBy} asked a question about ${q.title} on ${formatDateToHumanReadable(q.askDateTime)}. Question has ${q.views.length} views, ${q.answers.length} answers, and tags, ${concatTagName}.`;
   return (
     <div
       className='question right_padding'
@@ -57,7 +62,9 @@ const QuestionView = ({ q }: QuestionProps) => {
         <div>{q.views.length} views</div>
       </div>
       <div className='question_mid'>
-        <div className='postTitle'>{q.title}</div>
+        <HoverToPlayTTSWrapper text={questionTTS}>
+          <div className='postTitle'>{q.title}</div>
+        </HoverToPlayTTSWrapper>
         <div className='question_tags'>
           {q.tags.map((tag, idx) => (
             <button
