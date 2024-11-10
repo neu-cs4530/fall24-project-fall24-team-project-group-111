@@ -14,6 +14,9 @@
   --comment-section-background: #2c2d5d; 
   --comment-item-background: #505180;
   --comment-text-area-color: #505180;
+  --tag-label: #aebcf9;
+  --answer-question-meta: #bbbbbb;
+  --question-author:red;
 }
 [data-theme='LightMode'] {
   --primary-color: #3089e8;
@@ -31,6 +34,49 @@
   --comment-section-background: #c2c2c2;
   --comment-item-background: #fff;
   --comment-text-area-color: #fff;
+  --tag-label: #3c4776;
+  --answer-question-meta: #bbbbbb;
+  --question-author:red;
+}
+[data-theme='Pastel'] {
+  --primary-color: #FFB5E8;
+  --secondary-color: #000000;
+  --header-background: #A5E3F8; 
+  --background-color: #f2a4f8;
+  --text-color: #000000;
+  --button-background: #fda173;
+  --nav-button: #000000;
+  --button-hover: #fc7676;
+  --nav-selected: #99ff96;
+  --border-color: #A5E3FF;
+  --order-button:#A79AFF;
+  --tags-page-border: #1992cf;
+  --comment-section-background: #a4f9bf;
+  --comment-item-background: #f483e5;
+  --comment-text-area-color: #f2df9b;
+  --tag-label: #890000;
+  --answer-question-meta: #09841d;
+  --question-author:rgb(153, 0, 0);
+}
+[data-theme='Autumn'] {
+  --primary-color: #842C5C;
+  --secondary-color: #E2BF84;
+  --header-background: #4e1119; 
+  --background-color: #7A1825;
+  --text-color: #DDC084;
+  --button-background: #E5AC3B;
+  --nav-button: #e98644;
+  --button-hover: #C98133;
+  --nav-selected: #2E0d33;
+  --border-color: #395A42;
+  --order-button:#D23735;
+  --tags-page-border: #938A5D;
+  --comment-section-background: #1b2E26;
+  --comment-item-background: #474c32;
+  --comment-text-area-color: #f2df9b;
+  --tag-label: #ffecec;
+  --answer-question-meta: #81ab88;
+  --question-author:rgb(255, 135, 135);
 }
 * {
   font-family: Arial, Helvetica, sans-serif;

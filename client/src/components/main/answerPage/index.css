@@ -1,5 +1,5 @@
 .answer_question_meta {
-  color: #bbbbbb;
+  color: var(--answer-question-meta);
 }
 
 .ansButton {
