@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { AxiosError } from 'axios';
 import { addUser } from '../services/userAuthService';
-import { SettingsInfo, User } from '../types';
+import { User } from '../types';
 import useLoginContext from './useLoginContext';
 
 /**
@@ -75,19 +75,11 @@ const useAddUser = () => {
   const postNewUser = async (): Promise<boolean> => {
     if (!validateForm()) return false;
 
-    const defaultSettings: SettingsInfo = {
-      theme: 'LightMode',
-      textSize: 'medium',
-      textBoldness: 'normal',
-      font: 'Arial',
-      lineSpacing: 'normal',
-    };
     const user: User = {
       username,
       email,
       password,
       creationDateTime: new Date(),
-      settings: defaultSettings,
     };
 
     try {

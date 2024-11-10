@@ -25,14 +25,14 @@ export interface SettingsInfo {
  * @property email - The email address of a logged in user. Optional field.
  * @property password - The password of a logged in user. Optional field.
  * @property creationDateTime - The date and time when a logged in user was created. Optional field.
- * @property settings - the theme and text settings for the current user
+ * @property settings - the theme and text settings for the current user. Optional field.
  */
 export interface User {
   username: string;
   email?: string;
   password?: string;
   creationDateTime?: Date;
-  settings: SettingsInfo;
+  settings?: SettingsInfo;
 }
 
 export type ThemeType = 'LightMode' | 'DarkMode' | 'Pastel' | 'Autumn';

@@ -236,6 +236,7 @@ export interface SettingsInfo {
  * - email - The email address of the user.
  * - password - The password of the user.
  * - creationDateTime - The date and time when the user was created.
+ * - settings - The settings information saved for the user. Optional field.
  * - resetPasswordToken - The token used to reset the user's password. Optional field.
  * - resetPasswordExpires - The expiration date for the reset password token. Optional field.
  *
@@ -246,7 +247,7 @@ export interface User {
   email: string;
   password: string;
   creationDateTime: Date;
-  settings: SettingsInfo;
+  settings?: SettingsInfo;
   resetPasswordToken?: string;
   resetPasswordExpires?: Date;
 }
