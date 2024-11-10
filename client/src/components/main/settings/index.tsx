@@ -51,6 +51,8 @@ const SettingsPage = () => {
               </option>
               <option value='LightMode'>Light Mode</option>
               <option value='DarkMode'>Dark Mode</option>
+              <option value='Pastel'>Pastel Mode</option>
+              <option value='Autumn'>Autumn Mode</option>
             </select>
           </div>
         </HoverToPlayTTSWrapper>
