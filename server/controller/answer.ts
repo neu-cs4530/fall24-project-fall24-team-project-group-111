@@ -1,5 +1,4 @@
 import express, { Response } from 'express';
-import OpenAI from 'openai';
 import { Answer, AnswerRequest, AnswerResponse, FakeSOSocket } from '../types';
 import { addAnswerToQuestion, populateDocument, saveAnswer } from '../models/application';
 
