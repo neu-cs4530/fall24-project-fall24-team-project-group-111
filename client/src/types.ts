@@ -2,8 +2,6 @@ import { Socket } from 'socket.io-client';
 
 export type FakeSOSocket = Socket<ServerToClientEvents>;
 
-export type ThemeType = 'LightMode' | 'DarkMode';
-
 /**
  * Represents the settingsInfo in the application.
  * @property theme - the currently selected color theme
