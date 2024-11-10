@@ -34,7 +34,7 @@ export interface User {
   email?: string;
   password?: string;
   creationDateTime?: Date;
-  settings?: SettingsInfo;
+  settings: SettingsInfo;
 }
 
 /**

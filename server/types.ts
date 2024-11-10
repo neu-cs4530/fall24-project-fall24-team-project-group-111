@@ -243,6 +243,7 @@ export interface User {
   email: string;
   password: string;
   creationDateTime: Date;
+  settings: SettingsInfo;
 }
 
 /**
@@ -267,6 +268,13 @@ export interface LoginUserRequest extends Request {
   body: {
     username: string;
     password: string;
+  };
+}
+
+export interface UpdateThemeRequest extends Request {
+  body: {
+    username: string;
+    theme: string;
   };
 }
 

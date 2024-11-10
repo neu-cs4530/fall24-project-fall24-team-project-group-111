@@ -1,9 +1,9 @@
 import { useState } from 'react';
-import { useTheme } from '../../../contexts/ThemeContext';
 import './index.css';
 import { ThemeType } from '../../../types';
 import useUserContext from '../../../hooks/useUserContext';
 import { changeTheme } from '../../../services/userAuthService';
+import { useTheme } from '../../../contexts/ThemeContext';
 
 /**
  * Settings page component that displays the content of the settings page and handles
@@ -18,7 +18,7 @@ const SettingsPage = () => {
 
   const handleThemeChange = async (Event: { target: { value: unknown } }) => {
     setTheme(Event.target.value as ThemeType);
-    // await changeTheme(user.username, Event.target.value as ThemeType);
+    await changeTheme(user.username, Event.target.value as ThemeType); // alters back-end user data to save theme
   };
 
   const handleTextSizeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
