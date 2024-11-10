@@ -1,6 +1,5 @@
 import { useNavigate } from 'react-router-dom';
 import useLoginContext from './useLoginContext';
-import { SettingsInfo } from '../types';
 
 /**
  * Custom hook to handle logging in as a guest.
@@ -18,14 +17,7 @@ const useGuestLogin = () => {
    */
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const defaultSettings: SettingsInfo = {
-      theme: 'LightMode',
-      textSize: 'medium',
-      textBoldness: 'normal',
-      font: 'Arial',
-      lineSpacing: 'normal',
-    };
-    setUser({ username: 'Guest', settings: defaultSettings });
+    setUser({ username: 'Guest' });
     navigate('/home');
   };
 

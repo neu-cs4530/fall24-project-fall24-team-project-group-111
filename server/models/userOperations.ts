@@ -28,9 +28,16 @@ function isMongoDuplicateKeyError(error: unknown): boolean {
  */
 export const saveUser = async (user: User): Promise<UserResponse> => {
   try {
-    // Hash the password before saving the user
+    // Hash the password and set default settings before saving the user
     const hashedPassword = await bcrypt.hash(user.password, 10);
     user.password = hashedPassword;
+    user.settings = {
+      theme: 'LightMode',
+      textSize: 'medium',
+      textBoldness: 'normal',
+      font: 'Arial',
+      lineSpacing: 'normal',
+    };
     const result = await UserModel.create(user);
     return result;
   } catch (error) {
