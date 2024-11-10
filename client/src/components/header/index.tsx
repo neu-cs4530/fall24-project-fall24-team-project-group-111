@@ -2,6 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import useHeader from '../../hooks/useHeader';
 import './index.css';
+import HoverToPlayTTSWrapper from '../textToSpeech/textToSpeechComponent';
 
 /**
  * Header component that renders the main title and a search bar.
@@ -22,22 +23,28 @@ const Header = () => {
   return (
     <div id='header' className='header'>
       <div></div>
-      <div className='title'>Fake Stack Overflow</div>
-      <input
-        id='searchBar'
-        placeholder='Search ...'
-        type='text'
-        value={val}
-        onChange={handleInputChange}
-        onKeyDown={handleKeyDown}
-      />
-      <button
-        className='bluebtn'
-        onClick={() => {
-          handleNavigateSetting();
-        }}>
-        Settings
-      </button>
+      <HoverToPlayTTSWrapper text={'Fake Stack Overflow'}>
+        <div className='title'>Fake Stack Overflow</div>
+      </HoverToPlayTTSWrapper>
+      <HoverToPlayTTSWrapper text={'Search bar'}>
+        <input
+          id='searchBar'
+          placeholder='Search ...'
+          type='text'
+          value={val}
+          onChange={handleInputChange}
+          onKeyDown={handleKeyDown}
+        />
+      </HoverToPlayTTSWrapper>
+      <HoverToPlayTTSWrapper text={'Button for settings page'}>
+        <button
+          className='bluebtn'
+          onClick={() => {
+            handleNavigateSetting();
+          }}>
+          Settings
+        </button>
+      </HoverToPlayTTSWrapper>
     </div>
   );
 };

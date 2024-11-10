@@ -10,5 +10,5 @@
 }
 
 .tagName {
-  color: var(--nav-button);
+  color: var(--tag-label);
 }

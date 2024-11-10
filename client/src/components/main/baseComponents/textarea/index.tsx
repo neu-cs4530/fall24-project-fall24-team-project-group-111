@@ -1,5 +1,6 @@
 import React from 'react';
 import '../input/index.css';
+import HoverToPlayTTSWrapper from '../../../textToSpeech/textToSpeechComponent';
 
 /**
  * Interface representing the props for the Textarea component.
@@ -36,10 +37,13 @@ interface TextAreaProps {
  */
 const TextArea = ({ title, mandatory = true, hint, id, val, setState, err }: TextAreaProps) => (
   <>
-    <div className='input_title'>
-      {title}
-      {mandatory ? '*' : ''}
-    </div>
+    <HoverToPlayTTSWrapper
+      text={`Field ${title}, this is required. ${hint ? `Description is ${hint}` : ''}`}>
+      <div className='input_title'>
+        {title}
+        {mandatory ? '*' : ''}
+      </div>
+    </HoverToPlayTTSWrapper>
     {hint && <div className='input_hint'>{hint}</div>}
     <textarea
       id={id}
@@ -49,7 +53,11 @@ const TextArea = ({ title, mandatory = true, hint, id, val, setState, err }: Tex
         setState(e.currentTarget.value);
       }}
     />
-    {err && <div className='input_error'>{err}</div>}
+    {err && (
+      <HoverToPlayTTSWrapper text={`Error, ${err}`}>
+        <div className='input_error'>{err}</div>{' '}
+      </HoverToPlayTTSWrapper>
+    )}
   </>
 );
 

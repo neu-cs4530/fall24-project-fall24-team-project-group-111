@@ -84,4 +84,4 @@ app.use('/comment', commentController(socket));
 app.use('/user', userController(socket, JWT_SECRET));
 
 // Export the app instance
-export { app, server, startServer, };
+export { app, server, startServer, OPENAI_API_KEY };
