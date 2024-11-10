@@ -13,6 +13,8 @@ import AnswerPage from './main/answerPage';
 import SettingsPage from './main/settings';
 import { ThemeProvider } from '../contexts/ThemeContext';
 
+// note: any settings-related provider must be wrapped in proctected route
+// so that it may utilize User Context
 const ProtectedRoute = ({
   user,
   socket,
@@ -37,31 +39,31 @@ const FakeStackOverflow = ({ socket }: { socket: FakeSOSocket | null }) => {
   const [user, setUser] = useState<User | null>(null);
 
   return (
-    <ThemeProvider>
-      <LoginContext.Provider value={{ setUser }}>
-        <Routes>
-          {/* Public Route */}
-          <Route path='/' element={<Login />} />
+    <LoginContext.Provider value={{ setUser }}>
+      <Routes>
+        {/* Public Route */}
+        <Route path='/' element={<Login />} />
 
-          {/* Protected Routes */}
-          {
-            <Route
-              element={
-                <ProtectedRoute user={user} socket={socket}>
+        {/* Protected Routes */}
+        {
+          <Route
+            element={
+              <ProtectedRoute user={user} socket={socket}>
+                <ThemeProvider>
                   <Layout />
-                </ProtectedRoute>
-              }>
-              <Route path='/home' element={<QuestionPage />} />
-              <Route path='tags' element={<TagPage />} />
-              <Route path='/question/:qid' element={<AnswerPage />} />
-              <Route path='/new/question' element={<NewQuestionPage />} />
-              <Route path='/new/answer/:qid' element={<NewAnswerPage />} />
-              <Route path='/settings' element={<SettingsPage />} />
-            </Route>
-          }
-        </Routes>
-      </LoginContext.Provider>
-    </ThemeProvider>
+                </ThemeProvider>
+              </ProtectedRoute>
+            }>
+            <Route path='/home' element={<QuestionPage />} />
+            <Route path='tags' element={<TagPage />} />
+            <Route path='/question/:qid' element={<AnswerPage />} />
+            <Route path='/new/question' element={<NewQuestionPage />} />
+            <Route path='/new/answer/:qid' element={<NewAnswerPage />} />
+            <Route path='/settings' element={<SettingsPage />} />
+          </Route>
+        }
+      </Routes>
+    </LoginContext.Provider>
   );
 };
 

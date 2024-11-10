@@ -64,3 +64,23 @@ export const loginUser = async (username: string, password: string): Promise<Use
     return { error: 'Error logging in user' };
   }
 };
+
+/**
+ * Attempts change the theme of a user in the database.
+ *
+ * @param {string} username - The username of the user for the theme change.
+ * @param {string} theme - The theme to change to.
+ *
+ * @returns {Promise<UserResponse>} - The changed user, or an error message if the theme change failed.
+ */
+export const changeTheme = async (username: string, theme: string): Promise<UserResponse> => {
+  try {
+    const user = await UserModel.findOneAndUpdate({ username }, { settings: { theme } });
+    if (!user) {
+      return { error: 'Username does not exist' };
+    }
+    return user;
+  } catch (error) {
+    return { error: 'Error changing user theme' };
+  }
+};
