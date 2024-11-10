@@ -24,6 +24,9 @@ const questionSchema: Schema = new Schema(
       type: String,
     },
     tags: [{ type: Schema.Types.ObjectId, ref: 'Tag' }],
+    aiGeneratedAnswer: {
+      type: String,
+    },
     answers: [{ type: Schema.Types.ObjectId, ref: 'Answer' }],
     askedBy: {
       type: String,

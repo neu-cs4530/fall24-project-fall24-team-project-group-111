@@ -8,6 +8,7 @@ import {
   useState,
 } from 'react';
 import { ThemeType } from '../types';
+import useUserContext from '../hooks/useUserContext';
 
 /**
  * Context used to set the theme when the theme is changed
@@ -21,7 +22,8 @@ type ThemeContextType = {
 const ThemeContext = createContext<ThemeContextType>({ theme: 'LightMode', setTheme: () => {} });
 
 export const ThemeProvider = ({ children }: { children: ReactNode }) => {
-  const [theme, setTheme] = useState<ThemeType>('LightMode');
+  const { user } = useUserContext();
+  const [theme, setTheme] = useState<ThemeType>(user?.settings?.theme || 'LightMode');
 
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme);

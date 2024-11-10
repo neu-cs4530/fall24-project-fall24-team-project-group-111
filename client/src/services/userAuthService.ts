@@ -81,4 +81,20 @@ const resetPassword = async (
   return res.data;
 };
 
-export { addUser, loginUser, sendPasswordReset, resetPassword };
+/**
+ * Function to change a user's theme.
+ *
+ * @param username - the username of the person editing their settings
+ * @param theme - the theme to change to
+ * @throws Error if there is an issue changing theme
+ */
+const changeTheme = async (username: string, theme: string) => {
+  const data = { username, theme };
+  const res = await api.post(`${USER_API_URL}/changeTheme`, data);
+  if (res.status !== 200) {
+    throw new Error('Error while changing theme');
+  }
+  return res.data;
+};
+
+export { addUser, loginUser, sendPasswordReset, resetPassword, changeTheme };

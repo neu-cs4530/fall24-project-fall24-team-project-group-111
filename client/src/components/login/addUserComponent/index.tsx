@@ -2,6 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import useAddUser from '../../../hooks/useAddUser';
 import LoginInput from '../inputComponent';
+import HoverToPlayTTSWrapper from '../../textToSpeech/textToSpeechComponent';
 
 /**
  * Component that allows users to create an account.
@@ -39,7 +40,9 @@ const AddUser = ({ onSwitch }: { onSwitch: () => void }) => {
 
   return (
     <div className='login-input-container'>
-      <h3>Create an account</h3>
+      <HoverToPlayTTSWrapper text={'Create an account'}>
+        <h3>Create an account</h3>
+      </HoverToPlayTTSWrapper>
       <form onSubmit={handleSubmit}>
         <LoginInput
           title={'Username'}
@@ -66,16 +69,20 @@ const AddUser = ({ onSwitch }: { onSwitch: () => void }) => {
           type='password'
         />
         {postUserErr && <div className='error-text'>{postUserErr}</div>}
-        <button type='submit' className='login-button'>
-          Sign up
-        </button>
+        <HoverToPlayTTSWrapper text={'Button to complete Sign up'}>
+          <button type='submit' className='login-button'>
+            Sign up
+          </button>
+        </HoverToPlayTTSWrapper>
       </form>
-      <h5>
-        Already have an account?{' '}
-        <button onClick={onSwitch} className='link-button'>
-          Sign in
-        </button>
-      </h5>
+      <HoverToPlayTTSWrapper text={'Already have an account? Click here to sign in.'}>
+        <h5>
+          Already have an account?{' '}
+          <button onClick={onSwitch} className='link-button'>
+            Sign in
+          </button>
+        </h5>
+      </HoverToPlayTTSWrapper>
     </div>
   );
 };

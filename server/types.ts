@@ -72,6 +72,7 @@ export interface Question {
   _id?: ObjectId;
   title: string;
   text: string;
+  aiGeneratedAnswer?: string;
   tags: Tag[];
   askedBy: string;
   askDateTime: Date;
@@ -212,6 +213,21 @@ export interface ServerToClientEvents {
   commentUpdate: (comment: CommentUpdatePayload) => void;
 }
 
+/**
+ * Interface representing the SettingsInfo, which contains:
+ * - theme - the currently selected color theme
+ * - textSize - the currently selected size of the text
+ * - textBoldness - the currently selcted text boldness
+ * - font - the currently selcted font style for text
+ * - lineSpacing - the currently selcted line spacing for all text
+ */
+export interface SettingsInfo {
+  theme: string;
+  textSize: string;
+  textBoldness: string;
+  font: string;
+  lineSpacing: string;
+}
 
 /**
  * Interface representing a User, which contains:
@@ -220,6 +236,7 @@ export interface ServerToClientEvents {
  * - email - The email address of the user.
  * - password - The password of the user.
  * - creationDateTime - The date and time when the user was created.
+ * - settings - The settings information saved for the user. Optional field.
  * - resetPasswordToken - The token used to reset the user's password. Optional field.
  * - resetPasswordExpires - The expiration date for the reset password token. Optional field.
  *
@@ -230,6 +247,7 @@ export interface User {
   email: string;
   password: string;
   creationDateTime: Date;
+  settings?: SettingsInfo;
   resetPasswordToken?: string;
   resetPasswordExpires?: Date;
 }
@@ -293,6 +311,13 @@ export interface ResetPasswordRequest extends Request {
   body: {
     token: string;
     newPassword: string;
+  };
+}
+
+export interface UpdateThemeRequest extends Request {
+  body: {
+    username: string;
+    theme: string;
   };
 }
 

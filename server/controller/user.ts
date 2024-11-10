@@ -7,6 +7,7 @@ import {
   LoginUserRequest,
   SendPasswordResetRequest,
   ResetPasswordRequest,
+  UpdateThemeRequest,
   FakeSOSocket,
 } from '../types';
 import {
@@ -15,6 +16,7 @@ import {
   loginUser,
   sendPasswordReset,
   resetPassword,
+  changeTheme,
 } from '../models/userOperations';
 
 const userController = (socket: FakeSOSocket, JWT_SECRET: string) => {
@@ -233,11 +235,43 @@ const userController = (socket: FakeSOSocket, JWT_SECRET: string) => {
     }
   };
 
+  /**
+   * Handles changing the saved theme of the currently logged in user. If successful, the most
+   * recently saved theme will be accessed when logged back in.
+   *
+   * @param req The UpdateThemeRequest object containing the query parameters `username` and `theme`.
+   * @param res The HTTP response object used to send back the result of the operation.
+   *
+   * @returns A Promise that resolves to void.
+   */
+  const changeThemeRoute = async (req: UpdateThemeRequest, res: Response): Promise<void> => {
+    if (!req.body.username || !req.body.theme) {
+      res.status(400).send('Invalid request');
+      return;
+    }
+    const { username, theme } = req.body;
+
+    try {
+      const userFromDb = await changeTheme(username, theme);
+      if ('error' in userFromDb) {
+        throw new Error(userFromDb.error);
+      }
+      res.json({ message: 'Theme update successful', user: userFromDb });
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        res.status(500).send(`Error when updating theme: ${err.message}`);
+      } else {
+        res.status(500).send(`Error when updating theme`);
+      }
+    }
+  };
+
   router.post('/emailVerification', emailVerificationRoute);
   router.post('/addUser', addUserRoute);
   router.post('/loginUser', loginUserRoute);
   router.post('/sendPasswordReset', sendPasswordResetRoute);
   router.post('/resetPassword', resetPasswordRoute);
+  router.post('/changeTheme', changeThemeRoute);
 
   return router;
 };

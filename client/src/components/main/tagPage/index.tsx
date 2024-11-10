@@ -3,6 +3,7 @@ import './index.css';
 import TagView from './tag';
 import useTagPage from '../../../hooks/useTagPage';
 import AskQuestionButton from '../askQuestionButton';
+import HoverToPlayTTSWrapper from '../../textToSpeech/textToSpeechComponent';
 
 /**
  * Represents the TagPage component which displays a list of tags
@@ -14,8 +15,12 @@ const TagPage = () => {
   return (
     <>
       <div className='space_between right_padding'>
-        <div className='bold_title'>{tlist.length} Tags</div>
-        <div className='bold_title'>All Tags</div>
+        <HoverToPlayTTSWrapper text={`${tlist.length} Tags`}>
+          <div className='bold_title'>{tlist.length} Tags</div>
+        </HoverToPlayTTSWrapper>
+        <HoverToPlayTTSWrapper text={'All tags'}>
+          <div className='bold_title'>All Tags</div>
+        </HoverToPlayTTSWrapper>
         <AskQuestionButton />
       </div>
       <div className='tag_list right_padding'>

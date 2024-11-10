@@ -1,5 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import HoverToPlayTTSWrapper from '../../textToSpeech/textToSpeechComponent';
 
 /**
  * AskQuestionButton component that renders a button for navigating to the
@@ -17,13 +18,15 @@ const AskQuestionButton = () => {
   };
 
   return (
-    <button
-      className='bluebtn'
-      onClick={() => {
-        handleNewQuestion();
-      }}>
-      Ask a Question
-    </button>
+    <HoverToPlayTTSWrapper text={'button to Ask a Question'} isOnRight={false}>
+      <button
+        className='bluebtn'
+        onClick={() => {
+          handleNewQuestion();
+        }}>
+        Ask a Question
+      </button>
+    </HoverToPlayTTSWrapper>
   );
 };
 

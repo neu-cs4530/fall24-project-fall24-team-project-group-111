@@ -3,6 +3,7 @@ import './index.css';
 import useGuestLogin from '../../hooks/useGuestLogin';
 import SignIn from './signInComponent';
 import AddUser from './addUserComponent';
+import HoverToPlayTTSWrapper from '../textToSpeech/textToSpeechComponent';
 
 /**
  * Login Component contains forms that allow the user sign in or create a user,
@@ -21,12 +22,18 @@ const Login = () => {
 
   return (
     <div className='container'>
-      <h2>Welcome to FakeStackOverflow!</h2>
+      <HoverToPlayTTSWrapper text={'welcome to FakeStackOverflow!'}>
+        <h2>Welcome to FakeStackOverflow!</h2>
+      </HoverToPlayTTSWrapper>
       {isSignIn ? <SignIn onSwitch={handleSwitch} /> : <AddUser onSwitch={handleSwitch} />}
       <form onSubmit={handleSubmit}>
-        <button type='submit' className='link-button'>
-          Continue as a guest
-        </button>
+        <HoverToPlayTTSWrapper text={'Button to continue as a guest.'}>
+          <div>
+            <button type='submit' className='link-button'>
+              Continue as a guest
+            </button>
+          </div>
+        </HoverToPlayTTSWrapper>
       </form>
     </div>
   );
