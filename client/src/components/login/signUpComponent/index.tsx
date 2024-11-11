@@ -1,16 +1,14 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
-import useAddUser from '../../../hooks/useAddUser';
+import useVerifyUser from '../../../hooks/useVerifyUser';
 import LoginInput from '../inputComponent';
 import HoverToPlayTTSWrapper from '../../textToSpeech/textToSpeechComponent';
 
 /**
- * Component that allows users to create an account.
+ * Component that allows for the verification of new users during signup.
  *
  * @param onSwitch - Function to switch between login and signup.
  */
-const AddUser = ({ onSwitch }: { onSwitch: () => void }) => {
-  const navigate = useNavigate();
+const SignUp = ({ onSwitch }: { onSwitch: () => void }) => {
   const {
     username,
     setUsername,
@@ -21,9 +19,10 @@ const AddUser = ({ onSwitch }: { onSwitch: () => void }) => {
     usernameErr,
     emailErr,
     passwordErr,
-    postUserErr,
-    postNewUser,
-  } = useAddUser();
+    postEmailVerification,
+    postEmailVerificationErr,
+    emailRecipient,
+  } = useVerifyUser();
 
   /**
    * Function to handle the form submission event.
@@ -32,10 +31,7 @@ const AddUser = ({ onSwitch }: { onSwitch: () => void }) => {
    */
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const postSuccessful = await postNewUser();
-    if (postSuccessful) {
-      navigate('/home');
-    }
+    await postEmailVerification();
   };
 
   return (
@@ -68,13 +64,22 @@ const AddUser = ({ onSwitch }: { onSwitch: () => void }) => {
           err={passwordErr}
           type='password'
         />
-        {postUserErr && <div className='error-text'>{postUserErr}</div>}
+        {postEmailVerificationErr && <div className='error-text'>{postEmailVerificationErr}</div>}
         <HoverToPlayTTSWrapper text={'Button to complete Sign up'}>
           <button type='submit' className='login-button'>
             Sign up
           </button>
         </HoverToPlayTTSWrapper>
       </form>
+      {emailRecipient && (
+        <HoverToPlayTTSWrapper
+          text={`A verification email has been sent to ${emailRecipient}. Please follow the instructions to complete your sign up process.`}>
+          <div className='success_message'>
+            A verification email has been sent to {emailRecipient}. Please follow the instructions
+            to complete your sign up process.
+          </div>
+        </HoverToPlayTTSWrapper>
+      )}
       <HoverToPlayTTSWrapper text={'Already have an account? Click here to sign in.'}>
         <h5>
           Already have an account?{' '}
@@ -87,4 +92,4 @@ const AddUser = ({ onSwitch }: { onSwitch: () => void }) => {
   );
 };
 
-export default AddUser;
+export default SignUp;

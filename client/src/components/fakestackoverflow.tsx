@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import Layout from './layout';
 import Login from './login';
+import EmailVerificationPage from './login/emailVerification';
 import AccountRecoveryPage from './login/accountRecovery';
 import PasswordResetPage from './login/passwordReset';
 import { FakeSOSocket, User } from '../types';
@@ -45,6 +46,7 @@ const FakeStackOverflow = ({ socket }: { socket: FakeSOSocket | null }) => {
       <Routes>
         {/* Public Route */}
         <Route path='/' element={<Login />} />
+        <Route path='/verify-email/:token' element={<EmailVerificationPage />} />
         <Route path='/account-recovery' element={<AccountRecoveryPage />} />
         <Route path='/reset-password/:token' element={<PasswordResetPage />} />
 
