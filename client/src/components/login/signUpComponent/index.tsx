@@ -64,7 +64,11 @@ const SignUp = ({ onSwitch }: { onSwitch: () => void }) => {
           err={passwordErr}
           type='password'
         />
-        {postEmailVerificationErr && <div className='error-text'>{postEmailVerificationErr}</div>}
+        {postEmailVerificationErr && (
+          <HoverToPlayTTSWrapper text={postEmailVerificationErr}>
+            <div className='error-text'>{postEmailVerificationErr}</div>
+          </HoverToPlayTTSWrapper>
+        )}
         <HoverToPlayTTSWrapper text={'Button to complete Sign up'}>
           <button type='submit' className='login-button'>
             Sign up
