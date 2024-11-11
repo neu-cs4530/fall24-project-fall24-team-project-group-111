@@ -2,6 +2,7 @@ import React from 'react';
 import './index.css';
 import LoginInput from '../inputComponent';
 import usePasswordResetPage from '../../../hooks/usePasswordResetPage';
+import HoverToPlayTTSWrapper from '../../textToSpeech/textToSpeechComponent';
 
 /**
  * PasswordResetPage Component contains a form that allows the user to submit a password reset request.
@@ -31,7 +32,9 @@ const PasswordResetPage = () => {
 
   return (
     <div className='container'>
-      <h3>Reset your password</h3>
+      <HoverToPlayTTSWrapper text={'Reset your password'}>
+        <h3>Reset your password</h3>
+      </HoverToPlayTTSWrapper>
       <form onSubmit={handleSubmit}>
         <LoginInput
           title={'New Password'}
@@ -49,12 +52,22 @@ const PasswordResetPage = () => {
           err={confirmPasswordErr}
           type='password'
         />
-        {postPasswordResetErr && <div className='error-text'>{postPasswordResetErr}</div>}
-        <button type='submit' className='login-button'>
-          Update password
-        </button>
+        {postPasswordResetErr && (
+          <HoverToPlayTTSWrapper text={postPasswordResetErr}>
+            <div className='error-text'>{postPasswordResetErr}</div>
+          </HoverToPlayTTSWrapper>
+        )}
+        <HoverToPlayTTSWrapper text={'Button to update password.'}>
+          <button type='submit' className='login-button'>
+            Update password
+          </button>
+        </HoverToPlayTTSWrapper>
       </form>
-      {successMessage && <div className='success_message'>{successMessage}</div>}
+      {successMessage && (
+        <HoverToPlayTTSWrapper text={successMessage}>
+          <div className='success_message'>{successMessage}</div>
+        </HoverToPlayTTSWrapper>
+      )}
     </div>
   );
 };
