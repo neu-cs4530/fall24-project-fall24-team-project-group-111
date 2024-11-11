@@ -15,6 +15,7 @@ import tagController from './controller/tag';
 import commentController from './controller/comment';
 import userController from './controller/user';
 import { FakeSOSocket } from './types';
+import OpenAI from 'openai';
 
 dotenv.config();
 
@@ -38,6 +39,12 @@ const app = express();
 const server = http.createServer(app);
 const socket: FakeSOSocket = new Server(server, {
   cors: { origin: '*' },
+});
+
+const openai = new OpenAI({
+  organization: 'org-ILR5PGHDz2TMN7TbELizo9ld',
+  project: 'proj_HRv67erRpJfTx2bUo3Qt7htF',
+  apiKey: OPENAI_API_KEY,
 });
 
 function startServer() {
@@ -71,6 +78,25 @@ app.use(
 );
 
 app.use(express.json());
+
+app.post("/chat", async (req, res) => {
+  const { prompt } = req.body;
+
+  const completion = await openai.chat.completions.create({
+    model: 'gpt-4o-mini',
+    messages: [
+          {
+            role: 'system',
+            content: 'You are helping a user brainstorm questions for a forum. Please only respond in plain text',
+          },
+          {
+            role: 'user',
+            content: prompt,
+          },
+        ],
+  });
+  res.send(completion.choices[0].message.content);
+});
 
 app.get('/', (req: Request, res: Response) => {
   res.send('hello world');
