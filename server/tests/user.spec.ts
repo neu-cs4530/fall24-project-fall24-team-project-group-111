@@ -182,6 +182,10 @@ describe('POST /addUser', () => {
     expect(response.status).toBe(200);
     expect(response.body.message).toBe('User created successfully');
     expect(response.body.token).toBe('fakeJwtToken');
+    expect(response.body.user).toEqual({
+      ...mockUser,
+      creationDateTime: mockUser.creationDateTime.toISOString(),
+    });
   });
 
   it('should return a bad request error if the request body is missing', async () => {
@@ -202,6 +206,16 @@ describe('POST /addUser', () => {
     const response = await supertest(app).post('/user/addUser').send({ token: 'fakeToken' });
     expect(response.status).toBe(409);
     expect(response.text).toBe('Username is already taken');
+  });
+
+  it('it should return a 400 error if the saveUser method does not accept the token', async () => {
+    saveUserSpy.mockResolvedValueOnce({
+      error: 'Email verification token is invalid or has expired',
+    });
+
+    const response = await supertest(app).post('/user/addUser').send({ token: 'fakeToken' });
+    expect(response.status).toBe(400);
+    expect(response.text).toBe('Email verification token is invalid or has expired');
   });
 
   it('should return error in response if saveUser method throws an error', async () => {

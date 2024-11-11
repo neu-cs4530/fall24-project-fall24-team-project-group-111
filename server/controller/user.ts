@@ -107,10 +107,14 @@ const userController = (socket: FakeSOSocket, JWT_SECRET: string) => {
           res.status(409).send(userFromDb.error);
           return;
         }
+        if (userFromDb.error === 'Email verification token is invalid or has expired') {
+          res.status(400).send(userFromDb.error);
+          return;
+        }
         throw new Error(userFromDb.error);
       }
       const jwtToken = jwt.sign({ userId: userFromDb._id }, JWT_SECRET, { expiresIn: '1h' });
-      res.json({ message: 'User created successfully', token: jwtToken });
+      res.json({ message: 'User created successfully', token: jwtToken, user: userFromDb });
     } catch (err: unknown) {
       if (err instanceof Error) {
         res.status(500).send(`Error when saving user: ${err.message}`);
