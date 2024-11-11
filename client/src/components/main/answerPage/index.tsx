@@ -1,5 +1,5 @@
-import React from 'react';
-import { getMetaData } from '../../../tool';
+import React, { useState } from 'react';
+import { getMetaData, handleHyperlink } from '../../../tool';
 import AnswerView from './answer';
 import AnswerHeader from './header';
 import { Comment } from '../../../types';
@@ -17,10 +17,16 @@ import formatDateToHumanReadable from '../../../utils/date.utils';
  */
 const AnswerPage = () => {
   const { questionID, question, handleNewComment, handleNewAnswer } = useAnswerPage();
+  const [showAIAnswer, setShowAIAnswer] = useState<boolean>(false);
 
   if (!question) {
     return null;
   }
+
+  const aiAnswer =
+    question.aiGeneratedAnswer !== undefined
+      ? question.aiGeneratedAnswer
+      : 'AI generated answer is not available';
 
   const questionOverview = `${question.askedBy} asked a question about ${question.title} on ${formatDateToHumanReadable(question.askDateTime)}. Question has ${question.views.length} views, ${question.answers.length} answers, ${question.upVotes.length} upvotes, and ${question.downVotes.length} downvotes.`;
 
@@ -59,6 +65,24 @@ const AnswerPage = () => {
           Answer Question
         </button>
       </HoverToPlayTTSWrapper>
+      <div className='comment-section'>
+        <HoverToPlayTTSWrapper text='Button for showing AI-generated answer'>
+          <button className='toggle-button' onClick={() => setShowAIAnswer(!showAIAnswer)}>
+            {showAIAnswer ? 'Hide AI Answer' : 'Show AI Answer'}
+          </button>
+        </HoverToPlayTTSWrapper>
+        {showAIAnswer && (
+          <div className='answer right_padding'>
+            <div className='answerText'>
+              <HoverToPlayTTSWrapper text={aiAnswer}>
+                <div id='answerText' className=''>
+                  {handleHyperlink(aiAnswer)}
+                </div>
+              </HoverToPlayTTSWrapper>
+            </div>
+          </div>
+        )}
+      </div>
     </>
   );
 };
