@@ -57,9 +57,13 @@ const LoginInput = ({
       <HoverToPlayTTSWrapper text={title}>
         <div className='input_header_title'>{title}</div>
       </HoverToPlayTTSWrapper>
-      <button onClick={onLinkClick} className='input_header_link'>
-        {link}
-      </button>
+      {link && (
+        <HoverToPlayTTSWrapper text={link}>
+          <button onClick={onLinkClick} className='input_header_link'>
+            {link}
+          </button>
+        </HoverToPlayTTSWrapper>
+      )}
     </div>
     {hint && <div className='input_hint'>{hint}</div>}
     <input
@@ -72,7 +76,11 @@ const LoginInput = ({
         setState(e.currentTarget.value);
       }}
     />
-    {err && <div className='input_error'>{err}</div>}
+    {err && (
+      <HoverToPlayTTSWrapper text={err}>
+        <div className='input_error'>{err}</div>
+      </HoverToPlayTTSWrapper>
+    )}
   </>
 );
 
