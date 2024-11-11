@@ -62,7 +62,7 @@ jobs:
           echo "Server started successfully. Now stopping..."
           killall node
 
-          npm run test
+          NODE_OPTIONS="--max-old-space-size=4096" npm run test
 
       - name: Lint backend
         if: ${{ always() }}
