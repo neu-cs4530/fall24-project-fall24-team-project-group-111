@@ -43,8 +43,6 @@ const socket: FakeSOSocket = new Server(server, {
 function startServer() {
   server.listen(port, () => {
     console.log(`Server is running on port ${port}`);
-  }).on('error', (err) => {
-    console.error('Server failed to start:', err);
   });
 }
 
