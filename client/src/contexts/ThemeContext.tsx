@@ -23,7 +23,7 @@ const ThemeContext = createContext<ThemeContextType>({ theme: 'LightMode', setTh
 
 export const ThemeProvider = ({ children }: { children: ReactNode }) => {
   const { user } = useUserContext();
-  const [theme, setTheme] = useState<ThemeType>(user?.settings?.theme);
+  const [theme, setTheme] = useState<ThemeType>(user?.settings?.theme || 'LightMode');
 
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme);
