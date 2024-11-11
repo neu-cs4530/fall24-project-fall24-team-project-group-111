@@ -51,6 +51,8 @@ const SignIn = ({ onSwitch }: { onSwitch: () => void }) => {
         />
         <LoginInput
           title={'Password'}
+          link='Forgot password?'
+          onLinkClick={() => navigate('/account-recovery')}
           id={'passwordInput'}
           val={password}
           setState={setPassword}

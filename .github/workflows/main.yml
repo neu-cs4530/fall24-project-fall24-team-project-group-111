@@ -47,10 +47,14 @@ jobs:
           MONGODB_URI: mongodb://localhost:27017
           JWT_SECRET: ${{ secrets.JWT_SECRET }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          GMAIL_USER: ${{ secrets.GMAIL_USER }}
+          GMAIL_CLIENT_ID: ${{ secrets.GMAIL_CLIENT_ID }}
+          GMAIL_CLIENT_SECRET: ${{ secrets.GMAIL_CLIENT_SECRET }}
+          GMAIL_REFRESH_TOKEN: ${{ secrets.GMAIL_REFRESH_TOKEN }}
         run: |
           cd server
 
-          npm run start & sleep 10
+          npm run start & sleep 30
 
           echo "Checking if the server is running..."
           curl --fail 'http://localhost:8000/question/getQuestion?order=newest&search=' || (echo "Server failed to start" && killall node && exit 1)
@@ -58,7 +62,7 @@ jobs:
           echo "Server started successfully. Now stopping..."
           killall node
 
-          npm run test
+          NODE_OPTIONS="--max-old-space-size=4096" npm run test
 
       - name: Lint backend
         if: ${{ always() }}

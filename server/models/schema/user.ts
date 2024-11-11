@@ -30,6 +30,12 @@ const userSchema: Schema = new Schema(
     settings: {
       type: settingsSchema,
     },
+    resetPasswordToken: {
+      type: String,
+    },
+    resetPasswordExpires: {
+      type: Date,
+    },
   },
   { collection: 'User' },
 );
