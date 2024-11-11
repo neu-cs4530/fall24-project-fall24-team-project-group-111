@@ -131,7 +131,8 @@ const questionController = (socket: FakeSOSocket) => {
         messages: [
           {
             role: 'system',
-            content: 'You are answering a question on a question and answer platform',
+            content:
+              'You are answering a question on a question and answer platform. Please provide brief answers written in only plain text.',
           },
           {
             role: 'user',
