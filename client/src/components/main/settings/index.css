@@ -1,26 +1,13 @@
-:root {
-    --font-size: 16px;          
-    --font-weight: normal;      
-    --font-family: Arial, sans-serif; 
-    --text-color: #000;        
-  }
-
 h1 {
-    font-size: var(--font-size);
-    font-weight: var(--font-weight);
-    font-family: var(--font-family);
+    font-size: 24px;
   }
   
   label {
-    font-size: var(--font-size);
-    font-weight: var(--font-weight);
-    font-family: var(--font-family);
+    font-size: 18px;
   }
   
   select {
-    font-size: var(--font-size);
-    font-weight: var(--font-weight);
-    font-family: var(--font-family);
+    font-size: 16px;
     margin-left: 5px;
   }
 
@@ -59,13 +46,6 @@ h1 {
   
   .theme-select {
     padding: 5px;
-    /* font-size: 16px; */
-    font-size: var(--font-size);
-    font-weight: var(--font-weight);
-    font-family: var(--font-family);
-  }
-
-  .save-button:hover {
-    background-color: #45a049;
+    font-size: 16px;
   }
   
