@@ -29,7 +29,9 @@
     align-items: center;
     margin-bottom: 20px;
     margin-left: 20px;
-    color: var(--text-color);
+    font-size: xx-large;
+    font-weight: bolder;
+    color: var(--nav-button);
   }
   
   .settings-container {
