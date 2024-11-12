@@ -9,6 +9,9 @@ import HoverToPlayTTSWrapper from '../../textToSpeech/textToSpeechComponent';
  */
 const PasswordResetPage = () => {
   const {
+    token,
+    setToken,
+    tokenErr,
     newPassword,
     setNewPassword,
     newPasswordErr,
@@ -18,8 +21,6 @@ const PasswordResetPage = () => {
     postPasswordReset,
     postPasswordResetErr,
     successMessage,
-    token,
-    setToken,
   } = usePasswordResetPage();
 
   /**
@@ -43,6 +44,7 @@ const PasswordResetPage = () => {
           id={'passwordResetTokenInput'}
           val={token}
           setState={setToken}
+          err={tokenErr}
           type='text'
         />
         <LoginInput
