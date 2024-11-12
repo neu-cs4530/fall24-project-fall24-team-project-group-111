@@ -51,6 +51,8 @@ const SignIn = ({ onSwitch }: { onSwitch: () => void }) => {
         />
         <LoginInput
           title={'Password'}
+          link='Forgot password?'
+          onLinkClick={() => navigate('/account-recovery')}
           id={'passwordInput'}
           val={password}
           setState={setPassword}
@@ -72,6 +74,9 @@ const SignIn = ({ onSwitch }: { onSwitch: () => void }) => {
           </button>
         </h5>
       </HoverToPlayTTSWrapper>
+      <button onClick={() => navigate('/reset-password/invalidtoken')} className='link-button'>
+        Password reset temp
+      </button>
     </div>
   );
 };

@@ -1,7 +1,21 @@
 import express, { Response } from 'express';
 import jwt from 'jsonwebtoken';
-import { User, AddUserRequest, LoginUserRequest, FakeSOSocket, UpdateThemeRequest } from '../types';
-import { saveUser, loginUser, changeTheme } from '../models/userOperations';
+import {
+  User,
+  AddUserRequest,
+  LoginUserRequest,
+  SendPasswordResetRequest,
+  ResetPasswordRequest,
+  UpdateThemeRequest,
+  FakeSOSocket,
+} from '../types';
+import {
+  saveUser,
+  loginUser,
+  sendPasswordReset,
+  resetPassword,
+  changeTheme,
+} from '../models/userOperations';
 
 const userController = (socket: FakeSOSocket, JWT_SECRET: string) => {
   const router = express.Router();
@@ -38,7 +52,7 @@ const userController = (socket: FakeSOSocket, JWT_SECRET: string) => {
    */
   const addUserRoute = async (req: AddUserRequest, res: Response): Promise<void> => {
     if (!isUserBodyValid(req.body)) {
-      res.status(400).send('Invalid user body');
+      res.status(400).send('Invalid request');
       return;
     }
     const user: User = req.body;
@@ -103,6 +117,82 @@ const userController = (socket: FakeSOSocket, JWT_SECRET: string) => {
   };
 
   /**
+   * Handles sending a password reset request for a user.
+   * If there is an error, the HTTP response's status is updated.
+   *
+   * @param req The SendPasswordResetRequest object containing the query parameter `username`.
+   * @param res The HTTP response object used to send back the result of the operation.
+   *
+   * @returns A Promise that resolves to void.
+   */
+  const sendPasswordResetRoute = async (
+    req: SendPasswordResetRequest,
+    res: Response,
+  ): Promise<void> => {
+    if (!req.body.username) {
+      res.status(400).send('Invalid request');
+      return;
+    }
+    const { username } = req.body;
+
+    try {
+      const result = await sendPasswordReset(username);
+      if ('error' in result) {
+        if (result.error === 'Username does not exist') {
+          res.status(404).send(result.error);
+          return;
+        }
+        throw new Error(result.error);
+      }
+      res.json({
+        message: 'Password reset email successfully sent',
+        emailRecipient: result.emailRecipient,
+      });
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        res.status(500).send(`Error when sending password reset: ${err.message}`);
+      } else {
+        res.status(500).send(`Error when sending password reset`);
+      }
+    }
+  };
+
+  /**
+   * Handles resetting a user's password.
+   * If there is an error, the HTTP response's status is updated.
+   *
+   * @param req The ResetPasswordRequest object containing the query parameters `token` and `newPassword`.
+   * @param res The HTTP response object used to send back the result of the operation.
+   *
+   * @returns A Promise that resolves to void.
+   */
+  const resetPasswordRoute = async (req: ResetPasswordRequest, res: Response): Promise<void> => {
+    if (!req.body.token || !req.body.newPassword) {
+      res.status(400).send('Invalid request');
+      return;
+    }
+    const { token, newPassword } = req.body;
+
+    try {
+      const userFromDb = await resetPassword(token, newPassword);
+      if ('error' in userFromDb) {
+        if (userFromDb.error === 'Password reset token is invalid or has expired') {
+          res.status(401).send(userFromDb.error);
+          return;
+        }
+        throw new Error(userFromDb.error);
+      }
+      res.json({ message: 'Password reset successfully', user: userFromDb });
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        res.status(500).send(`Error when resetting password: ${err.message}`);
+      } else {
+        res.status(500).send(`Error when resetting password`);
+      }
+    }
+  };
+
+  /**
    * Handles changing the saved theme of the currently logged in user. If successful, the most
    * recently saved theme will be accessed when logged back in.
    *
@@ -135,6 +225,8 @@ const userController = (socket: FakeSOSocket, JWT_SECRET: string) => {
 
   router.post('/addUser', addUserRoute);
   router.post('/loginUser', loginUserRoute);
+  router.post('/sendPasswordReset', sendPasswordResetRoute);
+  router.post('/resetPassword', resetPasswordRoute);
   router.post('/changeTheme', changeThemeRoute);
 
   return router;
