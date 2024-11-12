@@ -7,15 +7,17 @@ import {
   useEffect,
   useState,
 } from 'react';
-import { TextSizeType, TextBoldnessType } from '../types';
+import { TextSizeType, TextBoldnessType, FontType, LineSpacingType } from '../types';
 
 type FontContextType = {
-  font: string;
-  setFont: Dispatch<SetStateAction<string>>;
+  font: FontType;
+  setFont: Dispatch<SetStateAction<FontType>>;
   textSize: TextSizeType;
   setTextSize: Dispatch<SetStateAction<TextSizeType>>;
   textBoldness: TextBoldnessType;
   setTextBoldness: Dispatch<SetStateAction<TextBoldnessType>>;
+  lineSpacing: LineSpacingType;
+  setLineSpacing: Dispatch<SetStateAction<LineSpacingType>>;
 };
 
 const FontContext = createContext<FontContextType>({
@@ -25,22 +27,35 @@ const FontContext = createContext<FontContextType>({
   setTextSize: () => {},
   textBoldness: 'normal',
   setTextBoldness: () => {},
+  lineSpacing: '1',
+  setLineSpacing: () => {},
 });
 
 export const FontProvider = ({ children }: { children: ReactNode }) => {
-  const [font, setFont] = useState<string>('Arial');
+  const [font, setFont] = useState<FontType>('Arial');
   const [textSize, setTextSize] = useState<TextSizeType>('medium');
   const [textBoldness, setTextBoldness] = useState<TextBoldnessType>('normal');
+  const [lineSpacing, setLineSpacing] = useState<LineSpacingType>('1');
 
   useEffect(() => {
     document.documentElement.style.setProperty('--font-family', font);
     document.documentElement.style.setProperty('--font-size', textSize);
     document.documentElement.style.setProperty('--font-weight', textBoldness);
-  }, [font, textSize, textBoldness]);
+    document.documentElement.style.setProperty('--line-height', lineSpacing);
+  }, [font, textSize, textBoldness, lineSpacing]);
 
   return (
     <FontContext.Provider
-      value={{ font, setFont, textSize, setTextSize, textBoldness, setTextBoldness }}>
+      value={{
+        font,
+        setFont,
+        textSize,
+        setTextSize,
+        textBoldness,
+        setTextBoldness,
+        lineSpacing,
+        setLineSpacing,
+      }}>
       {children}
     </FontContext.Provider>
   );

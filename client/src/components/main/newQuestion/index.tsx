@@ -82,12 +82,8 @@ const NewQuestionPage = () => {
         <form className='form' onSubmit={handleSubmit}>
           <div>
             <HoverToPlayTTSWrapper text='Need help forming a question? Brainstorm with our chatbot!'>
-              <label className='input-title'>
-                Need help forming a question? Brainstorm with our chatbot!
-              </label>
+              <label>Need help forming a question? Brainstorm with our chatbot!</label>
             </HoverToPlayTTSWrapper>
-            <br />
-            <br />
             <input className='input-text' type='text' value={prompt} onChange={handlePrompt} />
           </div>
         </form>
