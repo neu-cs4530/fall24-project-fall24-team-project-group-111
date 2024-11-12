@@ -1,11 +1,11 @@
-import { useState } from 'react';
 import './index.css';
 import { useNavigate } from 'react-router-dom';
-import { ThemeType } from '../../../types';
+import { FontType, TextBoldnessType, TextSizeType, ThemeType } from '../../../types';
 import useUserContext from '../../../hooks/useUserContext';
 import { changeTheme } from '../../../services/userAuthService';
 import { useTheme } from '../../../contexts/ThemeContext';
 import HoverToPlayTTSWrapper from '../../textToSpeech/textToSpeechComponent';
+import { useFont } from '../../../contexts/FontContext';
 import useAccountRecoveryPage from '../../../hooks/useAccountRecoveryPage';
 
 /**
@@ -15,9 +15,7 @@ import useAccountRecoveryPage from '../../../hooks/useAccountRecoveryPage';
 const SettingsPage = () => {
   const { user } = useUserContext();
   const { theme, setTheme } = useTheme();
-  const [textSize, setTextSize] = useState('medium');
-  const [textBoldness, setTextBoldness] = useState('normal');
-  const [font, setFont] = useState('Arial');
+  const { font, setFont, textSize, setTextSize, textBoldness, setTextBoldness } = useFont();
   const navigate = useNavigate();
 
   const { username, setUsername, postSendPasswordReset } = useAccountRecoveryPage();
@@ -28,15 +26,15 @@ const SettingsPage = () => {
   };
 
   const handleTextSizeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setTextSize(event.target.value);
+    setTextSize(event.target.value as TextSizeType);
   };
 
   const handleTextBoldnessChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setTextBoldness(event.target.value);
+    setTextBoldness(event.target.value as TextBoldnessType);
   };
 
   const handleFontChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setFont(event.target.value);
+    setFont(event.target.value as FontType);
   };
 
   /**
@@ -125,11 +123,21 @@ const SettingsPage = () => {
             </select>
           </div>
         </HoverToPlayTTSWrapper>
-        <HoverToPlayTTSWrapper text={'Button to send password reset email.'}>
-          <button type='submit' className='reset-pwd-button' onClick={() => handlePwdResetSubmit()}>
-            Send email to reset password
-          </button>
-        </HoverToPlayTTSWrapper>
+
+        {/* preview for text */}
+        <div className='preview-container'>
+          <p>Preview Text: This is how your selected settings will look!</p>
+        </div>
+        {user.username !== 'Guest' && (
+          <HoverToPlayTTSWrapper text={'Button to send password reset email.'}>
+            <button
+              type='submit'
+              className='reset-pwd-button'
+              onClick={() => handlePwdResetSubmit()}>
+              Send email to reset password
+            </button>
+          </HoverToPlayTTSWrapper>
+        )}
       </div>
     </>
   );

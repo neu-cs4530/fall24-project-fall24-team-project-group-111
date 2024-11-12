@@ -36,6 +36,9 @@ export interface User {
 }
 
 export type ThemeType = 'LightMode' | 'DarkMode' | 'Pastel' | 'Autumn';
+export type FontType = 'Arial' | 'Times New Roman' | 'Courier New'; // add more if needed
+export type TextSizeType = 'small' | 'medium' | 'large';
+export type TextBoldnessType = 'normal' | 'bold';
 
 /**
  * Enum representing the possible ordering options for questions.

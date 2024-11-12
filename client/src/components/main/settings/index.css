@@ -1,13 +1,25 @@
-h1 {
-    font-size: 24px;
+:root {
+    --font-family: Arial;
+    --font-size: medium;
+    --font-weight: normal;
+  }
+  
+  h1 {
+    font-family: var(--font-family);
+    font-size: var(--font-size);
+    font-weight: var(--font-weight);
   }
   
   label {
-    font-size: 18px;
+    font-family: var(--font-family);
+    font-size: var(--font-size);
+    font-weight: var(--font-weight);
   }
   
   select {
-    font-size: 16px;
+    font-family: var(--font-family);
+    font-size: var(--font-size);
+    font-weight: var(--font-weight);
     margin-left: 5px;
   }
 
@@ -46,15 +58,25 @@ h1 {
   
   .theme-select {
     padding: 5px;
-    font-size: 16px;
+    font-family: var(--font-family);
+    font-size: var(--font-size);
+    font-weight: var(--font-weight);
   }
 
   .reset-pwd-button {
     background: var(--button-background);
     color: #ffffff;
     border: #000000 1px solid;
-    font-size: 15px;
+    font-family: var(--font-family);
+    font-size: var(--font-size);
+    font-weight: var(--font-weight);
     padding: 10px 10px 10px 10px;
     margin-right: 5%;
+  }
+  
+  body {
+    font-family: var(--font-family);
+    font-size: var(--font-size);
+    font-weight: var(--font-weight);
   }
   
