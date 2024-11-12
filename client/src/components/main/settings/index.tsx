@@ -15,18 +15,6 @@ const SettingsPage = () => {
   const { theme, setTheme } = useTheme();
   const { font, setFont, textSize, setTextSize, textBoldness, setTextBoldness } = useFont();
 
-  // text color based on theme
-  const getTextColor = () => {
-    const rootStyles = getComputedStyle(document.documentElement);
-    return rootStyles.getPropertyValue('--text-color').trim();
-  };
-
-  // gets font size 
-  const getFontSize = () => {
-    const fontSize = getComputedStyle(document.documentElement).getPropertyValue(`--font-size-${textSize}`);
-    return fontSize || '16px'; 
-  };
-
   const handleThemeChange = async (Event: { target: { value: unknown } }) => {
     setTheme(Event.target.value as ThemeType);
     await changeTheme(user.username, Event.target.value as ThemeType); // alters back-end user data to save theme
@@ -120,16 +108,7 @@ const SettingsPage = () => {
 
         {/* preview for text */}
         <div className='preview-container'>
-          <p
-            className='preview-text'
-            style={{
-              fontSize: getFontSize(),
-              fontWeight: textBoldness === 'bold' ? 'bold' : 'normal',
-              fontFamily: font,
-              color: getTextColor(),
-            }}>
-            Preview Text: This is how your selected settings will look!
-          </p>
+          <p>Preview Text: This is how your selected settings will look!</p>
         </div>
       </div>
     </>
