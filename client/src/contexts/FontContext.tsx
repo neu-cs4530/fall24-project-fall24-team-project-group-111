@@ -18,8 +18,6 @@ type FontContextType = {
   setTextBoldness: Dispatch<SetStateAction<TextBoldnessType>>;
 };
 
-// const FontContext = createContext<FontContextType>({ font: 'Arial', setFont: () => {} });
-
 const FontContext = createContext<FontContextType>({
   font: 'Arial',
   setFont: () => {},

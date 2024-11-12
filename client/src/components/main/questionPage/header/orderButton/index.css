@@ -1,6 +1,9 @@
 .btn {
   background: var(--order-button);
   border: #000000 1px solid;
+  font-family: var(--font-family);
+  font-size: var(--font-size);
+  font-weight: var(--font-weight);
 }
 
 .btn:hover {

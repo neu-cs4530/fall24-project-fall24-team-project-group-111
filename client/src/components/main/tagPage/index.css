@@ -3,4 +3,7 @@
   grid-template-columns: repeat(3, 1fr);
   grid-gap: 80px 20px;
   color: var(--text-color);
+  font-family: var(--font-family);
+  font-size: var(--font-size);
+  font-weight: var(--font-weight);
 }
