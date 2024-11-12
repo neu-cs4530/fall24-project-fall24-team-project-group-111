@@ -17,160 +17,53 @@ const SettingsPage = () => {
   const [textBoldness, setTextBoldness] = useState('normal');
   const [font, setFont] = useState('Arial');
 
-  // text color based on theme
-  const getTextColor = () => {
-    switch (theme) {
-      case 'LightMode':
-        return 'black';
-      case 'DarkMode':
-        return 'white';
-      case 'Pastel':
-        return '#333';
-      case 'Autumn':
-        return '#f4a300';
-      default:
-        return 'black';
-    }
-  };
-
-  // font size switch made for preview
-  let fontSize;
-  switch (textSize) {
-    case 'small':
-      fontSize = '12px';
-      break;
-    case 'medium':
-      fontSize = '16px';
-      break;
-    default:
-      fontSize = '20px';
-      break;
-  }
-
-  const saveSettings = () => {
-    const themeSettings = {
-      LightMode: {
-        backgroundColor: '#ffffff',
-        primaryColor: '#3089e8',
-        secondaryColor: '#0056b3',
-        headerBackground: '#b2b2b2',
-        borderColor: '#000000',
-        orderButton: '#ffffff',
-        commentSectionBackground: '#c2c2c2',
-        commentItemBackground: '#fff',
-        commentTextAreaColor: '#fff',
-        tagLabel: '#3c4776',
-      },
-      DarkMode: {
-        backgroundColor: '#090822',
-        primaryColor: '#bb86fc',
-        secondaryColor: '#03dac6',
-        headerBackground: '#2c2d5d',
-        borderColor: '#efefeff3',
-        orderButton: '#efefeff3',
-        commentSectionBackground: '#2c2d5d',
-        commentItemBackground: '#505180',
-        commentTextAreaColor: '#505180',
-        tagLabel: '#aebcf9',
-      },
-      Pastel: {
-        backgroundColor: '#f2a4f8',
-        primaryColor: '#FFB5E8',
-        secondaryColor: '#000000',
-        headerBackground: '#A5E3F8',
-        borderColor: '#A5E3FF',
-        orderButton: '#A79AFF',
-        commentSectionBackground: '#a4f9bf',
-        commentItemBackground: '#f483e5',
-        commentTextAreaColor: '#f2df9b',
-        tagLabel: '#890000',
-      },
-      Autumn: {
-        backgroundColor: '#7A1825',
-        primaryColor: '#842C5C',
-        secondaryColor: '#E2BF84',
-        headerBackground: '#4e1119',
-        borderColor: '#395A42',
-        orderButton: '#D23735',
-        commentSectionBackground: '#1b2E26',
-        commentItemBackground: '#474c32',
-        commentTextAreaColor: '#f2df9b',
-        tagLabel: '#ffecec',
-      },
+    // saves the settings 
+    const saveSettings = () => { //rn this is to local storage (?) cold change to smthn else??
+      localStorage.setItem('theme', theme);
+      localStorage.setItem('textSize', textSize);
+      localStorage.setItem('textBoldness', textBoldness);
+      localStorage.setItem('font', font);
+  
+      document.documentElement.style.setProperty('--theme-color', getTextColor());
+      document.documentElement.style.setProperty('--font-size', textSize === 'small' ? '12px' : textSize === 'medium' ? '16px' : '20px');
+      document.documentElement.style.setProperty('--font-weight', textBoldness === 'bold' ? 'bold' : 'normal');
+      document.documentElement.style.setProperty('--font-family', font);
+  
+      changeTheme(user.username, theme); 
     };
+  
 
-    const currentThemeSettings = themeSettings[theme] || themeSettings.LightMode;
-    localStorage.setItem('theme', theme);
-    localStorage.setItem('textSize', textSize);
-    localStorage.setItem('textBoldness', textBoldness);
-    localStorage.setItem('font', font);
+    //text color based on theme
+    const getTextColor = () => {
+      switch (theme) {
+        case 'LightMode':
+          return 'black';
+        case 'DarkMode':
+          return 'white';
+        case 'Pastel':
+          return '#333';
+        case 'Autumn':
+          return '#f4a300';
+        default:
+          return 'black';
+      }
+    };  
 
-    document.documentElement.style.setProperty('--font-size', fontSize);
-    document.documentElement.style.setProperty(
-      '--font-weight',
-      textBoldness === 'bold' ? 'bold' : 'normal',
-    );
-    document.documentElement.style.setProperty('--font-family', font);
-    document.documentElement.style.setProperty('--text-color', getTextColor());
-
-    Object.entries(currentThemeSettings).forEach(([key, value]) => {
-      document.documentElement.style.setProperty(`--${key.toLowerCase()}`, value);
-    });
-
-    changeTheme(user.username, theme);
-  };
-
-  const handleThemeChange = async (event: React.ChangeEvent<HTMLSelectElement>) => {
-    const newTheme = event.target.value as ThemeType;
-    setTheme(newTheme);
-
-    // const textColor = getTextColor();
-    const textColor =
-      newTheme === 'LightMode'
-        ? 'black'
-        : newTheme === 'DarkMode'
-          ? 'white'
-          : newTheme === 'Pastel'
-            ? '#000000'
-            : '#DDC084';
-
-    const backgroundColor =
-      newTheme === 'LightMode'
-        ? '#fff'
-        : newTheme === 'DarkMode'
-          ? '#333'
-          : newTheme === 'Pastel'
-            ? '#f2a4f8'
-            : '#7A1825';
-
-    document.documentElement.style.setProperty('--text-color', textColor);
-    document.documentElement.style.setProperty('--background-color', backgroundColor);
-
-    await changeTheme(user.username, newTheme);
+  const handleThemeChange = async (Event: { target: { value: unknown } }) => {
+    setTheme(Event.target.value as ThemeType);
+    await changeTheme(user.username, Event.target.value as ThemeType); // alters back-end user data to save theme
   };
 
   const handleTextSizeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    const newSize = event.target.value;
-    setTextSize(newSize);
-
-    document.documentElement.style.setProperty('--font-size', newSize);
+    setTextSize(event.target.value);
   };
 
   const handleTextBoldnessChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    const newBoldness = event.target.value;
-    setTextBoldness(newBoldness);
-
-    document.documentElement.style.setProperty(
-      '--font-weight',
-      newBoldness === 'bold' ? 'bold' : 'normal',
-    );
+    setTextBoldness(event.target.value);
   };
 
   const handleFontChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    const newFont = event.target.value;
-    setFont(newFont);
-
-    document.documentElement.style.setProperty('--font-family', newFont);
+    setFont(event.target.value);
   };
 
   return (
@@ -247,21 +140,17 @@ const SettingsPage = () => {
           </div>
         </HoverToPlayTTSWrapper>
 
-        {/* save button */}
-        <button onClick={saveSettings} className='save-button'>
-          Save Settings
-        </button>
-
-        {/* preview for text */}
-        <div className='preview-container'>
+       {/*preview for text*/}
+        <div className="preview-container">
           <p
-            className='preview-text'
+            className="preview-text"
             style={{
-              fontSize,
+              fontSize: textSize === 'small' ? '12px' : textSize === 'medium' ? '16px' : '20px',
               fontWeight: textBoldness === 'bold' ? 'bold' : 'normal',
               fontFamily: font,
               color: getTextColor(),
-            }}>
+            }}
+          >
             Preview Text: This is how your selected settings will look!
           </p>
         </div>
