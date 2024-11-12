@@ -21,18 +21,10 @@ const SettingsPage = () => {
     return rootStyles.getPropertyValue('--text-color').trim();
   };
 
-  // gets font size -- this will be edited later to not be hard coded
+  // gets font size 
   const getFontSize = () => {
-    switch (textSize) {
-      case 'small':
-        return '12px';
-      case 'medium':
-        return '16px';
-      case 'large':
-        return '20px';
-      default:
-        return '16px';
-    }
+    const fontSize = getComputedStyle(document.documentElement).getPropertyValue(`--font-size-${textSize}`);
+    return fontSize || '16px'; 
   };
 
   const handleThemeChange = async (Event: { target: { value: unknown } }) => {
