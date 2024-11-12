@@ -24,8 +24,8 @@
   margin-bottom: 20px;
   border: 1px solid #ccc;
   border-radius: 4px;
-  background-color: var(--comment-item-background);
-  color: var(--text-color);
+  background-color: white;
+  color: black;
   font-family: var(--font-family);
   font-size: var(--font-size);
   font-weight: var(--font-weight);

@@ -68,7 +68,7 @@ const LoginInput = ({
     {hint && <div className='input_hint'>{hint}</div>}
     <input
       id={id}
-      className='reset-pwd-input'
+      className='input_input'
       type={type}
       value={val}
       required
