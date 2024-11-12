@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import './index.css';
 import { FontType, TextBoldnessType, TextSizeType, ThemeType } from '../../../types';
 import useUserContext from '../../../hooks/useUserContext';
@@ -15,41 +14,26 @@ const SettingsPage = () => {
   const { user } = useUserContext();
   const { theme, setTheme } = useTheme();
   const { font, setFont, textSize, setTextSize, textBoldness, setTextBoldness } = useFont();
-  //const [textSize, setTextSize] = useState('medium');
-  //const [textBoldness, setTextBoldness] = useState('normal');
- // const [font, setFont] = useState('Arial');
 
-    // // saves the settings 
-    // const saveSettings = () => { //rn this is to local storage (?) cold change to smthn else??
-    //   localStorage.setItem('theme', theme);
-    //   localStorage.setItem('textSize', textSize);
-    //   localStorage.setItem('textBoldness', textBoldness);
-    //   localStorage.setItem('font', font);
-  
-    //   document.documentElement.style.setProperty('--theme-color', getTextColor());
-    //   document.documentElement.style.setProperty('--font-size', textSize === 'small' ? '12px' : textSize === 'medium' ? '16px' : '20px');
-    //   document.documentElement.style.setProperty('--font-weight', textBoldness === 'bold' ? 'bold' : 'normal');
-    //   document.documentElement.style.setProperty('--font-family', font);
-  
-    //   changeTheme(user.username, theme); 
-    // };
-  
+  // text color based on theme
+  const getTextColor = () => {
+    const rootStyles = getComputedStyle(document.documentElement);
+    return rootStyles.getPropertyValue('--text-color').trim();
+  };
 
-    //text color based on theme
-    const getTextColor = () => {
-      switch (theme) {
-        case 'LightMode':
-          return 'black';
-        case 'DarkMode':
-          return 'white';
-        case 'Pastel':
-          return '#333';
-        case 'Autumn':
-          return '#f4a300';
-        default:
-          return 'black';
-      }
-    };  
+  // gets font size -- this will be edited later to not be hard coded
+  const getFontSize = () => {
+    switch (textSize) {
+      case 'small':
+        return '12px';
+      case 'medium':
+        return '16px';
+      case 'large':
+        return '20px';
+      default:
+        return '16px';
+    }
+  };
 
   const handleThemeChange = async (Event: { target: { value: unknown } }) => {
     setTheme(Event.target.value as ThemeType);
@@ -142,17 +126,16 @@ const SettingsPage = () => {
           </div>
         </HoverToPlayTTSWrapper>
 
-       {/*preview for text*/}
-        <div className="preview-container">
+        {/* preview for text */}
+        <div className='preview-container'>
           <p
-            className="preview-text"
+            className='preview-text'
             style={{
-              fontSize: textSize === 'small' ? '12px' : textSize === 'medium' ? '16px' : '20px',
+              fontSize: getFontSize(),
               fontWeight: textBoldness === 'bold' ? 'bold' : 'normal',
               fontFamily: font,
               color: getTextColor(),
-            }}
-          >
+            }}>
             Preview Text: This is how your selected settings will look!
           </p>
         </div>
