@@ -14,6 +14,7 @@ import NewAnswerPage from './main/newAnswer';
 import AnswerPage from './main/answerPage';
 import SettingsPage from './main/settings';
 import { ThemeProvider } from '../contexts/ThemeContext';
+import { FontProvider } from '../contexts/FontContext';
 
 // note: any settings-related provider must be wrapped in proctected route
 // so that it may utilize User Context
@@ -54,7 +55,9 @@ const FakeStackOverflow = ({ socket }: { socket: FakeSOSocket | null }) => {
             element={
               <ProtectedRoute user={user} socket={socket}>
                 <ThemeProvider>
-                  <Layout />
+                  <FontProvider>
+                    <Layout />
+                  </FontProvider>
                 </ThemeProvider>
               </ProtectedRoute>
             }>

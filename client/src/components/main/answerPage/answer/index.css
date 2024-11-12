@@ -8,6 +8,9 @@
 .answerText {
   width: 75%;
   color: var(--text-color);
+  font-family: var(--font-family);
+  font-size: var(--font-size);
+  font-weight: var(--font-weight);
 }
 
 .answerAuthor {
@@ -16,4 +19,7 @@
 
 .answer_author {
   color: var(--secondary-color);
+  font-family: var(--font-family);
+  font-size: var(--font-size);
+  font-weight: var(--font-weight);
 }
