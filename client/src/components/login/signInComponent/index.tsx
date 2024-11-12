@@ -74,9 +74,6 @@ const SignIn = ({ onSwitch }: { onSwitch: () => void }) => {
           </button>
         </h5>
       </HoverToPlayTTSWrapper>
-      <button onClick={() => navigate('/reset-password/invalidtoken')} className='link-button'>
-        Password reset temp
-      </button>
     </div>
   );
 };
