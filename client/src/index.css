@@ -78,6 +78,7 @@
   --answer-question-meta: #81ab88;
   --question-author:rgb(255, 135, 135);
 }
+
 * {
   font-family: Arial, Times 'Times New Roman', Times, serif, 'Courier New', Courier, monospace;
 }
@@ -93,4 +94,5 @@ body,
   font-family: var(--font-family);
   font-size: var(--font-size);
   font-weight: var(--font-weight);
+  line-height: var(--line-height);
 }

@@ -12,10 +12,10 @@ export type FakeSOSocket = Socket<ServerToClientEvents>;
  */
 export interface SettingsInfo {
   theme: ThemeType;
-  textSize: string;
-  textBoldness: string;
-  font: string;
-  lineSpacing: string;
+  textSize: TextSizeType;
+  textBoldness: TextBoldnessType;
+  font: FontType;
+  lineSpacing: LineSpacingType;
 }
 
 /**
@@ -36,9 +36,10 @@ export interface User {
 }
 
 export type ThemeType = 'LightMode' | 'DarkMode' | 'Pastel' | 'Autumn';
-export type FontType = 'Arial' | 'Times New Roman' | 'Courier New'; // add more if needed
-export type TextSizeType = 'small' | 'medium' | 'large';
+export type FontType = 'Arial' | 'Times New Roman' | 'Courier New';
+export type TextSizeType = 'small' | 'medium' | 'large' | 'x-large';
 export type TextBoldnessType = 'normal' | 'bold';
+export type LineSpacingType = '1' | '2' | '3' | '4';
 
 /**
  * Enum representing the possible ordering options for questions.
