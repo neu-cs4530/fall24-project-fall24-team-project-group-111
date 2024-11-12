@@ -1,10 +1,12 @@
 import { useState } from 'react';
 import './index.css';
+import { useNavigate } from 'react-router-dom';
 import { ThemeType } from '../../../types';
 import useUserContext from '../../../hooks/useUserContext';
 import { changeTheme } from '../../../services/userAuthService';
 import { useTheme } from '../../../contexts/ThemeContext';
 import HoverToPlayTTSWrapper from '../../textToSpeech/textToSpeechComponent';
+import useAccountRecoveryPage from '../../../hooks/useAccountRecoveryPage';
 
 /**
  * Settings page component that displays the content of the settings page and handles
@@ -16,6 +18,9 @@ const SettingsPage = () => {
   const [textSize, setTextSize] = useState('medium');
   const [textBoldness, setTextBoldness] = useState('normal');
   const [font, setFont] = useState('Arial');
+  const navigate = useNavigate();
+
+  const { username, setUsername, postSendPasswordReset } = useAccountRecoveryPage();
 
   const handleThemeChange = async (Event: { target: { value: unknown } }) => {
     setTheme(Event.target.value as ThemeType);
@@ -32,6 +37,19 @@ const SettingsPage = () => {
 
   const handleFontChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setFont(event.target.value);
+  };
+
+  /**
+   * Function to handle the form submission event.
+   *
+   * @param event - the form event object.
+   */
+  const handlePwdResetSubmit = async () => {
+    setUsername(user.username);
+    if (username) {
+      await postSendPasswordReset();
+      navigate('/reset-password/invalidtoken');
+    }
   };
 
   return (
@@ -106,6 +124,11 @@ const SettingsPage = () => {
               <option value='Courier New'>Courier New</option>
             </select>
           </div>
+        </HoverToPlayTTSWrapper>
+        <HoverToPlayTTSWrapper text={'Button to send password reset email.'}>
+          <button type='submit' className='reset-pwd-button' onClick={() => handlePwdResetSubmit()}>
+            Send email to reset password
+          </button>
         </HoverToPlayTTSWrapper>
       </div>
     </>

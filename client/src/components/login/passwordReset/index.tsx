@@ -18,6 +18,8 @@ const PasswordResetPage = () => {
     postPasswordReset,
     postPasswordResetErr,
     successMessage,
+    token,
+    setToken,
   } = usePasswordResetPage();
 
   /**
@@ -36,6 +38,13 @@ const PasswordResetPage = () => {
         <h3>Reset your password</h3>
       </HoverToPlayTTSWrapper>
       <form onSubmit={handleSubmit}>
+        <LoginInput
+          title={'Password Reset Token (from email)'}
+          id={'passwordResetTokenInput'}
+          val={token}
+          setState={setToken}
+          type='text'
+        />
         <LoginInput
           title={'New Password'}
           id={'newPasswordInput'}

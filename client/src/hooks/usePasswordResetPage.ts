@@ -20,13 +20,13 @@ import useLoginContext from './useLoginContext';
 const usePasswordResetPage = () => {
   const navigate = useNavigate();
   const { setUser } = useLoginContext();
-  const { token } = useParams<{ token: string }>();
   const [newPassword, setNewPassword] = useState<string>('');
   const [newPasswordErr, setNewPasswordErr] = useState<string>('');
   const [confirmPassword, setConfirmPassword] = useState<string>('');
   const [confirmPasswordErr, setConfirmPasswordErr] = useState<string>('');
   const [postPasswordResetErr, setPostPasswordResetErr] = useState<string>('');
   const [successMessage, setSuccessMessage] = useState<string>('');
+  const [token, setToken] = useState<string>('');
 
   /**
    * Function to validate the form before submitting the password reset request.
@@ -94,6 +94,8 @@ const usePasswordResetPage = () => {
     postPasswordReset,
     postPasswordResetErr,
     successMessage,
+    token,
+    setToken,
   };
 };
 
