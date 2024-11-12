@@ -48,7 +48,7 @@ export const saveUser = async (user: User): Promise<UserResponse> => {
       textSize: 'medium',
       textBoldness: 'normal',
       font: 'Arial',
-      lineSpacing: 'normal',
+      lineSpacing: '1',
     };
     const result = await UserModel.create(user);
     return result;
