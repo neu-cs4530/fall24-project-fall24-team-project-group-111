@@ -1,10 +1,11 @@
 import { useState } from 'react';
 import './index.css';
-import { ThemeType } from '../../../types';
+import { FontType, TextBoldnessType, TextSizeType, ThemeType } from '../../../types';
 import useUserContext from '../../../hooks/useUserContext';
 import { changeTheme } from '../../../services/userAuthService';
 import { useTheme } from '../../../contexts/ThemeContext';
 import HoverToPlayTTSWrapper from '../../textToSpeech/textToSpeechComponent';
+import { useFont } from '../../../contexts/FontContext';
 
 /**
  * Settings page component that displays the content of the settings page and handles
@@ -13,24 +14,25 @@ import HoverToPlayTTSWrapper from '../../textToSpeech/textToSpeechComponent';
 const SettingsPage = () => {
   const { user } = useUserContext();
   const { theme, setTheme } = useTheme();
-  const [textSize, setTextSize] = useState('medium');
-  const [textBoldness, setTextBoldness] = useState('normal');
-  const [font, setFont] = useState('Arial');
+  const { font, setFont, textSize, setTextSize, textBoldness, setTextBoldness } = useFont();
+  //const [textSize, setTextSize] = useState('medium');
+  //const [textBoldness, setTextBoldness] = useState('normal');
+ // const [font, setFont] = useState('Arial');
 
-    // saves the settings 
-    const saveSettings = () => { //rn this is to local storage (?) cold change to smthn else??
-      localStorage.setItem('theme', theme);
-      localStorage.setItem('textSize', textSize);
-      localStorage.setItem('textBoldness', textBoldness);
-      localStorage.setItem('font', font);
+    // // saves the settings 
+    // const saveSettings = () => { //rn this is to local storage (?) cold change to smthn else??
+    //   localStorage.setItem('theme', theme);
+    //   localStorage.setItem('textSize', textSize);
+    //   localStorage.setItem('textBoldness', textBoldness);
+    //   localStorage.setItem('font', font);
   
-      document.documentElement.style.setProperty('--theme-color', getTextColor());
-      document.documentElement.style.setProperty('--font-size', textSize === 'small' ? '12px' : textSize === 'medium' ? '16px' : '20px');
-      document.documentElement.style.setProperty('--font-weight', textBoldness === 'bold' ? 'bold' : 'normal');
-      document.documentElement.style.setProperty('--font-family', font);
+    //   document.documentElement.style.setProperty('--theme-color', getTextColor());
+    //   document.documentElement.style.setProperty('--font-size', textSize === 'small' ? '12px' : textSize === 'medium' ? '16px' : '20px');
+    //   document.documentElement.style.setProperty('--font-weight', textBoldness === 'bold' ? 'bold' : 'normal');
+    //   document.documentElement.style.setProperty('--font-family', font);
   
-      changeTheme(user.username, theme); 
-    };
+    //   changeTheme(user.username, theme); 
+    // };
   
 
     //text color based on theme
@@ -55,15 +57,15 @@ const SettingsPage = () => {
   };
 
   const handleTextSizeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setTextSize(event.target.value);
+    setTextSize(event.target.value as TextSizeType);
   };
 
   const handleTextBoldnessChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setTextBoldness(event.target.value);
+    setTextBoldness(event.target.value as TextBoldnessType);
   };
 
   const handleFontChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setFont(event.target.value);
+    setFont(event.target.value as FontType);
   };
 
   return (
