@@ -8,6 +8,7 @@ import mongoose from 'mongoose';
 import cors from 'cors';
 import { Server } from 'socket.io';
 import * as http from 'http';
+import path from 'path';
 
 import answerController from './controller/answer';
 import questionController from './controller/question';
@@ -15,6 +16,7 @@ import tagController from './controller/tag';
 import commentController from './controller/comment';
 import userController from './controller/user';
 import { FakeSOSocket } from './types';
+import OpenAI from 'openai';
 
 dotenv.config();
 
@@ -38,6 +40,12 @@ const app = express();
 const server = http.createServer(app);
 const socket: FakeSOSocket = new Server(server, {
   cors: { origin: '*' },
+});
+
+const openai = new OpenAI({
+  organization: 'org-ILR5PGHDz2TMN7TbELizo9ld',
+  project: 'proj_HRv67erRpJfTx2bUo3Qt7htF',
+  apiKey: OPENAI_API_KEY,
 });
 
 function startServer() {
@@ -72,6 +80,25 @@ app.use(
 
 app.use(express.json());
 
+app.post("/chat", async (req, res) => {
+  const { prompt } = req.body;
+
+  const completion = await openai.chat.completions.create({
+    model: 'gpt-4o-mini',
+    messages: [
+          {
+            role: 'system',
+            content: 'You are helping a user brainstorm questions for a forum called "Fake Stack Overflow". Please only respond in plain text',
+          },
+          {
+            role: 'user',
+            content: prompt,
+          },
+        ],
+  });
+  res.send(completion.choices[0].message.content);
+});
+
 app.get('/', (req: Request, res: Response) => {
   res.send('hello world');
   res.end();
@@ -82,6 +109,12 @@ app.use('/tag', tagController());
 app.use('/answer', answerController(socket));
 app.use('/comment', commentController(socket));
 app.use('/user', userController(socket, JWT_SECRET));
+
+app.use(express.static(path.join(__dirname, '../client/build')));
+
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../client/build', 'index.html'));
+});
 
 // Export the app instance
 export { app, server, startServer, OPENAI_API_KEY };

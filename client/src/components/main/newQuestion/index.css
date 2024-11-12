@@ -2,4 +2,31 @@
     font-family: var(--font-family);
     font-size: var(--font-size);
     font-weight: var(--font-weight);
-}
+  }
+  
+.form label {
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: var(--text-color);
+  }
+
+.form input {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: var(--comment-item-background);
+    color: var(--text-color);
+  }
+
+.form p {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    color: var(--text-color);
+  }
