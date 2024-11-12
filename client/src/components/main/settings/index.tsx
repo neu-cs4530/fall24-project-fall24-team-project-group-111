@@ -1,4 +1,5 @@
 import './index.css';
+import { useNavigate } from 'react-router-dom';
 import {
   FontType,
   LineSpacingType,
@@ -11,6 +12,7 @@ import { changeTheme } from '../../../services/userAuthService';
 import { useTheme } from '../../../contexts/ThemeContext';
 import HoverToPlayTTSWrapper from '../../textToSpeech/textToSpeechComponent';
 import { useFont } from '../../../contexts/FontContext';
+import useAccountRecoveryPage from '../../../hooks/useAccountRecoveryPage';
 
 /**
  * Settings page component that displays the content of the settings page and handles
@@ -29,6 +31,9 @@ const SettingsPage = () => {
     lineSpacing,
     setLineSpacing,
   } = useFont();
+  const navigate = useNavigate();
+
+  const { username, setUsername, postSendPasswordReset } = useAccountRecoveryPage();
 
   const handleThemeChange = async (Event: { target: { value: unknown } }) => {
     setTheme(Event.target.value as ThemeType);
@@ -49,6 +54,19 @@ const SettingsPage = () => {
 
   const handleLineSpacingChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setLineSpacing(event.target.value as LineSpacingType);
+  };
+
+  /**
+   * Function to handle the form submission event.
+   *
+   * @param event - the form event object.
+   */
+  const handlePwdResetSubmit = async () => {
+    setUsername(user.username);
+    if (username) {
+      await postSendPasswordReset();
+      navigate('/reset-password/invalidtoken');
+    }
   };
 
   return (
@@ -141,6 +159,16 @@ const SettingsPage = () => {
             </p>
           </HoverToPlayTTSWrapper>
         </div>
+        {user.username !== 'Guest' && (
+          <HoverToPlayTTSWrapper text={'Button to send password reset email.'}>
+            <button
+              type='submit'
+              className='reset-pwd-button'
+              onClick={() => handlePwdResetSubmit()}>
+              Send email to reset password
+            </button>
+          </HoverToPlayTTSWrapper>
+        )}
       </div>
     </>
   );

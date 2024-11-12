@@ -1,12 +1,15 @@
 import { useState } from 'react';
 import { AxiosError } from 'axios';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { resetPassword } from '../services/userAuthService';
 import useLoginContext from './useLoginContext';
 
 /**
  * Custom hook to handle a password reset request and form validation
  *
+ * @returns token - The current value of the token input.
+ * @returns setToken - Function to set the token input.
+ * @returns tokenErr - Error message for the token field, if any.
  * @returns newPassword - The current value of the newPassword input.
  * @returns setNewPassword - Function to set the newPassword input.
  * @returns newPasswordErr - Error message for the newPassword field, if any.
@@ -20,7 +23,8 @@ import useLoginContext from './useLoginContext';
 const usePasswordResetPage = () => {
   const navigate = useNavigate();
   const { setUser } = useLoginContext();
-  const { token } = useParams<{ token: string }>();
+  const [token, setToken] = useState<string>('');
+  const [tokenErr, setTokenErr] = useState<string>('');
   const [newPassword, setNewPassword] = useState<string>('');
   const [newPasswordErr, setNewPasswordErr] = useState<string>('');
   const [confirmPassword, setConfirmPassword] = useState<string>('');
@@ -35,6 +39,13 @@ const usePasswordResetPage = () => {
    */
   const validateForm = (): boolean => {
     let isValid = true;
+
+    if (!token) {
+      setTokenErr('Token cannot be empty');
+      isValid = false;
+    } else {
+      setTokenErr('');
+    }
 
     if (!newPassword) {
       setNewPasswordErr('Password cannot be empty');
@@ -59,11 +70,6 @@ const usePasswordResetPage = () => {
   const postPasswordReset = async () => {
     setPostPasswordResetErr('');
 
-    if (!token) {
-      setPostPasswordResetErr('Invalid or missing token');
-      return;
-    }
-
     if (!validateForm()) return;
 
     try {
@@ -85,6 +91,9 @@ const usePasswordResetPage = () => {
   };
 
   return {
+    token,
+    setToken,
+    tokenErr,
     newPassword,
     setNewPassword,
     newPasswordErr,
