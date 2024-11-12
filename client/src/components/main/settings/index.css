@@ -49,3 +49,6 @@ h1 {
     font-size: 16px;
   }
   
+  body {
+    font-family: var(--font-family, Arial); 
+  }
