@@ -5,7 +5,7 @@ import { addUser } from '../services/userAuthService';
 import useLoginContext from './useLoginContext';
 
 /**
- * Custom hook to handle new user submission
+ * Custom hook to handle new user submission and form validation
  *
  * @returns token - The current value of the token input.
  * @returns setToken - Function to set the token input.
