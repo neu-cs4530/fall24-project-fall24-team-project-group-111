@@ -258,16 +258,26 @@ export interface User {
 export type UserResponse = User | { error: string };
 
 /**
- * Type representing the possible responses for a password reset operation.
+ * Type representing the possible responses for operation that sends an email.
  */
-export type PasswordResetResponse = { emailRecipient: string } | { error: string };
+export type EmailResponse = { emailRecipient: string } | { error: string };
+
+/**
+ * Interface for the request body when verifying the email of a new user.
+ * - body - The user being verified.
+ */
+export interface EmailVerificationRequest extends Request {
+  body: User;
+}
 
 /**
  * Interface for the request body when adding a new user.
- * - body - The user being added.
+ * - token - The token used to verify the user.
  */
 export interface AddUserRequest extends Request {
-  body: User;
+  body: {
+    token: string;
+  };
 }
 
 /**
@@ -309,6 +319,26 @@ export interface UpdateThemeRequest extends Request {
     username: string;
     theme: string;
   };
+}
+
+/**
+ * Interface representing an UnverifiedUser, which contains:
+ * - _id - The unique identifier for the unverified user. Optional field.
+ * - username - The username of the unverified user.
+ * - email - The email address of the unverified user.
+ * - password - The password of the unverified user.
+ * - creationDateTime - The date and time when the unverified user was created.
+ * - emailVerificationToken - The token used to verify the user.
+ * - emailVerificationExpires - The expiration date for the email verification token.
+ */
+export interface UnverifiedUser {
+  _id?: ObjectId;
+  username: string;
+  email: string;
+  password: string;
+  creationDateTime: Date;
+  emailVerificationToken: string;
+  emailVerificationExpires: Date;
 }
 
 export interface AuthenticatedRequest extends Request {

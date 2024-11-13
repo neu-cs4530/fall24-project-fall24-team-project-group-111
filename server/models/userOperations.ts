@@ -2,7 +2,8 @@ import bcrypt from 'bcrypt';
 import crypto from 'crypto';
 import { MongoServerError } from 'mongodb';
 import UserModel from './users';
-import { User, UserResponse, PasswordResetResponse } from '../types';
+import UnverifiedUserModel from './unverifiedUsers';
+import { User, UserResponse, EmailResponse, UnverifiedUser } from '../types';
 import sendMail from '../utils/emailConfig';
 
 /**
@@ -33,24 +34,76 @@ function isMongoDuplicateKeyError(error: unknown): boolean {
 }
 
 /**
+ * Sends an email verification to a new user.
+ *
+ * @param {User} user - The user requesting to be verified.
+ *
+ * @returns {Promise<EmailResponse>} - The email address that the email verification was sent to, or an error message if the operation failed.
+ */
+export const sendEmailVerification = async (user: User): Promise<EmailResponse> => {
+  try {
+    const existingUser = await UserModel.findOne({ username: user.username });
+    if (existingUser) {
+      return { error: 'Username is already taken' };
+    }
+
+    const emailRecipient = user.email;
+    const hashedPassword = await hashPassword(user.password); // Hash the password before saving the unverified user
+    const emailVerificationToken = crypto.randomBytes(20).toString('hex');
+    const unverifiedUser: UnverifiedUser = {
+      ...user,
+      password: hashedPassword,
+      emailVerificationToken,
+      emailVerificationExpires: new Date(Date.now() + 86400000), // expires in 24 hours
+    };
+    await UnverifiedUserModel.create(unverifiedUser);
+
+    await sendMail(
+      emailRecipient,
+      'Activate your FakeStackOverflow Account',
+      `Thank you for signing up for FakeStackOverflow! Use this token to verify your email: ${emailVerificationToken}\n
+This token will expire in 24 hours. If you did not sign up for a FakeStackOverflow account, you can safely ignore this email.`,
+    );
+    return { emailRecipient };
+  } catch (error) {
+    if (error instanceof Error) {
+      return { error: error.message };
+    }
+    return { error: 'Error sending email verification' };
+  }
+};
+
+/**
  * Saves a new user in the database.
  *
- * @param {User} user - The user to save
+ * @param {string} token - The token used to verify the user.
  *
  * @returns {Promise<UserResponse>} - The saved user, or an error message if the save failed
  */
-export const saveUser = async (user: User): Promise<UserResponse> => {
+export const saveUser = async (token: string): Promise<UserResponse> => {
   try {
-    // Hash the password and set default settings before saving the user
-    user.password = await hashPassword(user.password);
-    user.settings = {
-      theme: 'LightMode',
-      textSize: 'medium',
-      textBoldness: 'normal',
-      font: 'Arial',
-      lineSpacing: '1',
+    const unverifiedUser = await UnverifiedUserModel.findOneAndDelete({
+      emailVerificationToken: token,
+      emailVerificationExpires: { $gt: Date.now() },
+    });
+    if (!unverifiedUser) {
+      return { error: 'Email verification token is invalid or has expired' };
+    }
+
+    const newUser: User = {
+      username: unverifiedUser.username,
+      email: unverifiedUser.email,
+      password: unverifiedUser.password,
+      creationDateTime: unverifiedUser.creationDateTime,
+      settings: {
+        theme: 'LightMode',
+        textSize: 'medium',
+        textBoldness: 'normal',
+        font: 'Arial',
+        lineSpacing: '1',
+      },
     };
-    const result = await UserModel.create(user);
+    const result = await UserModel.create(newUser);
     return result;
   } catch (error) {
     if (isMongoDuplicateKeyError(error)) {
@@ -89,9 +142,9 @@ export const loginUser = async (username: string, password: string): Promise<Use
  *
  * @param {string} username - The username of the user.
  *
- * @returns {Promise<PasswordResetResponse>} - The email address that the password reset was sent to, or an error message if the operation failed.
+ * @returns {Promise<EmailResponse>} - The email address that the password reset was sent to, or an error message if the operation failed.
  */
-export const sendPasswordReset = async (username: string): Promise<PasswordResetResponse> => {
+export const sendPasswordReset = async (username: string): Promise<EmailResponse> => {
   try {
     const resetToken = crypto.randomBytes(20).toString('hex');
     const updatedUser = await UserModel.findOneAndUpdate(

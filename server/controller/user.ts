@@ -2,6 +2,7 @@ import express, { Response } from 'express';
 import jwt from 'jsonwebtoken';
 import {
   User,
+  EmailVerificationRequest,
   AddUserRequest,
   LoginUserRequest,
   SendPasswordResetRequest,
@@ -10,6 +11,7 @@ import {
   FakeSOSocket,
 } from '../types';
 import {
+  sendEmailVerification,
   saveUser,
   loginUser,
   sendPasswordReset,
@@ -42,15 +44,18 @@ const userController = (socket: FakeSOSocket, JWT_SECRET: string) => {
   };
 
   /**
-   * Handles adding a new user. The user is first validated and then saved, with a token generated.
-   * If the user is invalid or saving fails, the HTTP response status is updated.
+   * Handles sending a new user an email verification.
+   * If the user is invalid or sending the email verification fails, the HTTP response status is updated.
    *
-   * @param req The AddUserRequest object containing the user data.
+   * @param req The EmailVerificationRequest object containing the user data.
    * @param res The HTTP response object used to send back the result of the operation.
    *
    * @returns A Promise that resolves to void.
    */
-  const addUserRoute = async (req: AddUserRequest, res: Response): Promise<void> => {
+  const emailVerificationRoute = async (
+    req: EmailVerificationRequest,
+    res: Response,
+  ): Promise<void> => {
     if (!isUserBodyValid(req.body)) {
       res.status(400).send('Invalid request');
       return;
@@ -58,16 +63,58 @@ const userController = (socket: FakeSOSocket, JWT_SECRET: string) => {
     const user: User = req.body;
 
     try {
-      const userFromDb = await saveUser(user);
+      const result = await sendEmailVerification(user);
+      if ('error' in result) {
+        if (result.error === 'Username is already taken') {
+          res.status(409).send(result.error);
+          return;
+        }
+        throw new Error(result.error);
+      }
+      res.json({
+        message: 'Email verification successfully sent',
+        emailRecipient: result.emailRecipient,
+      });
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        res.status(500).send(`Error when sending email verification: ${err.message}`);
+      } else {
+        res.status(500).send(`Error when sending email verification`);
+      }
+    }
+  };
+
+  /**
+   * Handles adding a new user. The user is saved and a JWT token is generated.
+   * If there is an error, the HTTP response's status is updated.
+   *
+   * @param req The AddUserRequest object containing the query parameter `token`.
+   * @param res The HTTP response object used to send back the result of the operation.
+   *
+   * @returns A Promise that resolves to void.
+   */
+  const addUserRoute = async (req: AddUserRequest, res: Response): Promise<void> => {
+    if (!req.body.token) {
+      res.status(400).send('Invalid request');
+      return;
+    }
+    const { token } = req.body;
+
+    try {
+      const userFromDb = await saveUser(token);
       if ('error' in userFromDb) {
         if (userFromDb.error === 'Username is already taken') {
           res.status(409).send(userFromDb.error);
           return;
         }
+        if (userFromDb.error === 'Email verification token is invalid or has expired') {
+          res.status(400).send(userFromDb.error);
+          return;
+        }
         throw new Error(userFromDb.error);
       }
-      const token = jwt.sign({ userId: userFromDb._id }, JWT_SECRET, { expiresIn: '1h' });
-      res.json({ message: 'User created successfully', token });
+      const jwtToken = jwt.sign({ userId: userFromDb._id }, JWT_SECRET, { expiresIn: '1h' });
+      res.json({ message: 'User created successfully', token: jwtToken, user: userFromDb });
     } catch (err: unknown) {
       if (err instanceof Error) {
         res.status(500).send(`Error when saving user: ${err.message}`);
@@ -223,6 +270,7 @@ const userController = (socket: FakeSOSocket, JWT_SECRET: string) => {
     }
   };
 
+  router.post('/emailVerification', emailVerificationRoute);
   router.post('/addUser', addUserRoute);
   router.post('/loginUser', loginUserRoute);
   router.post('/sendPasswordReset', sendPasswordResetRoute);

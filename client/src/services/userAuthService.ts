@@ -4,13 +4,32 @@ import api from './config';
 const USER_API_URL = `${process.env.REACT_APP_SERVER_URL}/user`;
 
 /**
+ * Function to send an email verification to a new user, returning the recipient email address.
+ *
+ * @param user - The user to send the email verification to.
+ * @throws Error if there is an issue sending the email verification.
+ */
+const sendEmailVerification = async (
+  user: User,
+): Promise<{ message: string; emailRecipient: string }> => {
+  const res = await api.post(`${USER_API_URL}/emailVerification`, user);
+
+  if (res.status !== 200) {
+    const errorMessage = res.data?.message || 'Error while sending an email verification';
+    throw new Error(errorMessage);
+  }
+
+  return res.data;
+};
+
+/**
  * Function to add a new user, returning a JWT.
  *
- * @param user - The User object to add.
+ * @param token - The token used to determine which user to create.
  * @throws Error if there is an issue creating the new user.
  */
-const addUser = async (user: User): Promise<{ message: string; token: string }> => {
-  const res = await api.post(`${USER_API_URL}/addUser`, user);
+const addUser = async (token: string): Promise<{ message: string; token: string; user: User }> => {
+  const res = await api.post(`${USER_API_URL}/addUser`, { token });
 
   if (res.status !== 200) {
     const errorMessage = res.data?.message || 'Error while creating a new user';
@@ -97,4 +116,4 @@ const changeTheme = async (username: string, theme: string) => {
   return res.data;
 };
 
-export { addUser, loginUser, sendPasswordReset, resetPassword, changeTheme };
+export { sendEmailVerification, addUser, loginUser, sendPasswordReset, resetPassword, changeTheme };
