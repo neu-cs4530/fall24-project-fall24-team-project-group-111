@@ -110,11 +110,5 @@ app.use('/answer', answerController(socket));
 app.use('/comment', commentController(socket));
 app.use('/user', userController(socket, JWT_SECRET));
 
-app.use(express.static(path.join(__dirname, '../client/build')));
-
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '../client/build', 'index.html'));
-});
-
 // Export the app instance
 export { app, server, startServer, OPENAI_API_KEY };

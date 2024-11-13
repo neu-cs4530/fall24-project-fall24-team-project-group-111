@@ -47,7 +47,7 @@ const FakeStackOverflow = ({ socket }: { socket: FakeSOSocket | null }) => {
         {/* Public Route */}
         <Route path='/' element={<Login />} />
         <Route path='/account-recovery' element={<AccountRecoveryPage />} />
-        <Route path='/reset-password/:token' element={<PasswordResetPage />} />
+        <Route path='/reset-password' element={<PasswordResetPage />} />
 
         {/* Protected Routes */}
         {

@@ -65,7 +65,7 @@ const SettingsPage = () => {
     setUsername(user.username);
     if (username) {
       await postSendPasswordReset();
-      navigate('/reset-password/invalidtoken');
+      navigate('/reset-password');
     }
   };
 
@@ -159,13 +159,13 @@ const SettingsPage = () => {
             </p>
           </HoverToPlayTTSWrapper>
         </div>
-        {user.username !== 'Guest' && (
+        {user.username !== 'Guest' && user.email && (
           <HoverToPlayTTSWrapper text={'Button to send password reset email.'}>
             <button
               type='submit'
               className='reset-pwd-button'
               onClick={() => handlePwdResetSubmit()}>
-              Send email to reset password
+              Send password reset email to {user.email}
             </button>
           </HoverToPlayTTSWrapper>
         )}
