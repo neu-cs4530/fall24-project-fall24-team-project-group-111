@@ -9,6 +9,9 @@ import HoverToPlayTTSWrapper from '../../textToSpeech/textToSpeechComponent';
  */
 const PasswordResetPage = () => {
   const {
+    token,
+    setToken,
+    tokenErr,
     newPassword,
     setNewPassword,
     newPasswordErr,
@@ -36,6 +39,14 @@ const PasswordResetPage = () => {
         <h3>Reset your password</h3>
       </HoverToPlayTTSWrapper>
       <form onSubmit={handleSubmit}>
+        <LoginInput
+          title={'Password Reset Token (from email)'}
+          id={'passwordResetTokenInput'}
+          val={token}
+          setState={setToken}
+          err={tokenErr}
+          type='text'
+        />
         <LoginInput
           title={'New Password'}
           id={'newPasswordInput'}

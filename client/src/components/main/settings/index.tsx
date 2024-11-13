@@ -1,10 +1,18 @@
-import { useState } from 'react';
 import './index.css';
-import { ThemeType } from '../../../types';
+import { useNavigate } from 'react-router-dom';
+import {
+  FontType,
+  LineSpacingType,
+  TextBoldnessType,
+  TextSizeType,
+  ThemeType,
+} from '../../../types';
 import useUserContext from '../../../hooks/useUserContext';
 import { changeTheme } from '../../../services/userAuthService';
 import { useTheme } from '../../../contexts/ThemeContext';
 import HoverToPlayTTSWrapper from '../../textToSpeech/textToSpeechComponent';
+import { useFont } from '../../../contexts/FontContext';
+import useAccountRecoveryPage from '../../../hooks/useAccountRecoveryPage';
 
 /**
  * Settings page component that displays the content of the settings page and handles
@@ -13,9 +21,19 @@ import HoverToPlayTTSWrapper from '../../textToSpeech/textToSpeechComponent';
 const SettingsPage = () => {
   const { user } = useUserContext();
   const { theme, setTheme } = useTheme();
-  const [textSize, setTextSize] = useState('medium');
-  const [textBoldness, setTextBoldness] = useState('normal');
-  const [font, setFont] = useState('Arial');
+  const {
+    font,
+    setFont,
+    textSize,
+    setTextSize,
+    textBoldness,
+    setTextBoldness,
+    lineSpacing,
+    setLineSpacing,
+  } = useFont();
+  const navigate = useNavigate();
+
+  const { username, setUsername, postSendPasswordReset } = useAccountRecoveryPage();
 
   const handleThemeChange = async (Event: { target: { value: unknown } }) => {
     setTheme(Event.target.value as ThemeType);
@@ -23,21 +41,38 @@ const SettingsPage = () => {
   };
 
   const handleTextSizeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setTextSize(event.target.value);
+    setTextSize(event.target.value as TextSizeType);
   };
 
   const handleTextBoldnessChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setTextBoldness(event.target.value);
+    setTextBoldness(event.target.value as TextBoldnessType);
   };
 
   const handleFontChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setFont(event.target.value);
+    setFont(event.target.value as FontType);
+  };
+
+  const handleLineSpacingChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setLineSpacing(event.target.value as LineSpacingType);
+  };
+
+  /**
+   * Function to handle the form submission event.
+   *
+   * @param event - the form event object.
+   */
+  const handlePwdResetSubmit = async () => {
+    setUsername(user.username);
+    if (username) {
+      await postSendPasswordReset();
+      navigate('/reset-password');
+    }
   };
 
   return (
     <>
       <HoverToPlayTTSWrapper text={'Settings'}>
-        <h1 className='settings-title'>Settings</h1>
+        <h1 className='settings-title'>User Settings</h1>
       </HoverToPlayTTSWrapper>
       <div className='settings-container'>
         <HoverToPlayTTSWrapper text={'Change theme'}>
@@ -65,14 +100,11 @@ const SettingsPage = () => {
             <label htmlFor='text-size-select' style={{ marginRight: '10px' }}>
               Text Size:
             </label>
-            <select
-              id='text-size-select'
-              value={textSize}
-              onChange={handleTextSizeChange}
-              style={{ padding: '5px', fontSize: '16px' }}>
+            <select id='text-size-select' value={textSize} onChange={handleTextSizeChange}>
               <option value='small'>Small</option>
               <option value='medium'>Medium</option>
               <option value='large'>Large</option>
+              <option value='x-large'>X-Large</option>
             </select>
           </div>
         </HoverToPlayTTSWrapper>
@@ -84,8 +116,7 @@ const SettingsPage = () => {
             <select
               id='text-boldness-select'
               value={textBoldness}
-              onChange={handleTextBoldnessChange}
-              style={{ padding: '5px', fontSize: '16px' }}>
+              onChange={handleTextBoldnessChange}>
               <option value='normal'>Normal</option>
               <option value='bold'>Bold</option>
             </select>
@@ -96,17 +127,48 @@ const SettingsPage = () => {
             <label htmlFor='font-select' style={{ marginRight: '10px' }}>
               Font:
             </label>
-            <select
-              id='font-select'
-              value={font}
-              onChange={handleFontChange}
-              style={{ padding: '5px', fontSize: '16px' }}>
+            <select id='font-select' value={font} onChange={handleFontChange}>
               <option value='Arial'>Arial</option>
               <option value='Times New Roman'>Times New Roman</option>
               <option value='Courier New'>Courier New</option>
             </select>
           </div>
         </HoverToPlayTTSWrapper>
+        <HoverToPlayTTSWrapper text={'Adjust line spacing'}>
+          <div className='settings-row'>
+            <label htmlFor='font-select' style={{ marginRight: '10px' }}>
+              Line Spacing:
+            </label>
+            <select id='font-select' value={lineSpacing} onChange={handleLineSpacingChange}>
+              <option value='1'>1</option>
+              <option value='2'>2</option>
+              <option value='3'>3</option>
+              <option value='4'>4</option>
+            </select>
+          </div>
+        </HoverToPlayTTSWrapper>
+
+        {/* preview for text */}
+        <div className='preview-container'>
+          <HoverToPlayTTSWrapper
+            text={
+              'This is an example preview text that says: This is how your selected settings will look!'
+            }>
+            <p>
+              Preview Text: <br /> This is how your selected settings will look!
+            </p>
+          </HoverToPlayTTSWrapper>
+        </div>
+        {user.username !== 'Guest' && user.email && (
+          <HoverToPlayTTSWrapper text={'Button to send password reset email.'}>
+            <button
+              type='submit'
+              className='reset-pwd-button'
+              onClick={() => handlePwdResetSubmit()}>
+              Send password reset email to {user.email}
+            </button>
+          </HoverToPlayTTSWrapper>
+        )}
       </div>
     </>
   );

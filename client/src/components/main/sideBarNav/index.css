@@ -21,9 +21,15 @@
   text-align: center;
   line-height: 40px;
   color: var(--nav-button);
+  font-family: var(--font-family);
+  font-size: var(--font-size);
+  font-weight: var(--font-weight);
 }
 
 .menu_selected {
   background: var( --nav-selected);
   padding: 15px;
+  font-family: var(--font-family);
+  font-size: var(--font-size);
+  font-weight: var(--font-weight);
 }

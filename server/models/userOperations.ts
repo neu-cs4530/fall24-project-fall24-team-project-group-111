@@ -101,7 +101,7 @@ export const saveUser = async (token: string): Promise<UserResponse> => {
         textSize: 'medium',
         textBoldness: 'normal',
         font: 'Arial',
-        lineSpacing: 'normal',
+        lineSpacing: '1',
       },
     };
     const result = await UserModel.create(newUser);
@@ -160,11 +160,10 @@ export const sendPasswordReset = async (username: string): Promise<EmailResponse
     }
 
     const emailRecipient = updatedUser.email;
-    const resetURL = `${process.env.CLIENT_URL}/reset-password/${resetToken}`;
     await sendMail(
       emailRecipient,
       'FakeStackOverflow Password Reset Request',
-      `A password reset was requested for ${username}. Click the link to reset your password: ${resetURL}. This link will expire in 1 hour.`,
+      `A password reset was requested for ${username}. Use this token to reset your password: ${resetToken}. This token will expire in 1 hour.`,
     );
     return { emailRecipient };
   } catch (error) {

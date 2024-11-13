@@ -2,14 +2,19 @@
   margin-bottom: 8px;
   font-weight: bold;
   color: var(--text-color);
+  font-family: var(--font-family);
+  font-size: var(--font-size);
+  font-weight: var(--font-weight);
 }
 
 .input_hint {
-  font-size: 14px;
   color: var(--text-color);
   margin-bottom: 5px;
   font-style: italic;
   margin-left: 10px;
+  font-family: var(--font-family);
+  font-size: var(--font-size);
+  font-weight: var(--font-weight);
 }
 
 .input_input {
@@ -19,8 +24,11 @@
   margin-bottom: 20px;
   border: 1px solid #ccc;
   border-radius: 4px;
-  background-color: var(--comment-item-background);
+  background-color: var(--comment-text-area-color);
   color: var(--text-color);
+  font-family: var(--font-family);
+  font-size: var(--font-size);
+  font-weight: var(--font-weight);
 }
 
 .input_error {

@@ -17,7 +17,7 @@ const mockSettingsInfo = {
   textSize: 'medium',
   textBoldness: 'normal',
   font: 'Arial',
-  lineSpacing: 'normal',
+  lineSpacing: '1',
 };
 
 const mockUser: User = {
@@ -124,7 +124,7 @@ describe('POST /emailVerification', () => {
         textSize: 'medium',
         textBoldness: 'normal',
         font: 'Arial',
-        lineSpacing: 'normal',
+        lineSpacing: '1',
       },
     };
 
