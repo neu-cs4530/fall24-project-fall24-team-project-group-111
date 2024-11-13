@@ -54,6 +54,8 @@ const useLoginUser = () => {
    * @returns boolean - True if the user login was successful, false otherwise.
    */
   const postLoginUser = async (): Promise<boolean> => {
+    setPostLoginErr('');
+
     if (!validateForm()) return false;
 
     try {
@@ -64,8 +66,8 @@ const useLoginUser = () => {
       }
     } catch (err) {
       const axiosError = err as AxiosError;
-      const errorMessage = axiosError.response?.data || 'Error creating user';
-      setPostLoginErr(typeof errorMessage === 'string' ? errorMessage : 'Error creating user');
+      const errorMessage = axiosError.response?.data || 'Error logging in user';
+      setPostLoginErr(typeof errorMessage === 'string' ? errorMessage : 'Error logging in user');
     }
     return false;
   };
