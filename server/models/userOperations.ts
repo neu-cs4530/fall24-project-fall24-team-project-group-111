@@ -61,7 +61,7 @@ export const sendEmailVerification = async (user: User): Promise<EmailResponse> 
     await sendMail(
       emailRecipient,
       'Activate your FakeStackOverflow Account',
-      `Thank you for signing up for FakeStackOverflow! Use this token to verify your email: ${emailVerificationToken}.\n
+      `Thank you for signing up for FakeStackOverflow! Use this token to verify your email: ${emailVerificationToken}\n
 This token will expire in 24 hours. If you did not sign up for a FakeStackOverflow account, you can safely ignore this email.`,
     );
     return { emailRecipient };
