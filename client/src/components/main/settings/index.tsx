@@ -1,7 +1,7 @@
 import './index.css';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 import {
   FontType,
   LineSpacingType,
@@ -69,7 +69,7 @@ const SettingsPage = () => {
   };
 
   /**
-   * Loads the user settings from the server based on the provided username.
+   * Memoized function to load user settings.
    *
    * This function fetches user settings from the `/getUserSettings/{username}` endpoint,
    * and upon a successful response, updates the state variables for theme, text size,
@@ -78,20 +78,23 @@ const SettingsPage = () => {
    * @param {string} username - The username of the user whose settings are to be loaded.
    * @returns {Promise<void>} - This function does not return a value but performs state updates.
    */
-  const loadSettings = async (_userUsername: string) => {
-    try {
-      const response = await axios.get(`/getUserSettings/${username}`);
-      const { settings } = response.data;
+  const loadSettings = useCallback(
+    async (_userUsername: string) => {
+      try {
+        const response = await axios.get(`/getUserSettings/${_userUsername}`);
+        const { settings } = response.data;
 
-      setTheme(settings.theme);
-      setTextSize(settings.textSize);
-      setTextBoldness(settings.textBoldness);
-      setFont(settings.font);
-      setLineSpacing(settings.lineSpacing);
-    } catch (error) {
-      // console.error('Failed to load user settings:', error);
-    }
-  };
+        setTheme(settings.theme);
+        setTextSize(settings.textSize);
+        setTextBoldness(settings.textBoldness);
+        setFont(settings.font);
+        setLineSpacing(settings.lineSpacing);
+      } catch (error) {
+        // console.error('Failed to load user settings:', error);
+      }
+    },
+    [setFont, setLineSpacing, setTextBoldness, setTextSize, setTheme],
+  ); // Add the set functions as dependencies
 
   /**
    * Effect hook that triggers when the user object changes.
@@ -105,7 +108,7 @@ const SettingsPage = () => {
     if (user) {
       loadSettings(user.username);
     }
-  }, [user, loadSettings]);
+  }, [user, loadSettings]); // Now loadSettings has the correct dependencies
 
   /**
    * Function to handle the form submission event.
