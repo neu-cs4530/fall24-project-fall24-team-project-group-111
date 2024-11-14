@@ -322,6 +322,46 @@ export interface UpdateThemeRequest extends Request {
 }
 
 /**
+ * Interface for the request body when changing the text size of a user.
+ */
+export interface UpdateTextSizeRequest extends Request {
+  body: {
+    username: string;
+    textSize: string;
+  };
+}
+
+/**
+ * Interface for the request body when changing the text boldness of a user.
+ */
+export interface UpdateTextBoldnessRequest extends Request {
+  body: {
+    username: string;
+    textBoldness: string;
+  };
+}
+
+/**
+ * Interface for the request body when changing the font style of a user.
+ */
+export interface UpdateFontRequest extends Request {
+  body: {
+    username: string;
+    font: string;
+  };
+}
+
+/**
+ * Interface for the request body when changing the line spacing of a user.
+ */
+export interface UpdateLineSpacingRequest extends Request {
+  body: {
+    username: string;
+    lineSpacing: string;
+  };
+}
+
+/**
  * Interface representing an UnverifiedUser, which contains:
  * - _id - The unique identifier for the unverified user. Optional field.
  * - username - The username of the unverified user.

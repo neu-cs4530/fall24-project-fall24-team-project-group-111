@@ -225,3 +225,83 @@ export const changeTheme = async (username: string, theme: string): Promise<User
     return { error: 'Error changing user theme' };
   }
 };
+
+/**
+ * Attempts to change the text size of a user in the database.
+ *
+ * @param {string} username - The username of the user for the text size change.
+ * @param {string} textSize - The text size to change to.
+ *
+ * @returns {Promise<UserResponse>} - The changed user, or an error message if the text size change failed.
+ */
+export const changeTextSize = async (username: string, textSize: string): Promise<UserResponse> => {
+  try {
+    const user = await UserModel.findOneAndUpdate({ username }, { settings: { textSize } });
+    if (!user) {
+      return { error: 'Username does not exist' };
+    }
+    return user;
+  } catch (error) {
+    return { error: 'Error changing user text size' };
+  }
+};
+
+/**
+ * Attempts to change the text boldness of a user in the database.
+ *
+ * @param {string} username - The username of the user for the text boldness change.
+ * @param {string} textBoldness - The text boldness to change to.
+ *
+ * @returns {Promise<UserResponse>} - The changed user, or an error message if the text boldness change failed.
+ */
+export const changeTextBoldness = async (username: string, textBoldness: string): Promise<UserResponse> => {
+  try {
+    const user = await UserModel.findOneAndUpdate({ username }, { settings: { textBoldness } });
+    if (!user) {
+      return { error: 'Username does not exist' };
+    }
+    return user;
+  } catch (error) {
+    return { error: 'Error changing user text boldness' };
+  }
+};
+
+/**
+ * Attempts to change the font style of a user in the database.
+ *
+ * @param {string} username - The username of the user for the font change.
+ * @param {string} font - The font style to change to.
+ *
+ * @returns {Promise<UserResponse>} - The changed user, or an error message if the font change failed.
+ */
+export const changeFont = async (username: string, font: string): Promise<UserResponse> => {
+  try {
+    const user = await UserModel.findOneAndUpdate({ username }, { settings: { font } });
+    if (!user) {
+      return { error: 'Username does not exist' };
+    }
+    return user;
+  } catch (error) {
+    return { error: 'Error changing user font style' };
+  }
+};
+
+/**
+ * Attempts to change the line spacing of a user in the database.
+ *
+ * @param {string} username - The username of the user for the line spacing change.
+ * @param {string} lineSpacing - The line spacing to change to.
+ *
+ * @returns {Promise<UserResponse>} - The changed user, or an error message if the line spacing change failed.
+ */
+export const changeLineSpacing = async (username: string, lineSpacing: string): Promise<UserResponse> => {
+  try {
+    const user = await UserModel.findOneAndUpdate({ username }, { settings: { lineSpacing } });
+    if (!user) {
+      return { error: 'Username does not exist' };
+    }
+    return user;
+  } catch (error) {
+    return { error: 'Error changing user line spacing' };
+  }
+};
