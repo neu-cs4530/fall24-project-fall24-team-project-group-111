@@ -89,7 +89,7 @@ const SettingsPage = () => {
       setFont(settings.font);
       setLineSpacing(settings.lineSpacing);
     } catch (error) {
-      console.error('Failed to load user settings:', error);
+      // console.error('Failed to load user settings:', error);
     }
   };
 
@@ -105,7 +105,7 @@ const SettingsPage = () => {
     if (user) {
       loadSettings(user.username);
     }
-  }, [user]);
+  }, [user, loadSettings]);
 
   /**
    * Function to handle the form submission event.
