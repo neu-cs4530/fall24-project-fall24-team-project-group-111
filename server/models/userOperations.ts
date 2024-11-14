@@ -254,7 +254,10 @@ export const changeTextSize = async (username: string, textSize: string): Promis
  *
  * @returns {Promise<UserResponse>} - The changed user, or an error message if the text boldness change failed.
  */
-export const changeTextBoldness = async (username: string, textBoldness: string): Promise<UserResponse> => {
+export const changeTextBoldness = async (
+  username: string,
+  textBoldness: string,
+): Promise<UserResponse> => {
   try {
     const user = await UserModel.findOneAndUpdate({ username }, { settings: { textBoldness } });
     if (!user) {
@@ -294,7 +297,10 @@ export const changeFont = async (username: string, font: string): Promise<UserRe
  *
  * @returns {Promise<UserResponse>} - The changed user, or an error message if the line spacing change failed.
  */
-export const changeLineSpacing = async (username: string, lineSpacing: string): Promise<UserResponse> => {
+export const changeLineSpacing = async (
+  username: string,
+  lineSpacing: string,
+): Promise<UserResponse> => {
   try {
     const user = await UserModel.findOneAndUpdate({ username }, { settings: { lineSpacing } });
     if (!user) {
