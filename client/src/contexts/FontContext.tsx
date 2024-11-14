@@ -34,10 +34,14 @@ const FontContext = createContext<FontContextType>({
 
 export const FontProvider = ({ children }: { children: ReactNode }) => {
   const { user } = useUserContext();
-  const [font, setFont] = useState<FontType>('Arial');
-  const [textSize, setTextSize] = useState<TextSizeType>('medium');
-  const [textBoldness, setTextBoldness] = useState<TextBoldnessType>('normal');
-  const [lineSpacing, setLineSpacing] = useState<LineSpacingType>('1');
+  const [font, setFont] = useState<FontType>(user?.settings?.font || 'Arial');
+  const [textSize, setTextSize] = useState<TextSizeType>(user?.settings?.textSize || 'medium');
+  const [textBoldness, setTextBoldness] = useState<TextBoldnessType>(
+    user?.settings?.textBoldness || 'normal',
+  );
+  const [lineSpacing, setLineSpacing] = useState<LineSpacingType>(
+    user?.settings?.lineSpacing || '1',
+  );
 
   useEffect(() => {
     document.documentElement.style.setProperty('--font-family', font);
