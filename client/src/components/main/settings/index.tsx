@@ -8,7 +8,13 @@ import {
   ThemeType,
 } from '../../../types';
 import useUserContext from '../../../hooks/useUserContext';
-import { changeFont, changeLineSpacing, changeTextBoldness, changeTextSize, changeTheme } from '../../../services/userAuthService';
+import {
+  changeFont,
+  changeLineSpacing,
+  changeTextBoldness,
+  changeTextSize,
+  changeTheme,
+} from '../../../services/userAuthService';
 import { useTheme } from '../../../contexts/ThemeContext';
 import HoverToPlayTTSWrapper from '../../textToSpeech/textToSpeechComponent';
 import { useFont } from '../../../contexts/FontContext';

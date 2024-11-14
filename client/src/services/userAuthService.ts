@@ -118,7 +118,7 @@ const changeTheme = async (username: string, theme: string) => {
 
 /**
  * Updates the text size setting for a specific user.
- * 
+ *
  * @param username - The username of the user whose text size is being updated.
  * @param textSize - The new text size to be set.
  * @throws Error if the backend update fails.
@@ -133,7 +133,7 @@ const changeTextSize = async (username: string, textSize: TextSizeType) => {
 
 /**
  * Updates the text boldness setting for a specific user.
- * 
+ *
  * @param username - The username of the user whose text boldness is being updated.
  * @param textBoldness - The new text boldness to be set.
  * @throws Error if the backend update fails.
@@ -148,7 +148,7 @@ const changeTextBoldness = async (username: string, textBoldness: TextBoldnessTy
 
 /**
  * Updates the font style setting for a specific user.
- * 
+ *
  * @param username - The username of the user whose font style is being updated.
  * @param font - The new font style to be set.
  * @throws Error if the backend update fails.
@@ -163,7 +163,7 @@ const changeFont = async (username: string, font: FontType) => {
 
 /**
  * Updates the line spacing setting for a specific user.
- * 
+ *
  * @param username - The username of the user whose line spacing is being updated.
  * @param lineSpacing - The new line spacing to be set.
  * @throws Error if the backend update fails.
@@ -176,5 +176,15 @@ const changeLineSpacing = async (username: string, lineSpacing: LineSpacingType)
   }
 };
 
-
-export { sendEmailVerification, addUser, loginUser, sendPasswordReset, resetPassword, changeTheme, changeTextSize, changeTextBoldness, changeFont, changeLineSpacing };
+export {
+  sendEmailVerification,
+  addUser,
+  loginUser,
+  sendPasswordReset,
+  resetPassword,
+  changeTheme,
+  changeTextSize,
+  changeTextBoldness,
+  changeFont,
+  changeLineSpacing,
+};
