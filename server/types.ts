@@ -256,6 +256,13 @@ export interface User {
  */
 export type UserResponse = User | { error: string };
 
+// Define a custom interface that includes the route parameter `username`
+interface UserRequest extends Request {
+  params: {
+    username: string;
+  };
+}
+
 /**
  * Type representing the possible responses for operation that sends an email.
  */
