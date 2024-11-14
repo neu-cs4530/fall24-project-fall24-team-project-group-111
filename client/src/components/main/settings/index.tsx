@@ -8,7 +8,7 @@ import {
   ThemeType,
 } from '../../../types';
 import useUserContext from '../../../hooks/useUserContext';
-import { changeTheme } from '../../../services/userAuthService';
+import { changeFont, changeLineSpacing, changeTextBoldness, changeTextSize, changeTheme } from '../../../services/userAuthService';
 import { useTheme } from '../../../contexts/ThemeContext';
 import HoverToPlayTTSWrapper from '../../textToSpeech/textToSpeechComponent';
 import { useFont } from '../../../contexts/FontContext';
@@ -40,20 +40,24 @@ const SettingsPage = () => {
     await changeTheme(user.username, Event.target.value as ThemeType); // alters back-end user data to save theme
   };
 
-  const handleTextSizeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+  const handleTextSizeChange = async (event: React.ChangeEvent<HTMLSelectElement>) => {
     setTextSize(event.target.value as TextSizeType);
+    await changeTextSize(user.username, event.target.value as TextSizeType); // alters back-end user data
   };
 
-  const handleTextBoldnessChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+  const handleTextBoldnessChange = async (event: React.ChangeEvent<HTMLSelectElement>) => {
     setTextBoldness(event.target.value as TextBoldnessType);
+    await changeTextBoldness(user.username, event.target.value as TextBoldnessType); // alters back-end user data
   };
 
-  const handleFontChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+  const handleFontChange = async (event: React.ChangeEvent<HTMLSelectElement>) => {
     setFont(event.target.value as FontType);
+    await changeFont(user.username, event.target.value as FontType); // alters back-end user data
   };
 
-  const handleLineSpacingChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+  const handleLineSpacingChange = async (event: React.ChangeEvent<HTMLSelectElement>) => {
     setLineSpacing(event.target.value as LineSpacingType);
+    await changeLineSpacing(user.username, event.target.value as LineSpacingType); // alters back-end user data
   };
 
   /**

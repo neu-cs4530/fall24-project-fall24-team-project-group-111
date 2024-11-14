@@ -8,6 +8,7 @@ import {
   useState,
 } from 'react';
 import { TextSizeType, TextBoldnessType, FontType, LineSpacingType } from '../types';
+import useUserContext from '../hooks/useUserContext';
 
 type FontContextType = {
   font: FontType;
@@ -32,6 +33,7 @@ const FontContext = createContext<FontContextType>({
 });
 
 export const FontProvider = ({ children }: { children: ReactNode }) => {
+  const { user } = useUserContext();
   const [font, setFont] = useState<FontType>('Arial');
   const [textSize, setTextSize] = useState<TextSizeType>('medium');
   const [textBoldness, setTextBoldness] = useState<TextBoldnessType>('normal');

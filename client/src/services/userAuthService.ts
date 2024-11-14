@@ -1,4 +1,4 @@
-import { User } from '../types';
+import { FontType, LineSpacingType, TextBoldnessType, TextSizeType, User } from '../types';
 import api from './config';
 
 const USER_API_URL = `${process.env.REACT_APP_SERVER_URL}/user`;
@@ -116,4 +116,65 @@ const changeTheme = async (username: string, theme: string) => {
   return res.data;
 };
 
-export { sendEmailVerification, addUser, loginUser, sendPasswordReset, resetPassword, changeTheme };
+/**
+ * Updates the text size setting for a specific user.
+ * 
+ * @param username - The username of the user whose text size is being updated.
+ * @param textSize - The new text size to be set.
+ * @throws Error if the backend update fails.
+ */
+const changeTextSize = async (username: string, textSize: TextSizeType) => {
+  const data = { username, textSize };
+  const res = await api.post(`${USER_API_URL}/changeTextSize`, { username, textSize });
+  if (res.status !== 200) {
+    throw new Error('Error while updating text size');
+  }
+};
+
+/**
+ * Updates the text boldness setting for a specific user.
+ * 
+ * @param username - The username of the user whose text boldness is being updated.
+ * @param textBoldness - The new text boldness to be set.
+ * @throws Error if the backend update fails.
+ */
+const changeTextBoldness = async (username: string, textBoldness: TextBoldnessType) => {
+  const data = { username, textBoldness };
+  const res = await api.post(`${USER_API_URL}/changeTextBoldness`, data);
+  if (res.status !== 200) {
+    throw new Error('Error while updating text boldness');
+  }
+};
+
+/**
+ * Updates the font style setting for a specific user.
+ * 
+ * @param username - The username of the user whose font style is being updated.
+ * @param font - The new font style to be set.
+ * @throws Error if the backend update fails.
+ */
+const changeFont = async (username: string, font: FontType) => {
+  const data = { username, font };
+  const res = await api.post(`${USER_API_URL}/changeFont`, data);
+  if (res.status !== 200) {
+    throw new Error('Error while updating font style');
+  }
+};
+
+/**
+ * Updates the line spacing setting for a specific user.
+ * 
+ * @param username - The username of the user whose line spacing is being updated.
+ * @param lineSpacing - The new line spacing to be set.
+ * @throws Error if the backend update fails.
+ */
+const changeLineSpacing = async (username: string, lineSpacing: LineSpacingType) => {
+  const data = { username, lineSpacing };
+  const res = await api.post(`${USER_API_URL}/changeLineSpacing`, data);
+  if (res.status !== 200) {
+    throw new Error('Error while updating line spacing');
+  }
+};
+
+
+export { sendEmailVerification, addUser, loginUser, sendPasswordReset, resetPassword, changeTheme, changeTextSize, changeTextBoldness, changeFont, changeLineSpacing };
