@@ -27,7 +27,6 @@ import {
   changeTextSize,
 } from '../models/userOperations';
 import UserModel from '../models/users';
-import { app } from '../app';
 
 const userController = (socket: FakeSOSocket, JWT_SECRET: string) => {
   const router = express.Router();
@@ -411,34 +410,34 @@ const userController = (socket: FakeSOSocket, JWT_SECRET: string) => {
   };
 
   /**
- * Handles retrieving the settings of the currently logged in user.
- * If the user doesn't exist or there is an error, a proper response is returned.
- *
- * @param req The request object containing the `username` in the query.
- * @param res The HTTP response object used to send back the result of the operation.
- *
- * @returns A Promise that resolves to the user's settings or an error message.
- */
+   * Handles retrieving the settings of the currently logged in user.
+   * If the user doesn't exist or there is an error, a proper response is returned.
+   *
+   * @param req The request object containing the `username` in the query.
+   * @param res The HTTP response object used to send back the result of the operation.
+   *
+   * @returns A Promise that resolves to the user's settings or an error message.
+   */
   const getUserSettings = async (req: AddUserRequest, res: Response): Promise<void> => {
-  const { username } = req.params;  // Retrieve username from the URL parameters
+    const { username } = req.params; // Retrieve username from the URL parameters
 
-  if (!username) {
-    res.status(400).send('Username is required');
-    return;
-  }
-
-  try {
-    const user = await UserModel.findOne({ username });
-
-    if (!user) {
-      res.status(404).send('User not found');
+    if (!username) {
+      res.status(400).send('Username is required');
       return;
     }
-    res.json({ settings: user.settings });
-  } catch (error) {
-    res.status(500).send('Error retrieving user settings');
-  }
-};
+
+    try {
+      const user = await UserModel.findOne({ username });
+
+      if (!user) {
+        res.status(404).send('User not found');
+        return;
+      }
+      res.json({ settings: user.settings });
+    } catch (error) {
+      res.status(500).send('Error retrieving user settings');
+    }
+  };
 
   router.post('/emailVerification', emailVerificationRoute);
   router.post('/addUser', addUserRoute);
@@ -451,8 +450,8 @@ const userController = (socket: FakeSOSocket, JWT_SECRET: string) => {
   router.post('/changeTextBoldness', changeTextBoldnessRoute);
   router.post('/changeLineSpacing', changeLineSpacingRoute);
 
-  app.get('/getUserSettings/:username', getUserSettings);
-  
+  router.post('/getUserSettings/:username', getUserSettings);
+
   return router;
 };
 
