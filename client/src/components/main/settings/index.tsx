@@ -1,5 +1,7 @@
 import './index.css';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import { useEffect } from 'react';
 import {
   FontType,
   LineSpacingType,
@@ -65,6 +67,45 @@ const SettingsPage = () => {
     setLineSpacing(event.target.value as LineSpacingType);
     await changeLineSpacing(user.username, event.target.value as LineSpacingType); // alters back-end user data
   };
+
+  /**
+   * Loads the user settings from the server based on the provided username.
+   *
+   * This function fetches user settings from the `/getUserSettings/{username}` endpoint,
+   * and upon a successful response, updates the state variables for theme, text size,
+   * text boldness, font, and line spacing.
+   *
+   * @param {string} username - The username of the user whose settings are to be loaded.
+   * @returns {Promise<void>} - This function does not return a value but performs state updates.
+   */
+  const loadSettings = async (_userUsername: string) => {
+    try {
+      const response = await axios.get(`/getUserSettings/${username}`);
+      const { settings } = response.data;
+
+      setTheme(settings.theme);
+      setTextSize(settings.textSize);
+      setTextBoldness(settings.textBoldness);
+      setFont(settings.font);
+      setLineSpacing(settings.lineSpacing);
+    } catch (error) {
+      console.error('Failed to load user settings:', error);
+    }
+  };
+
+  /**
+   * Effect hook that triggers when the user object changes.
+   *
+   * This hook will call `loadSettings` to fetch and apply the settings of the newly
+   * logged-in user, or when the user object is updated.
+   *
+   * @effect This hook will re-run when the `user` object changes (e.g., after login).
+   */
+  useEffect(() => {
+    if (user) {
+      loadSettings(user.username);
+    }
+  }, [user]);
 
   /**
    * Function to handle the form submission event.
