@@ -125,10 +125,11 @@ const changeTheme = async (username: string, theme: string) => {
  */
 const changeTextSize = async (username: string, textSize: TextSizeType) => {
   const data = { username, textSize };
-  const res = await api.post(`${USER_API_URL}/changeTextSize`, { username, textSize });
+  const res = await api.post(`${USER_API_URL}/changeTextSize`, data);
   if (res.status !== 200) {
     throw new Error('Error while updating text size');
   }
+  return res.data;
 };
 
 /**
@@ -144,6 +145,7 @@ const changeTextBoldness = async (username: string, textBoldness: TextBoldnessTy
   if (res.status !== 200) {
     throw new Error('Error while updating text boldness');
   }
+  return res.data;
 };
 
 /**
@@ -159,6 +161,7 @@ const changeFont = async (username: string, font: FontType) => {
   if (res.status !== 200) {
     throw new Error('Error while updating font style');
   }
+  return res.data;
 };
 
 /**
@@ -174,6 +177,7 @@ const changeLineSpacing = async (username: string, lineSpacing: LineSpacingType)
   if (res.status !== 200) {
     throw new Error('Error while updating line spacing');
   }
+  return res.data;
 };
 
 export {
