@@ -216,7 +216,11 @@ export const resetPassword = async (token: string, newPassword: string): Promise
  */
 export const changeTheme = async (username: string, theme: string): Promise<UserResponse> => {
   try {
-    const user = await UserModel.findOneAndUpdate({ username }, { settings: { theme } });
+    const user = await UserModel.findOneAndUpdate(
+      { username },
+      { $set: { 'settings.theme': theme } }, // only update the theme field
+      { new: true },
+    );
     if (!user) {
       return { error: 'Username does not exist' };
     }
@@ -236,7 +240,11 @@ export const changeTheme = async (username: string, theme: string): Promise<User
  */
 export const changeTextSize = async (username: string, textSize: string): Promise<UserResponse> => {
   try {
-    const user = await UserModel.findOneAndUpdate({ username }, { settings: { textSize } });
+    const user = await UserModel.findOneAndUpdate(
+      { username },
+      { $set: { 'settings.textSize': textSize } },
+      { new: true },
+    );
     if (!user) {
       return { error: 'Username does not exist' };
     }
@@ -259,7 +267,11 @@ export const changeTextBoldness = async (
   textBoldness: string,
 ): Promise<UserResponse> => {
   try {
-    const user = await UserModel.findOneAndUpdate({ username }, { settings: { textBoldness } });
+    const user = await UserModel.findOneAndUpdate(
+      { username },
+      { $set: { 'settings.textBoldness': textBoldness } },
+      { new: true },
+    );
     if (!user) {
       return { error: 'Username does not exist' };
     }
@@ -279,7 +291,11 @@ export const changeTextBoldness = async (
  */
 export const changeFont = async (username: string, font: string): Promise<UserResponse> => {
   try {
-    const user = await UserModel.findOneAndUpdate({ username }, { settings: { font } });
+    const user = await UserModel.findOneAndUpdate(
+      { username },
+      { $set: { 'settings.font': font } },
+      { new: true },
+    );
     if (!user) {
       return { error: 'Username does not exist' };
     }
@@ -302,7 +318,11 @@ export const changeLineSpacing = async (
   lineSpacing: string,
 ): Promise<UserResponse> => {
   try {
-    const user = await UserModel.findOneAndUpdate({ username }, { settings: { lineSpacing } });
+    const user = await UserModel.findOneAndUpdate(
+      { username },
+      { $set: { 'settings.lineSpacing': lineSpacing } },
+      { new: true },
+    );
     if (!user) {
       return { error: 'Username does not exist' };
     }

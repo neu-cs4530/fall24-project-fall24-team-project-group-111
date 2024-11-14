@@ -2,7 +2,6 @@ import { Request } from 'express';
 import { ObjectId } from 'mongodb';
 import { Server } from 'socket.io';
 import { JwtPayload } from 'jsonwebtoken';
-
 export type FakeSOSocket = Server<ServerToClientEvents>;
 
 /**
@@ -358,6 +357,17 @@ export interface UpdateLineSpacingRequest extends Request {
   body: {
     username: string;
     lineSpacing: string;
+  };
+}
+
+//might not be needed
+/**
+ * Interface for the request body when updating multiple settings for a user.
+ */
+export interface UpdateSettingsRequest extends Request {
+  body: {
+    username: string;
+    settings: SettingsInfo
   };
 }
 
