@@ -1,5 +1,7 @@
 import './index.css';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import { useCallback, useEffect } from 'react';
 import {
   FontType,
   LineSpacingType,
@@ -8,7 +10,13 @@ import {
   ThemeType,
 } from '../../../types';
 import useUserContext from '../../../hooks/useUserContext';
-import { changeTheme } from '../../../services/userAuthService';
+import {
+  changeFont,
+  changeLineSpacing,
+  changeTextBoldness,
+  changeTextSize,
+  changeTheme,
+} from '../../../services/userAuthService';
 import { useTheme } from '../../../contexts/ThemeContext';
 import HoverToPlayTTSWrapper from '../../textToSpeech/textToSpeechComponent';
 import { useFont } from '../../../contexts/FontContext';
@@ -40,21 +48,67 @@ const SettingsPage = () => {
     await changeTheme(user.username, Event.target.value as ThemeType); // alters back-end user data to save theme
   };
 
-  const handleTextSizeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+  const handleTextSizeChange = async (event: React.ChangeEvent<HTMLSelectElement>) => {
     setTextSize(event.target.value as TextSizeType);
+    await changeTextSize(user.username, event.target.value as TextSizeType); // alters back-end user data
   };
 
-  const handleTextBoldnessChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+  const handleTextBoldnessChange = async (event: React.ChangeEvent<HTMLSelectElement>) => {
     setTextBoldness(event.target.value as TextBoldnessType);
+    await changeTextBoldness(user.username, event.target.value as TextBoldnessType); // alters back-end user data
   };
 
-  const handleFontChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+  const handleFontChange = async (event: React.ChangeEvent<HTMLSelectElement>) => {
     setFont(event.target.value as FontType);
+    await changeFont(user.username, event.target.value as FontType); // alters back-end user data
   };
 
-  const handleLineSpacingChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+  const handleLineSpacingChange = async (event: React.ChangeEvent<HTMLSelectElement>) => {
     setLineSpacing(event.target.value as LineSpacingType);
+    await changeLineSpacing(user.username, event.target.value as LineSpacingType); // alters back-end user data
   };
+
+  /**
+   * Memoized function to load user settings.
+   *
+   * This function fetches user settings from the `/getUserSettings/{username}` endpoint,
+   * and upon a successful response, updates the state variables for theme, text size,
+   * text boldness, font, and line spacing.
+   *
+   * @param {string} username - The username of the user whose settings are to be loaded.
+   * @returns {Promise<void>} - This function does not return a value but performs state updates.
+   */
+  const loadSettings = useCallback(
+    async (_userUsername: string) => {
+      try {
+        const response = await axios.get(`/getUserSettings/${_userUsername}`);
+        const { settings } = response.data;
+
+        setTheme(settings.theme);
+        setTextSize(settings.textSize);
+        setTextBoldness(settings.textBoldness);
+        setFont(settings.font);
+        setLineSpacing(settings.lineSpacing);
+      } catch (error) {
+        // console.error('Failed to load user settings:', error);
+      }
+    },
+    [setFont, setLineSpacing, setTextBoldness, setTextSize, setTheme],
+  ); // Add the set functions as dependencies
+
+  /**
+   * Effect hook that triggers when the user object changes.
+   *
+   * This hook will call `loadSettings` to fetch and apply the settings of the newly
+   * logged-in user, or when the user object is updated.
+   *
+   * @effect This hook will re-run when the `user` object changes (e.g., after login).
+   */
+  useEffect(() => {
+    if (user) {
+      loadSettings(user.username);
+    }
+  }, [user, loadSettings]); // Now loadSettings has the correct dependencies
 
   /**
    * Function to handle the form submission event.

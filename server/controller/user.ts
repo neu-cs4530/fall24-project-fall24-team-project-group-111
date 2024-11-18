@@ -9,6 +9,10 @@ import {
   ResetPasswordRequest,
   UpdateThemeRequest,
   FakeSOSocket,
+  UpdateFontRequest,
+  UpdateLineSpacingRequest,
+  UpdateTextBoldnessRequest,
+  UpdateTextSizeRequest,
 } from '../types';
 import {
   sendEmailVerification,
@@ -17,7 +21,12 @@ import {
   sendPasswordReset,
   resetPassword,
   changeTheme,
+  changeFont,
+  changeLineSpacing,
+  changeTextBoldness,
+  changeTextSize,
 } from '../models/userOperations';
+import UserModel from '../models/users';
 
 const userController = (socket: FakeSOSocket, JWT_SECRET: string) => {
   const router = express.Router();
@@ -270,12 +279,178 @@ const userController = (socket: FakeSOSocket, JWT_SECRET: string) => {
     }
   };
 
+  /**
+   * Handles changing the font style of the currently logged in user. If successful, the most
+   * recently saved font style will be accessed when logged back in.
+   *
+   * @param req The UpdateFontRequest object containing the query parameters `username` and `font`.
+   * @param res The HTTP response object used to send back the result of the operation.
+   *
+   * @returns A Promise that resolves to void.
+   */
+  const changeFontRoute = async (req: UpdateFontRequest, res: Response): Promise<void> => {
+    if (!req.body.username || !req.body.font) {
+      res.status(400).send('Invalid request');
+      return;
+    }
+    const { username, font } = req.body;
+
+    try {
+      const userFromDb = await changeFont(username, font);
+      if ('error' in userFromDb) {
+        throw new Error(userFromDb.error);
+      }
+      res.json({ message: 'Font update successful', user: userFromDb });
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        res.status(500).send(`Error when updating font: ${err.message}`);
+      } else {
+        res.status(500).send(`Error when updating font`);
+      }
+    }
+  };
+
+  /**
+   * Handles changing the text size of the currently logged in user. If successful, the most
+   * recently saved text size will be accessed when logged back in.
+   *
+   * @param req The UpdateTextSizeRequest object containing the query parameters `username` and `textSize`.
+   * @param res The HTTP response object used to send back the result of the operation.
+   *
+   * @returns A Promise that resolves to void.
+   */
+  const changeTextSizeRoute = async (req: UpdateTextSizeRequest, res: Response): Promise<void> => {
+    if (!req.body.username || !req.body.textSize) {
+      res.status(400).send('Invalid request');
+      return;
+    }
+    const { username, textSize } = req.body;
+
+    try {
+      const userFromDb = await changeTextSize(username, textSize);
+      if ('error' in userFromDb) {
+        throw new Error(userFromDb.error);
+      }
+      res.json({ message: 'Text size update successful', user: userFromDb });
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        res.status(500).send(`Error when updating text size: ${err.message}`);
+      } else {
+        res.status(500).send(`Error when updating text size`);
+      }
+    }
+  };
+
+  /**
+   * Handles changing the text boldness of the currently logged in user. If successful, the most
+   * recently saved text boldness will be accessed when logged back in.
+   *
+   * @param req The UpdateTextBoldnessRequest object containing the query parameters `username` and `textBoldness`.
+   * @param res The HTTP response object used to send back the result of the operation.
+   *
+   * @returns A Promise that resolves to void.
+   */
+  const changeTextBoldnessRoute = async (
+    req: UpdateTextBoldnessRequest,
+    res: Response,
+  ): Promise<void> => {
+    if (!req.body.username || !req.body.textBoldness) {
+      res.status(400).send('Invalid request');
+      return;
+    }
+    const { username, textBoldness } = req.body;
+
+    try {
+      const userFromDb = await changeTextBoldness(username, textBoldness);
+      if ('error' in userFromDb) {
+        throw new Error(userFromDb.error);
+      }
+      res.json({ message: 'Text boldness update successful', user: userFromDb });
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        res.status(500).send(`Error when updating text boldness: ${err.message}`);
+      } else {
+        res.status(500).send(`Error when updating text boldness`);
+      }
+    }
+  };
+
+  /**
+   * Handles changing the line spacing of the currently logged in user. If successful, the most
+   * recently saved line spacing will be accessed when logged back in.
+   *
+   * @param req The UpdateLineSpacingRequest object containing the query parameters `username` and `lineSpacing`.
+   * @param res The HTTP response object used to send back the result of the operation.
+   *
+   * @returns A Promise that resolves to void.
+   */
+  const changeLineSpacingRoute = async (
+    req: UpdateLineSpacingRequest,
+    res: Response,
+  ): Promise<void> => {
+    if (!req.body.username || !req.body.lineSpacing) {
+      res.status(400).send('Invalid request');
+      return;
+    }
+    const { username, lineSpacing } = req.body;
+
+    try {
+      const userFromDb = await changeLineSpacing(username, lineSpacing);
+      if ('error' in userFromDb) {
+        throw new Error(userFromDb.error);
+      }
+      res.json({ message: 'Line spacing update successful', user: userFromDb });
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        res.status(500).send(`Error when updating line spacing: ${err.message}`);
+      } else {
+        res.status(500).send(`Error when updating line spacing`);
+      }
+    }
+  };
+
+  /**
+   * Handles retrieving the settings of the currently logged in user.
+   * If the user doesn't exist or there is an error, a proper response is returned.
+   *
+   * @param req The request object containing the `username` in the query.
+   * @param res The HTTP response object used to send back the result of the operation.
+   *
+   * @returns A Promise that resolves to the user's settings or an error message.
+   */
+  const getUserSettings = async (req: AddUserRequest, res: Response): Promise<void> => {
+    const { username } = req.params; // Retrieve username from the URL parameters
+
+    if (!username) {
+      res.status(400).send('Username is required');
+      return;
+    }
+
+    try {
+      const user = await UserModel.findOne({ username });
+
+      if (!user) {
+        res.status(404).send('User not found');
+        return;
+      }
+      res.json({ settings: user.settings });
+    } catch (error) {
+      res.status(500).send('Error retrieving user settings');
+    }
+  };
+
   router.post('/emailVerification', emailVerificationRoute);
   router.post('/addUser', addUserRoute);
   router.post('/loginUser', loginUserRoute);
   router.post('/sendPasswordReset', sendPasswordResetRoute);
   router.post('/resetPassword', resetPasswordRoute);
   router.post('/changeTheme', changeThemeRoute);
+  router.post('/changeFont', changeFontRoute);
+  router.post('/changeTextSize', changeTextSizeRoute);
+  router.post('/changeTextBoldness', changeTextBoldnessRoute);
+  router.post('/changeLineSpacing', changeLineSpacingRoute);
+
+  router.post('/getUserSettings/:username', getUserSettings);
 
   return router;
 };

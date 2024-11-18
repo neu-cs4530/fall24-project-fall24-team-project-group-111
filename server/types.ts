@@ -2,7 +2,6 @@ import { Request } from 'express';
 import { ObjectId } from 'mongodb';
 import { Server } from 'socket.io';
 import { JwtPayload } from 'jsonwebtoken';
-
 export type FakeSOSocket = Server<ServerToClientEvents>;
 
 /**
@@ -257,6 +256,13 @@ export interface User {
  */
 export type UserResponse = User | { error: string };
 
+// Define a custom interface that includes the route parameter `username`
+interface UserRequest extends Request {
+  params: {
+    username: string;
+  };
+}
+
 /**
  * Type representing the possible responses for operation that sends an email.
  */
@@ -318,6 +324,57 @@ export interface UpdateThemeRequest extends Request {
   body: {
     username: string;
     theme: string;
+  };
+}
+
+/**
+ * Interface for the request body when changing the text size of a user.
+ */
+export interface UpdateTextSizeRequest extends Request {
+  body: {
+    username: string;
+    textSize: string;
+  };
+}
+
+/**
+ * Interface for the request body when changing the text boldness of a user.
+ */
+export interface UpdateTextBoldnessRequest extends Request {
+  body: {
+    username: string;
+    textBoldness: string;
+  };
+}
+
+/**
+ * Interface for the request body when changing the font style of a user.
+ */
+export interface UpdateFontRequest extends Request {
+  body: {
+    username: string;
+    font: string;
+  };
+}
+
+/**
+ * Interface for the request body when changing the line spacing of a user.
+ */
+export interface UpdateLineSpacingRequest extends Request {
+  body: {
+    username: string;
+    lineSpacing: string;
+  };
+}
+
+//might not be needed
+/**
+ * Interface for the request body when updating multiple settings for a user.
+ */
+export interface UpdateSettingsRequest extends Request {
+  body: {
+    username: string;
+    settings: SettingsInfo
   };
 }
 
