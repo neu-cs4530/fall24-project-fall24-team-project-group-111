@@ -43,6 +43,46 @@ const SettingsPage = () => {
 
   const { username, setUsername, postSendPasswordReset } = useAccountRecoveryPage();
 
+  const themeCustomizers = document.querySelectorAll('span');
+  const dynamicInputs = document.querySelectorAll('input.input-color-picker');
+
+  const handleThemeUpdate = (cssVars: { [x: string]: string | null }) => {
+    const root = document.querySelector(':root') as HTMLElement;
+    const keys = Object.keys(cssVars);
+    keys.forEach(key => {
+      if (root) {
+        root.style.setProperty(key, cssVars[key]);
+      }
+    });
+  };
+
+  themeCustomizers.forEach(item => {
+    item.addEventListener('click', e => {
+      const bgColor = (e.target as HTMLElement)?.getAttribute('data-background-color');
+      const textColor = (e.target as HTMLElement)?.getAttribute('data-text-color');
+      const buttonColor = (e.target as HTMLElement)?.getAttribute('data-button-background');
+
+      handleThemeUpdate({
+        '--custom-background-color': bgColor,
+        '--custom-text-color': textColor,
+        '--custom-button-background': buttonColor,
+      });
+
+      $("input.input-color-picker[data-id='button-background']").val(buttonColor!);
+      $("input.input-color-picker[data-id='text-color']").val(textColor!);
+      $("input.input-color-picker[data-id='background-color']").val(bgColor!);
+    });
+  });
+
+  dynamicInputs.forEach(item => {
+    item.addEventListener('input', e => {
+      const cssPropName = `--custom-${(e.target as HTMLElement)?.getAttribute('data-id')}`;
+      handleThemeUpdate({
+        [cssPropName]: (e.target as HTMLInputElement)?.value,
+      });
+    });
+  });
+
   const handleThemeChange = async (Event: { target: { value: unknown } }) => {
     setTheme(Event.target.value as ThemeType);
     await changeTheme(user.username, Event.target.value as ThemeType); // alters back-end user data to save theme
@@ -132,7 +172,7 @@ const SettingsPage = () => {
         <HoverToPlayTTSWrapper text={'Change theme'}>
           <div className='settings-row'>
             <label htmlFor='theme-select' className='theme-label'>
-              Change theme
+              Theme:
             </label>
             <select
               id='theme-select'
@@ -146,9 +186,34 @@ const SettingsPage = () => {
               <option value='DarkMode'>Dark Mode</option>
               <option value='Pastel'>Pastel Mode</option>
               <option value='Autumn'>Autumn Mode</option>
+              <option value='Custom'>Custom Mode</option>
             </select>
           </div>
         </HoverToPlayTTSWrapper>
+        <div className='settings-row'>
+          <div>
+            <label>Background: </label>
+            <input
+              className='input-color-picker'
+              type='color'
+              data-id='background-color'
+              name='Background'
+            />
+          </div>
+          <div>
+            <label>Accent Color 2: </label>
+            <input className='input-color-picker' type='color' data-id='text-color' name='Text' />
+          </div>
+          <div>
+            <label>Accent Color 1: </label>
+            <input
+              className='input-color-picker'
+              type='color'
+              data-id='button-background'
+              name='Button'
+            />
+          </div>
+        </div>
         <HoverToPlayTTSWrapper text={'Adjust text size'}>
           <div className='settings-row'>
             <label htmlFor='text-size-select' style={{ marginRight: '10px' }}>

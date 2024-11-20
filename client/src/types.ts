@@ -35,7 +35,7 @@ export interface User {
   settings?: SettingsInfo;
 }
 
-export type ThemeType = 'LightMode' | 'DarkMode' | 'Pastel' | 'Autumn';
+export type ThemeType = 'LightMode' | 'DarkMode' | 'Pastel' | 'Autumn' | 'Custom';
 export type FontType = 'Arial' | 'Times New Roman' | 'Courier New';
 export type TextSizeType = 'small' | 'medium' | 'large' | 'x-large';
 export type TextBoldnessType = 'normal' | 'bold';
