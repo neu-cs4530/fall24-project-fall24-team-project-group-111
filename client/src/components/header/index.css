@@ -19,3 +19,20 @@
   font-weight: var(--font-weight);
 }
 
+.menubtn {
+  background-color: transparent;
+  padding: 16px;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  color: var(--text-color);
+  font-family: var(--font-family);
+  font-size: var(--font-size);
+  font-weight: bold;
+}
+
+.menubtn:hover {
+  text-decoration: underline;
+}
+
