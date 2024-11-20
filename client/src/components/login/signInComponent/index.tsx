@@ -36,43 +36,45 @@ const SignIn = ({ onSwitch }: { onSwitch: () => void }) => {
   };
 
   return (
-    <div className='login-input-container'>
-      <HoverToPlayTTSWrapper text={'Sign in to your account'}>
-        <h3>Sign in to your account</h3>
-      </HoverToPlayTTSWrapper>
-      <form onSubmit={handleSubmit}>
-        <LoginInput
-          title={'Username'}
-          id={'usernameInput'}
-          val={username}
-          setState={setUsername}
-          err={usernameErr}
-          type='text'
-        />
-        <LoginInput
-          title={'Password'}
-          link='Forgot password?'
-          onLinkClick={() => navigate('/account-recovery')}
-          id={'passwordInput'}
-          val={password}
-          setState={setPassword}
-          err={passwordErr}
-          type='password'
-        />
-        {postLoginErr && <div className='error-text'>{postLoginErr}</div>}
-        <HoverToPlayTTSWrapper text={'Sign in button'}>
-          <button type='submit' className='login-button'>
-            Sign In
-          </button>
+    <div className='nested-container'>
+      <div className='login-input-container'>
+        <HoverToPlayTTSWrapper text={'Sign in to your account'}>
+          <div className='login-header'>Sign in to your account</div>
         </HoverToPlayTTSWrapper>
-      </form>
+        <form onSubmit={handleSubmit}>
+          <LoginInput
+            title={'Username'}
+            id={'usernameInput'}
+            val={username}
+            setState={setUsername}
+            err={usernameErr}
+            type='text'
+          />
+          <LoginInput
+            title={'Password'}
+            link='Forgot password?'
+            onLinkClick={() => navigate('/account-recovery')}
+            id={'passwordInput'}
+            val={password}
+            setState={setPassword}
+            err={passwordErr}
+            type='password'
+          />
+          {postLoginErr && <div className='error-text'>{postLoginErr}</div>}
+          <HoverToPlayTTSWrapper text={'Sign in button'}>
+            <button type='submit' className='login-button'>
+              Sign In
+            </button>
+          </HoverToPlayTTSWrapper>
+        </form>
+      </div>
       <HoverToPlayTTSWrapper text={'Dont have an account? Click here to sign up.'}>
-        <h5>
+        <div className='login-text'>
           Don’t have an account?{' '}
           <button onClick={onSwitch} className='link-button'>
             Sign up
           </button>
-        </h5>
+        </div>
       </HoverToPlayTTSWrapper>
     </div>
   );

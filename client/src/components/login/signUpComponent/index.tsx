@@ -39,7 +39,7 @@ const SignUp = ({ onSwitch }: { onSwitch: () => void }) => {
   return (
     <div>
       {emailRecipient ? (
-        <div className='login-input-container'>
+        <div className='nested-container'>
           <HoverToPlayTTSWrapper
             text={`A verification email has been sent to ${emailRecipient} containing a verification token.`}>
             <h3 className='success_message'>
@@ -52,53 +52,55 @@ const SignUp = ({ onSwitch }: { onSwitch: () => void }) => {
           </button>
         </div>
       ) : (
-        <div className='login-input-container'>
-          <HoverToPlayTTSWrapper text={'Create an account'}>
-            <h3>Create an account</h3>
-          </HoverToPlayTTSWrapper>
-          <form onSubmit={handleSubmit}>
-            <LoginInput
-              title={'Username'}
-              id={'usernameInput'}
-              val={username}
-              setState={setUsername}
-              err={usernameErr}
-              type='text'
-            />
-            <LoginInput
-              title={'Email'}
-              id={'emailInput'}
-              val={email}
-              setState={setEmail}
-              err={emailErr}
-              type='text'
-            />
-            <LoginInput
-              title={'Password'}
-              id={'passwordInput'}
-              val={password}
-              setState={setPassword}
-              err={passwordErr}
-              type='password'
-            />
-            {postEmailVerificationErr && (
-              <HoverToPlayTTSWrapper text={postEmailVerificationErr}>
-                <div className='error-text'>{postEmailVerificationErr}</div>
-              </HoverToPlayTTSWrapper>
-            )}
-            <HoverToPlayTTSWrapper text={'Button to complete Sign up'}>
-              <button type='submit' className='login-button'>
-                Sign up
-              </button>
+        <div className='nested-container'>
+          <div className='login-input-container'>
+            <HoverToPlayTTSWrapper text={'Create an account'}>
+              <div className='login-header'>Create an account</div>
             </HoverToPlayTTSWrapper>
-          </form>
+            <form onSubmit={handleSubmit}>
+              <LoginInput
+                title={'Username'}
+                id={'usernameInput'}
+                val={username}
+                setState={setUsername}
+                err={usernameErr}
+                type='text'
+              />
+              <LoginInput
+                title={'Email'}
+                id={'emailInput'}
+                val={email}
+                setState={setEmail}
+                err={emailErr}
+                type='text'
+              />
+              <LoginInput
+                title={'Password'}
+                id={'passwordInput'}
+                val={password}
+                setState={setPassword}
+                err={passwordErr}
+                type='password'
+              />
+              {postEmailVerificationErr && (
+                <HoverToPlayTTSWrapper text={postEmailVerificationErr}>
+                  <div className='error-text'>{postEmailVerificationErr}</div>
+                </HoverToPlayTTSWrapper>
+              )}
+              <HoverToPlayTTSWrapper text={'Button to complete Sign up'}>
+                <button type='submit' className='login-button'>
+                  Sign up
+                </button>
+              </HoverToPlayTTSWrapper>
+            </form>
+          </div>
           <HoverToPlayTTSWrapper text={'Already have an account? Click here to sign in.'}>
-            <h5>
+            <div className='login-text'>
               Already have an account?{' '}
               <button onClick={onSwitch} className='link-button'>
                 Sign in
               </button>
-            </h5>
+            </div>
           </HoverToPlayTTSWrapper>
         </div>
       )}
