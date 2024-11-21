@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import textToSpeech from '../../utils/textToSpeech';
+import { useTTSEnabled } from '../../contexts/TTSContext';
 
 interface HoverToPlayTTSWrapperProps {
   children: React.ReactNode;
@@ -14,6 +15,7 @@ const HoverToPlayTTSWrapper = ({
 }: HoverToPlayTTSWrapperProps) => {
   const [isHovered, setIsHovered] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
+  const { ttsEnabled } = useTTSEnabled();
 
   const handleButtonClick = () => {
     if (isPlaying) {
@@ -45,8 +47,8 @@ const HoverToPlayTTSWrapper = ({
         gap: '8px',
         position: 'relative',
       }}>
-      {children} {}
-      {isHovered && (
+      {children}
+      {isHovered && ttsEnabled && (
         <button
           className='playTTSButton'
           style={{

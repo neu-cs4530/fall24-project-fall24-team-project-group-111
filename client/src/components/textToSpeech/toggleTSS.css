@@ -1,0 +1,85 @@
+/* Container for centering the button */
+.toggle-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 30px;
+  }
+  
+  /* Style for the entire button */
+  .toggle-button {
+    width: 70px;
+    height: 30px;
+    background-color: #ccc;
+    border-radius: 25px;
+    position: relative;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    padding: 5px;
+    transition: background-color 0.3s;
+  }
+  
+  .circle {
+    width: 25px;
+    height: 25px;
+    background-color: white;
+    border-radius: 50%;
+    position: absolute;
+    top: 50%;
+    left: 5px;
+    transform: translateY(-50%);
+    transition: left 0.3s;
+  }
+  
+  .toggle-button.on .circle {
+    left: 43px;
+  }
+  
+  .text {
+    position: absolute;
+    font-size: 14px;
+    color: black;
+    transition: right 0.3s, left 0.3s;
+    font-weight: bolder;
+  }
+  
+  .text.left {
+    left: 35px;
+  }
+  
+  .text.right {
+    right: 35px;
+  }
+  
+  /* Styles with variables */
+  
+  .styled-button {
+    background-color: var(--toggle-off);
+  }
+  
+  .styled-button.on {
+    background-color: var(--toggle-on);
+  }
+  
+  .styled-button.off {
+    background-color: var(--toggle-off);
+  }
+  
+  .styled-text {
+    color: var(--toggle-font);
+  }
+
+  .ttsLabel {
+    padding-bottom: 5px;
+  }
+
+  .styled-ttsLabel {
+    color: var(--toggle-label);
+  }
+  
+  .toggle-container-background-color {
+    background-color: darkgrey;
+    border-radius: 25px;
+    width: 70px;
+  }
