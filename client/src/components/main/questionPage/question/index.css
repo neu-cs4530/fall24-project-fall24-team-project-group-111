@@ -1,24 +1,64 @@
 .question {
   display: flex;
   flex-direction: row;
-  border-top: var(--text-color) 1px dashed;
+  /* border-top: 0.5px solid var(--header-background); */
+  padding: 20px;
+  /* margin-bottom: 20px; */
+  /* background: linear-gradient(30deg, var(--header-background), var(--background-color)); */
+  /* background-color: #ffffff; */
+  border-radius: 8px;
+  box-shadow: 0 0 8px var(--box-shadow);
+  margin: 10px;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.question:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 8px 4px var(--box-shadow);
 }
 
 .postStats {
   color: var(--text-color);
   text-align: center;
-  width: 10%;
+  /* width: 10%; */
+  width: 15%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  /* justify-content: left; */
+  /* align-items: center; */
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.fas {
+  margin-right: 5px;
 }
 
 .question_mid {
-  width: 60%;
+  /* width: 60%; */
+  width: 55%;
+  padding: 0 20px;
 }
 
 .postTitle {
   color: var(--secondary-color);
   font-family: var(--font-family);
-  font-size: var(--font-size);
+  /* font-size: var(--font-size); */
+  font-size: calc(var(--font-size) + 20px); /* Adjust font-size using calc() */
   font-weight: var(--font-weight);
+  margin-bottom: 10px;
+}
+
+.question_text {
+  color: var(--text-color);
+  font-family: var(--font-family);
+  font-size: 1em;
+  margin-bottom: 10px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 100%;
 }
 
 .question_tags {
@@ -38,6 +78,7 @@
   font-family: var(--font-family);
   font-size: var(--font-size);
   font-weight: var(--font-weight);
+  cursor: pointer;
 }
 
 .question_tag_button:first-child {
@@ -47,11 +88,17 @@
 .lastActivity {
   width: 30%;
   display: flex;
-  flex-direction: row;
+  /* flex-direction: row; */
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-end;
+  text-align: right;
 }
 
 .question_author {
-  color: var( --question-author);
+  /* color: var( --question-author); */
+  color: var(--secondary-color);
+  font-weight: bold;
 }
 
 .question_meta {

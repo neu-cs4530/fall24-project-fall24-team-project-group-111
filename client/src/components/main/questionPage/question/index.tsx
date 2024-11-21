@@ -5,6 +5,7 @@ import { getMetaData } from '../../../../tool';
 import { Question } from '../../../../types';
 import HoverToPlayTTSWrapper from '../../../textToSpeech/textToSpeechComponent';
 import formatDateToHumanReadable from '../../../../utils/date.utils';
+import '@fortawesome/fontawesome-free/css/all.min.css';
 
 /**
  * Interface representing the props for the Question component.
@@ -58,13 +59,28 @@ const QuestionView = ({ q }: QuestionProps) => {
         }
       }}>
       <div className='postStats'>
-        <div>{q.answers.length || 0} answers</div>
-        <div>{q.views.length} views</div>
+        <div>
+          <i className='fas fa-comments'></i>
+          {q.answers.length || 0} answers
+        </div>
+        <div>
+          <i className='fas fa-eye'></i>
+          {q.views.length} views
+        </div>
+        <div>
+          <i className='fas fa-thumbs-up'></i>
+          {q.upVotes.length} upvotes
+        </div>
+        <div>
+          <i className='fas fa-thumbs-down'></i>
+          {q.downVotes.length} downvotes
+        </div>
       </div>
       <div className='question_mid'>
         <HoverToPlayTTSWrapper text={questionTTS}>
           <div className='postTitle'>{q.title}</div>
         </HoverToPlayTTSWrapper>
+        <div className='question_text'>{q.text}</div>
         <div className='question_tags'>
           {q.tags.map((tag, idx) => (
             <button

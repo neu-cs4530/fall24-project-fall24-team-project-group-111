@@ -2,10 +2,11 @@
   display: flex;
   flex-direction: column;
   width: 15%;
-  border-right: dashed;
+  border-right: 0.5px solid var(--header-background);
+  /* border-color: var(--header-background); */
   padding: 4% 0 4% 0;
   align-items: center;
-  border-color: var(--text-color);
+  /* border-color: var(--text-color); */
   gap: 50px;
 }
 

@@ -5,6 +5,7 @@
   height: 10%;
   width: 100%;
   background: var(--header-background);
+  box-shadow: 0 4px 8px var(--box-shadow);
 }
 
 .title {
