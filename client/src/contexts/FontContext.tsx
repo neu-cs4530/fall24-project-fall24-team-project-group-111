@@ -32,6 +32,21 @@ const FontContext = createContext<FontContextType>({
   setLineSpacing: () => {},
 });
 
+const mapTextSizeToCSSValue = (textSize: TextSizeType): string => {
+  switch (textSize) {
+    case 'small':
+      return '12px';
+    case 'medium':
+      return '16px';
+    case 'large':
+      return '20px';
+    case 'x-large':
+      return '24px';
+    default:
+      return '16px'; // Default to medium if the value is not recognized
+  }
+};
+
 export const FontProvider = ({ children }: { children: ReactNode }) => {
   const { user } = useUserContext();
   const [font, setFont] = useState<FontType>(user?.settings?.font || 'Arial');
@@ -45,7 +60,7 @@ export const FontProvider = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     document.documentElement.style.setProperty('--font-family', font);
-    document.documentElement.style.setProperty('--font-size', textSize);
+    document.documentElement.style.setProperty('--font-size', mapTextSizeToCSSValue(textSize));
     document.documentElement.style.setProperty('--font-weight', textBoldness);
     document.documentElement.style.setProperty('--line-height', lineSpacing);
   }, [font, textSize, textBoldness, lineSpacing]);

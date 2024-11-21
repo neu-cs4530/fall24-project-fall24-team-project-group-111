@@ -6,6 +6,7 @@
   /* margin-bottom: 20px; */
   /* background: linear-gradient(30deg, var(--header-background), var(--background-color)); */
   /* background-color: #ffffff; */
+  background-color: var(--question-background);
   border-radius: 8px;
   box-shadow: 0 0 8px var(--box-shadow);
   margin: 10px;
@@ -20,6 +21,7 @@
 .postStats {
   color: var(--text-color);
   text-align: center;
+  font-size: calc(var(--font-size) - 2px);
   /* width: 10%; */
   width: 15%;
   display: flex;
@@ -45,7 +47,7 @@
   color: var(--secondary-color);
   font-family: var(--font-family);
   /* font-size: var(--font-size); */
-  font-size: calc(var(--font-size) + 20px); /* Adjust font-size using calc() */
+  font-size: calc(var(--font-size) + 4px); /* Adjust font-size using calc() */
   font-weight: var(--font-weight);
   margin-bottom: 10px;
 }
@@ -53,7 +55,7 @@
 .question_text {
   color: var(--text-color);
   font-family: var(--font-family);
-  font-size: 1em;
+  font-size: var(--font-size);
   margin-bottom: 10px;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -64,7 +66,7 @@
 .question_tags {
   margin-top: 1%;
   font-family: var(--font-family);
-  font-size: var(--font-size);
+  font-size: calc(var(--font-size) - 2px);
   font-weight: var(--font-weight);
 }
 
@@ -74,9 +76,9 @@
   border-width: 0;
   border-radius: 8px;
   margin-left: 2%;
-  padding: 1% 3% 1% 3%;
+  padding: 1% 1.5% 1% 1.5%;
   font-family: var(--font-family);
-  font-size: var(--font-size);
+  font-size: calc(var(--font-size) - 2px);
   font-weight: var(--font-weight);
   cursor: pointer;
 }
@@ -88,8 +90,8 @@
 .lastActivity {
   width: 30%;
   display: flex;
-  /* flex-direction: row; */
-  flex-direction: column;
+  flex-direction: row;
+  /* flex-direction: column; */
   justify-content: center;
   align-items: flex-end;
   text-align: right;
@@ -99,10 +101,12 @@
   /* color: var( --question-author); */
   color: var(--secondary-color);
   font-weight: bold;
+  font-size: calc(var(--font-size) - 2px);
 }
 
 .question_meta {
   color: var(--text-color);
+  font-size: calc(var(--font-size) - 2px);
 }
 
 .titleTTS {
