@@ -101,6 +101,9 @@ export const saveUser = async (token: string): Promise<UserResponse> => {
         textBoldness: 'normal',
         font: 'Arial',
         lineSpacing: '1',
+        backgroundColor: '#ffffff',
+        textColor: '#000000',
+        buttonColor: '#5c0707',
       },
     };
     const result = await UserModel.create(newUser);
@@ -207,7 +210,7 @@ export const resetPassword = async (token: string, newPassword: string): Promise
 };
 
 /**
- * Attempts change the theme of a user in the database.
+ * Attempts to change the theme of a user in the database.
  *
  * @param {string} username - The username of the user for the theme change.
  * @param {string} theme - The theme to change to.
@@ -227,6 +230,87 @@ export const changeTheme = async (username: string, theme: string): Promise<User
     return user;
   } catch (error) {
     return { error: 'Error changing user theme' };
+  }
+};
+
+/**
+ * Attempts to change the background color on the custom theme of a user in the database.
+ *
+ * @param {string} username - The username of the user for the background color change.
+ * @param {string} backgroundColor - The background color to change to.
+ *
+ * @returns {Promise<UserResponse>} - The changed user, or an error message if the background color change failed.
+ */
+export const changeBackgroundColor = async (
+  username: string,
+  backgroundColor: string,
+): Promise<UserResponse> => {
+  try {
+    const user = await UserModel.findOneAndUpdate(
+      { username },
+      { $set: { 'settings.backgroundColor': backgroundColor } },
+      { new: true },
+    );
+    if (!user) {
+      return { error: 'Username does not exist' };
+    }
+    return user;
+  } catch (error) {
+    return { error: 'Error changing user background color' };
+  }
+};
+
+/**
+ * Attempts to change the text color on the custom theme of a user in the database.
+ *
+ * @param {string} username - The username of the user for the text color change.
+ * @param {string} textColor - The text color to change to.
+ *
+ * @returns {Promise<UserResponse>} - The changed user, or an error message if the text color change failed.
+ */
+export const changeTextColor = async (
+  username: string,
+  textColor: string,
+): Promise<UserResponse> => {
+  try {
+    const user = await UserModel.findOneAndUpdate(
+      { username },
+      { $set: { 'settings.textColor': textColor } },
+      { new: true },
+    );
+    if (!user) {
+      return { error: 'Username does not exist' };
+    }
+    return user;
+  } catch (error) {
+    return { error: 'Error changing user text color' };
+  }
+};
+
+/**
+ * Attempts to change the button color on the custom theme of a user in the database.
+ *
+ * @param {string} username - the username of the user for the button color change.
+ * @param {string} buttonColor - the button color to change to.
+ *
+ * @returns {Promise<UserResponse>} - The changed user, or an error message if the button color change failed.
+ */
+export const changeButtonColor = async (
+  username: string,
+  buttonColor: string,
+): Promise<UserResponse> => {
+  try {
+    const user = await UserModel.findOneAndUpdate(
+      { username },
+      { $set: { 'settings.buttonColor': buttonColor } },
+      { new: true },
+    );
+    if (!user) {
+      return { error: 'Username does not exist' };
+    }
+    return user;
+  } catch (error) {
+    return { error: 'Error changing user button color' };
   }
 };
 

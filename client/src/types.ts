@@ -9,6 +9,9 @@ export type FakeSOSocket = Socket<ServerToClientEvents>;
  * @property textBoldness - the currently selcted text boldness
  * @property font - the currently selcted font style for text
  * @property lineSpacing - the currently selcted line spacing for all text
+ * @property backgroundColor - the currently selected background color for the custom theme option
+ * @property textColor - the currently selected text color for the custom theme option
+ * @property buttonColor - the currently selected button color for the custom theme option
  */
 export interface SettingsInfo {
   theme: ThemeType;
@@ -16,6 +19,9 @@ export interface SettingsInfo {
   textBoldness: TextBoldnessType;
   font: FontType;
   lineSpacing: LineSpacingType;
+  backgroundColor: string;
+  textColor: string;
+  buttonColor: string;
 }
 
 /**
