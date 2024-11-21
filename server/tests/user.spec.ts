@@ -15,6 +15,7 @@ const changeThemeSpy = jest.spyOn(util, 'changeTheme');
 const changeFontSpy = jest.spyOn(util, 'changeFont');
 const changeTextSizeSpy = jest.spyOn(util, 'changeTextSize');
 const changeTextBoldnessSpy = jest.spyOn(util, 'changeTextBoldness');
+const changeLineSpacingSpy = jest.spyOn(util, 'changeTextBoldness');
 
 const mockSettingsInfo = {
   theme: 'LightMode',
@@ -870,5 +871,54 @@ describe('POST /changeTextBoldness', () => {
     const response = await supertest(app).post('/user/changeTextBoldness').send(mockReqBody);
     expect(response.status).toBe(500);
     expect(response.text).toBe('Error when updating text boldness');
+  });
+});
+
+describe('POST /changeLineSpacing', () => {
+  afterEach(async () => {
+    await mongoose.connection.close(); // Ensure the connection is properly closed
+  });
+
+  afterAll(async () => {
+    await mongoose.disconnect(); // Ensure mongoose is disconnected after all tests
+  });
+  it('should return a 400 error if username or line spacing is missing', async () => {
+    const mockReqBody = {
+      username: 'fakeUser',
+    };
+
+    const response = await supertest(app).post('/user/changeLineSpacing').send(mockReqBody);
+    expect(response.status).toBe(400);
+    expect(response.text).toBe('Invalid request');
+  });
+
+  it('should return a 500 error when the response includes an error field', async () => {
+    const mockReqBody = {
+      username: 'fakeUser',
+      lineSpacing: '1',
+    };
+    const mockErrorResponse = {
+      error: 'Database update failed',
+    };
+
+    changeLineSpacingSpy.mockResolvedValueOnce(mockErrorResponse);
+    const response = await supertest(app).post('/user/changeLineSpacing').send(mockReqBody);
+    expect(response.status).toBe(500);
+    expect(response.text).toBe(
+      'Error when updating line spacing: Error changing user line spacing',
+    );
+  });
+  it('should return a 500 error with a generic message if an unknown error occurs', async () => {
+    const mockReqBody = {
+      username: 'fakeUser',
+      lineSpacing: '3',
+    };
+    changeLineSpacingSpy.mockRejectedValueOnce({});
+
+    const response = await supertest(app).post('/user/changeLineSpacing').send(mockReqBody);
+    expect(response.status).toBe(500);
+    expect(response.text).toBe(
+      'Error when updating line spacing: Error changing user line spacing',
+    );
   });
 });
