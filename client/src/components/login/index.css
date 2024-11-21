@@ -1,5 +1,4 @@
 body {
-  /* height: 100%; */
   background-color: #f1f2f3;
 }
 
@@ -18,16 +17,6 @@ body {
   justify-content: center;
   align-items: center;
 }
-
-/* .container h2,
-.container h3,
-.container h5,
-.container p,
-.container form {
-  text-align: center;
-  width: 100%;
-  margin: 10px 0;
-} */
 
 .container form {
   display: flex;
