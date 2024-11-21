@@ -1,5 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import '@fortawesome/fontawesome-free/css/all.min.css';
 import useHeader from '../../hooks/useHeader';
 import useUserContext from '../../hooks/useUserContext';
 import './index.css';
@@ -30,16 +31,18 @@ const Header = () => {
       <HoverToPlayTTSWrapper text={'Fake Stack Overflow'}>
         <div className='title'>Fake Stack Overflow</div>
       </HoverToPlayTTSWrapper>
-      <HoverToPlayTTSWrapper text={'Search bar'}>
+      <div className='search-container'>
+        <i className='fas fa-search search-icon'></i>
         <input
           id='searchBar'
-          placeholder='Search ...'
+          className='search-bar'
+          placeholder='Search...'
           type='text'
           value={val}
           onChange={handleInputChange}
           onKeyDown={handleKeyDown}
         />
-      </HoverToPlayTTSWrapper>
+      </div>
       {user.username === 'Guest' ? (
         <button className='menubtn' onClick={handleLogout}>
           Sign In

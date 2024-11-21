@@ -2,11 +2,16 @@
   margin-right: 0%;
 }
 
-.question_list:last-child {
-  border-bottom: var(--text-color) 1px dashed;
+.count_label {
+  color: var(--text-color);
+  font-family: var(--font-family);
+  font-size: var(--font-size);
+  font-weight: var(--font-weight);
 }
 
-.count_label {
+.end_of_content {
+  text-align: center;
+  margin: 20px;
   color: var(--text-color);
   font-family: var(--font-family);
   font-size: var(--font-size);

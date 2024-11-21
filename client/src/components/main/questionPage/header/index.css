@@ -1,4 +1,11 @@
+.count_label {
+    font-size: calc(var(--font-size) + 2px);
+}
+
 .btns {
+    border: 1px solid var(--header-background);
+    border-radius: 8px;
+    padding: 2px;
     font-family: var(--font-family);
     font-size: var(--font-size);
     font-weight: var(--font-weight);

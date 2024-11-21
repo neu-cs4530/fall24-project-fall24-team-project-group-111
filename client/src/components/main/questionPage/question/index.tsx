@@ -60,45 +60,49 @@ const QuestionView = ({ q }: QuestionProps) => {
       }}>
       <div className='postStats'>
         <div>
-          <i className='fas fa-comments'></i>
           {q.answers.length || 0} answers
+          <i className='fas fa-comments'></i>
         </div>
         <div>
-          <i className='fas fa-eye'></i>
           {q.views.length} views
+          <i className='fas fa-eye'></i>
         </div>
         <div>
-          <i className='fas fa-thumbs-up'></i>
           {q.upVotes.length} upvotes
+          <i className='fas fa-thumbs-up'></i>
         </div>
         <div>
-          <i className='fas fa-thumbs-down'></i>
           {q.downVotes.length} downvotes
+          <i className='fas fa-thumbs-down'></i>
         </div>
       </div>
-      <div className='question_mid'>
-        <HoverToPlayTTSWrapper text={questionTTS}>
-          <div className='postTitle'>{q.title}</div>
-        </HoverToPlayTTSWrapper>
-        <div className='question_text'>{q.text}</div>
-        <div className='question_tags'>
-          {q.tags.map((tag, idx) => (
-            <button
-              key={idx}
-              className='question_tag_button'
-              onClick={e => {
-                e.stopPropagation();
-                clickTag(tag.name);
-              }}>
-              {tag.name}
-            </button>
-          ))}
+      <div className='question_info_container'>
+        <div className='question_main_info'>
+          <HoverToPlayTTSWrapper text={questionTTS}>
+            <div className='postTitle'>{q.title}</div>
+          </HoverToPlayTTSWrapper>
+          <div className='question_text'>{q.text}</div>
         </div>
-      </div>
-      <div className='lastActivity'>
-        <div className='question_author'>{q.askedBy}</div>
-        <div>&nbsp;</div>
-        <div className='question_meta'>asked {getMetaData(new Date(q.askDateTime))}</div>
+        <div className='question_additional_info'>
+          <div className='question_tags'>
+            {q.tags.map((tag, idx) => (
+              <button
+                key={idx}
+                className='question_tag_button'
+                onClick={e => {
+                  e.stopPropagation();
+                  clickTag(tag.name);
+                }}>
+                {tag.name}
+              </button>
+            ))}
+          </div>
+          <div className='lastActivity'>
+            <div className='question_author'>{q.askedBy}</div>
+            <div>&nbsp;</div>
+            <div className='question_meta'>asked {getMetaData(new Date(q.askDateTime))}</div>
+          </div>
+        </div>
       </div>
     </div>
   );

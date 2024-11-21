@@ -7,10 +7,12 @@ import { OrderType, orderTypeDisplayName } from '../../../../../types';
  *
  * name - The text to be displayed on the button.
  * setQuestionOrder - A function that sets the order of questions based on the message.
+ * isActive - A boolean value that determines if the button is active.
  */
 interface OrderButtonProps {
   orderType: OrderType;
   setQuestionOrder: (order: OrderType) => void;
+  isActive: boolean;
 }
 
 /**
@@ -20,10 +22,11 @@ interface OrderButtonProps {
  *
  * @param orderType - The label for the button and the value passed to setQuestionOrder function.
  * @param setQuestionOrder - Callback function to set the order of questions based on the input message.
+ * @param isActive - A boolean value that determines if the button is active.
  */
-const OrderButton = ({ orderType, setQuestionOrder }: OrderButtonProps) => (
+const OrderButton = ({ orderType, setQuestionOrder, isActive }: OrderButtonProps) => (
   <button
-    className='btn'
+    className={`btn ${isActive ? 'btn_selected' : ''}`}
     onClick={() => {
       setQuestionOrder(orderType);
     }}>
