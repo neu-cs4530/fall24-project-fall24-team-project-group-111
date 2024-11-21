@@ -141,53 +141,58 @@ const SettingsPage = () => {
             </select>
           </div>
         </HoverToPlayTTSWrapper>
-        <div className='settings-row'>
-          <div>
-            <HoverToPlayTTSWrapper text={'Color selecter for Background Color'}>
-              <label>Background: </label>
-              <input
-                className='input-color-picker'
-                type='color'
-                data-id='background-color'
-                name='Background'
-                value={backgroundColor}
-                onChange={handleBackgroundColorChange}
-              />
+        {theme === 'Custom' && (
+          <div className='settings-row'>
+            <div>
+              <HoverToPlayTTSWrapper text={'Color selecter for Background Color'}>
+                <label>Background: </label>
+                <input
+                  className='input-color-picker'
+                  type='color'
+                  data-id='background-color'
+                  name='Background'
+                  value={backgroundColor}
+                  onChange={handleBackgroundColorChange}
+                />
+              </HoverToPlayTTSWrapper>
+            </div>
+            <div>
+              <HoverToPlayTTSWrapper text={'Color selecter for Accent Color 1'}>
+                <label>Accent Color 1: </label>
+                <input
+                  className='input-color-picker'
+                  type='color'
+                  data-id='text-color'
+                  name='Text'
+                  value={textColor}
+                  onChange={handleTextColorChange}
+                />
+              </HoverToPlayTTSWrapper>
+            </div>
+            <div>
+              <HoverToPlayTTSWrapper text={'Color selecter for Accent Color 2'}>
+                <label>Accent Color 2: </label>
+                <input
+                  className='input-color-picker'
+                  type='color'
+                  data-id='button-background'
+                  name='Button'
+                  value={buttonColor}
+                  onChange={handleButtonColorChange}
+                />
+              </HoverToPlayTTSWrapper>
+            </div>
+            <br />
+            <HoverToPlayTTSWrapper text={'Button to save custom theme.'}>
+              <button
+                type='submit'
+                className='reset-pwd-button'
+                onClick={() => handleCustomTheme()}>
+                Save Custom Theme!
+              </button>
             </HoverToPlayTTSWrapper>
           </div>
-          <div>
-            <HoverToPlayTTSWrapper text={'Color selecter for Accent Color 1'}>
-              <label>Accent Color 1: </label>
-              <input
-                className='input-color-picker'
-                type='color'
-                data-id='text-color'
-                name='Text'
-                value={textColor}
-                onChange={handleTextColorChange}
-              />
-            </HoverToPlayTTSWrapper>
-          </div>
-          <div>
-            <HoverToPlayTTSWrapper text={'Color selecter for Accent Color 2'}>
-              <label>Accent Color 2: </label>
-              <input
-                className='input-color-picker'
-                type='color'
-                data-id='button-background'
-                name='Button'
-                value={buttonColor}
-                onChange={handleButtonColorChange}
-              />
-            </HoverToPlayTTSWrapper>
-          </div>
-          <br />
-          <HoverToPlayTTSWrapper text={'Button to save custom theme.'}>
-            <button type='submit' className='reset-pwd-button' onClick={() => handleCustomTheme()}>
-              Save Custom Theme!
-            </button>
-          </HoverToPlayTTSWrapper>
-        </div>
+        )}
         <HoverToPlayTTSWrapper text={'Adjust text size'}>
           <div className='settings-row'>
             <label htmlFor='text-size-select' style={{ marginRight: '10px' }}>
