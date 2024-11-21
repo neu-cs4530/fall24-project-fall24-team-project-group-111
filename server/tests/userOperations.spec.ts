@@ -11,6 +11,8 @@ import {
   changeTheme,
   changeTextSize,
   changeTextBoldness,
+  changeFont,
+  changeLineSpacing,
 } from '../models/userOperations';
 import UserModel from '../models/users';
 import UnverifiedUserModel from '../models/unverifiedUsers';
@@ -335,5 +337,37 @@ describe('changeTextBoldness', () => {
     mockingoose(UserModel).toReturn(null, 'findOneAndUpdate');
     const result = await changeTextBoldness('nonexistentUser', 'bold');
     expect(result).toEqual({ error: 'Username does not exist' });
+  });
+});
+
+describe('changeFont', () => {
+  test('should return error if username does not exist', async () => {
+    mockingoose(UserModel).toReturn(null, 'findOneAndUpdate');
+
+    const result = await changeFont('nonexistentUser', 'Arial');
+    expect(result).toEqual({ error: 'Username does not exist' });
+  });
+
+  test('should return error if there is an error changing the font', async () => {
+    mockingoose(UserModel).toReturn(new Error('Database error'), 'findOneAndUpdate');
+
+    const result = await changeFont('existingUser', 'Arial');
+    expect(result).toEqual({ error: 'Error changing user font style' });
+  });
+});
+
+describe('changeLineSpacing', () => {
+  test('should return error if username does not exist', async () => {
+    mockingoose(UserModel).toReturn(null, 'findOneAndUpdate');
+
+    const result = await changeLineSpacing('nonexistentUser', '1.5');
+    expect(result).toEqual({ error: 'Username does not exist' });
+  });
+
+  test('should return error if there is an error changing the line spacing', async () => {
+    mockingoose(UserModel).toReturn(new Error('Database error'), 'findOneAndUpdate');
+
+    const result = await changeLineSpacing('existingUser', '1.5');
+    expect(result).toEqual({ error: 'Error changing user line spacing' });
   });
 });
