@@ -16,7 +16,6 @@
   --comment-text-area-color: #505180;
   --tag-label: #aebcf9;
   --answer-question-meta: #bbbbbb;
-  --question-author:red;
 }
 [data-theme='LightMode'] {
   --primary-color: #3089e8;
@@ -36,7 +35,6 @@
   --comment-text-area-color: #fff;
   --tag-label: #3c4776;
   --answer-question-meta: #bbbbbb;
-  --question-author:red;
 }
 [data-theme='Pastel'] {
   --primary-color: #FFB5E8;
@@ -56,7 +54,6 @@
   --comment-text-area-color: #f2df9b;
   --tag-label: #890000;
   --answer-question-meta: #09841d;
-  --question-author:rgb(153, 0, 0);
 }
 [data-theme='Autumn'] {
   --primary-color: #842C5C;
@@ -76,7 +73,6 @@
   --comment-text-area-color: #f2df9b;
   --tag-label: #ffecec;
   --answer-question-meta: #81ab88;
-  --question-author:rgb(255, 135, 135);
 }
 
 * {
