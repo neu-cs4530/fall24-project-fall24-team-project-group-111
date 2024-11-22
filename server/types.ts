@@ -379,6 +379,16 @@ export interface UpdateSettingsRequest extends Request {
 }
 
 /**
+ * Interface for handling Google OAuth callback, which contains:
+ * - code - The code returned from Google OAuth.
+ */
+export interface GoogleOAuthCallbackRequest extends Request {
+  query: {
+    code: string;
+  };
+}
+
+/**
  * Interface representing an UnverifiedUser, which contains:
  * - _id - The unique identifier for the unverified user. Optional field.
  * - username - The username of the unverified user.
