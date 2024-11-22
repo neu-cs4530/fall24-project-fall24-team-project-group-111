@@ -2,6 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import useVerifyUser from '../../../hooks/useVerifyUser';
 import LoginInput from '../inputComponent';
+import GoogleAuthButton from '../google';
 import HoverToPlayTTSWrapper from '../../textToSpeech/textToSpeechComponent';
 
 /**
@@ -87,11 +88,17 @@ const SignUp = ({ onSwitch }: { onSwitch: () => void }) => {
                   <div className='error-text'>{postEmailVerificationErr}</div>
                 </HoverToPlayTTSWrapper>
               )}
-              <HoverToPlayTTSWrapper text={'Button to complete Sign up'}>
-                <button type='submit' className='login-button'>
-                  Sign up
-                </button>
-              </HoverToPlayTTSWrapper>
+              <div className='buttons-container'>
+                <HoverToPlayTTSWrapper text={'Button to complete Sign up'}>
+                  <button type='submit' className='login-button'>
+                    Sign up
+                  </button>
+                </HoverToPlayTTSWrapper>
+                <div className='divider'></div>
+                <HoverToPlayTTSWrapper text={'Sign up with Google button'}>
+                  <GoogleAuthButton text='Sign up' />
+                </HoverToPlayTTSWrapper>
+              </div>
             </form>
           </div>
           <HoverToPlayTTSWrapper text={'Already have an account? Click here to sign in.'}>

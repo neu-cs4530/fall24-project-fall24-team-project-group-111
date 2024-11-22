@@ -2,6 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import useLoginUser from '../../../hooks/useLoginUser';
 import LoginInput from '../inputComponent';
+import GoogleAuthButton from '../google';
 import HoverToPlayTTSWrapper from '../../textToSpeech/textToSpeechComponent';
 
 /**
@@ -61,11 +62,17 @@ const SignIn = ({ onSwitch }: { onSwitch: () => void }) => {
             type='password'
           />
           {postLoginErr && <div className='error-text'>{postLoginErr}</div>}
-          <HoverToPlayTTSWrapper text={'Sign in button'}>
-            <button type='submit' className='login-button'>
-              Sign In
-            </button>
-          </HoverToPlayTTSWrapper>
+          <div className='buttons-container'>
+            <HoverToPlayTTSWrapper text={'Sign in button'}>
+              <button type='submit' className='login-button'>
+                Sign In
+              </button>
+            </HoverToPlayTTSWrapper>
+            <div className='divider'></div>
+            <HoverToPlayTTSWrapper text={'Sign in with Google button'}>
+              <GoogleAuthButton text='Sign in' />
+            </HoverToPlayTTSWrapper>
+          </div>
         </form>
       </div>
       <HoverToPlayTTSWrapper text={'Dont have an account? Click here to sign up.'}>
