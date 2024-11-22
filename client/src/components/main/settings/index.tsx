@@ -1,5 +1,6 @@
 import './index.css';
 import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 import {
   FontType,
   LineSpacingType,
@@ -53,6 +54,8 @@ const SettingsPage = () => {
 
   const { username, setUsername, postSendPasswordReset } = useAccountRecoveryPage();
 
+  const [showSaveMessage, setShowSaveMessage] = useState(false);
+
   /**
    * Function to handle the custom theme change event.
    *
@@ -62,6 +65,10 @@ const SettingsPage = () => {
     await changeBackgroundColor(user.username, backgroundColor);
     await changeTextColor(user.username, textColor);
     await changeButtonColor(user.username, buttonColor);
+    setShowSaveMessage(true);
+    setTimeout(() => {
+      setShowSaveMessage(false);
+    }, 3000);
   };
 
   const handleBackgroundColorChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -190,6 +197,7 @@ const SettingsPage = () => {
                 onClick={() => handleCustomTheme()}>
                 Save Custom Theme!
               </button>
+              {showSaveMessage && <div className='success-message'>Theme saved successfully!</div>}
             </HoverToPlayTTSWrapper>
           </div>
         )}

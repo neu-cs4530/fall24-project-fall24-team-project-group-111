@@ -87,13 +87,13 @@
 [data-theme='Custom'] {
   --primary-color: var(--custom-text-color);
   --secondary-color: var(--custom-text-color);
-  --header-background: var(--custom-background-color);
+  --header-background: var(--custom-button-background);
   --background-color: var(--custom-background-color);
   --text-color: var(--custom-text-color);
   --button-background: var(--custom-button-background);
   --nav-button: var(--custom-button-background);
   --button-hover: #cccccc;
-  --nav-selected: #cccccc;
+  --nav-selected: var(--custom-text-color);
   --border-color: #000000;
   --order-button:#ffffff;
   --tags-page-border: #000000;
