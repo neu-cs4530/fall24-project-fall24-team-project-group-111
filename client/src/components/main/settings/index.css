@@ -28,14 +28,25 @@
   .settings-title {
     display: flex;
     align-items: center;
-    margin-bottom: 20px;
+    margin-bottom: 30px;
     margin-left: 20px;
+    margin-top: 20px;
     font-size: xx-large;
     font-weight: bolder;
     color: var(--nav-button);
   }
   
   .settings-container {
+    display: flex;
+    flex-direction: column;
+    row-gap: 10px;
+    align-items: left;
+    margin-bottom: 20px;
+    margin-left: 20px;
+    color: var(--text-color);
+  }
+
+  .preview-container {
     display: flex;
     flex-direction: column;
     row-gap: 10px;

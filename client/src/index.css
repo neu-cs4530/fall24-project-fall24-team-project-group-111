@@ -73,7 +73,7 @@
   --tags-page-border: #938A5D;
   --comment-section-background: #1b2E26;
   --comment-item-background: #474c32;
-  --comment-text-area-color: #f2df9b;
+  --comment-text-area-color: #474c32;
   --tag-label: #ffecec;
   --answer-question-meta: #81ab88;
   --question-author:rgb(255, 135, 135);
@@ -95,4 +95,5 @@ body,
   font-size: var(--font-size);
   font-weight: var(--font-weight);
   line-height: var(--line-height);
+  color: var(--text-color);
 }

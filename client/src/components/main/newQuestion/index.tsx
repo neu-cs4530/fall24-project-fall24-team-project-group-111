@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
+import ReactMarkdown from 'react-markdown';
+import Spinner from 'react-bootstrap/Spinner';
 import useNewQuestion from '../../../hooks/useNewQuestion';
 import Form from '../baseComponents/form';
 import TextArea from '../baseComponents/textarea';
 import './index.css';
 import HoverToPlayTTSWrapper from '../../textToSpeech/textToSpeechComponent';
 import sendPrompt from '../../../services/chatbotServic';
-
+import 'bootstrap/dist/css/bootstrap.min.css';
 /**
  * NewQuestionPage component allows users to submit a new question with a title,
  * description, tags, and username.
@@ -22,16 +24,21 @@ const NewQuestionPage = () => {
     textErr,
     tagErr,
     postQuestion,
+    posting,
   } = useNewQuestion();
 
   const [prompt, setPrompt] = useState('');
   const [response, setResponse] = useState('Hello! What topic would you like to explore?');
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (event: React.ChangeEvent<HTMLFormElement>) => {
     event.preventDefault();
+    setLoading(true);
+    setResponse('');
     const res = await sendPrompt(prompt);
     setResponse(res);
     setPrompt('');
+    setLoading(false);
   };
 
   const handlePrompt = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -74,6 +81,7 @@ const NewQuestionPage = () => {
               }}>
               Post Question
             </button>
+            {posting && <Spinner animation='grow' variant='light' />}
           </HoverToPlayTTSWrapper>
           <div className='mandatory_indicator'>* indicates mandatory fields</div>
         </div>
@@ -81,15 +89,28 @@ const NewQuestionPage = () => {
       <div>
         <form className='form' onSubmit={handleSubmit}>
           <div>
-            <HoverToPlayTTSWrapper text='Need help forming a question? Brainstorm with our chatbot!'>
-              <label>Need help forming a question? Brainstorm with our chatbot!</label>
+            <HoverToPlayTTSWrapper
+              text='Need help forming a question? Brainstorm with our chatbot! Please enter the topic
+                you are interested in:'>
+              <label>
+                Need help forming a question? Brainstorm with our chatbot! Please enter the topic
+                you are interested in:
+              </label>
             </HoverToPlayTTSWrapper>
             <input className='input-text' type='text' value={prompt} onChange={handlePrompt} />
+            <button className='form_postBtn' type='submit'>
+              Brainstorm!
+            </button>
           </div>
         </form>
         <HoverToPlayTTSWrapper text={response}>
           <form className='form'>
-            <p>{response}</p>
+            {loading && (
+              <div className='spinner-container'>
+                <Spinner animation='grow' variant='light' />
+              </div>
+            )}
+            <ReactMarkdown>{response}</ReactMarkdown>
           </form>
         </HoverToPlayTTSWrapper>
       </div>
