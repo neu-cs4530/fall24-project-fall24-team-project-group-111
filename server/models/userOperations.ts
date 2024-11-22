@@ -60,9 +60,9 @@ export const sendEmailVerification = async (user: User): Promise<EmailResponse> 
 
     await sendMail(
       emailRecipient,
-      'Activate your FakeStackOverflow Account',
-      `Thank you for signing up for FakeStackOverflow! Use this token to verify your email: ${emailVerificationToken}\n
-This token will expire in 24 hours. If you did not sign up for a FakeStackOverflow account, you can safely ignore this email.`,
+      'Activate your CodeFlow Account',
+      `Thank you for signing up for CodeFlow! Use this token to verify your email: ${emailVerificationToken}\n
+This token will expire in 24 hours. If you did not sign up for a CodeFlow account, you can safely ignore this email.`,
     );
     return { emailRecipient };
   } catch (error) {
@@ -161,7 +161,7 @@ export const sendPasswordReset = async (username: string): Promise<EmailResponse
     const emailRecipient = updatedUser.email;
     await sendMail(
       emailRecipient,
-      'FakeStackOverflow Password Reset Request',
+      'CodeFlow Password Reset Request',
       `A password reset was requested for ${username}. Use this token to reset your password: ${resetToken}. This token will expire in 1 hour.`,
     );
     return { emailRecipient };

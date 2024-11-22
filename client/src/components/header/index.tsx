@@ -23,8 +23,8 @@ const Header = () => {
   return (
     <div id='header' className='header'>
       <div></div>
-      <HoverToPlayTTSWrapper text={'Fake Stack Overflow'}>
-        <div className='title'>Fake Stack Overflow</div>
+      <HoverToPlayTTSWrapper text={'Code Flow'}>
+        <div className='title'>Code Flow</div>
       </HoverToPlayTTSWrapper>
       <HoverToPlayTTSWrapper text={'Search bar'}>
         <input

@@ -22,8 +22,8 @@ const Login = () => {
 
   return (
     <div className='container'>
-      <HoverToPlayTTSWrapper text={'welcome to FakeStackOverflow!'}>
-        <h2>Welcome to FakeStackOverflow!</h2>
+      <HoverToPlayTTSWrapper text={'welcome to Code Flow!'}>
+        <h2>Welcome to CodeFlow!</h2>
       </HoverToPlayTTSWrapper>
       {isSignIn ? <SignIn onSwitch={handleSwitch} /> : <SignUp onSwitch={handleSwitch} />}
       <form onSubmit={handleSubmit}>

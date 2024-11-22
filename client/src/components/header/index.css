@@ -8,9 +8,9 @@
 }
 
 .title {
-  font-size: 32px;
-  font-weight: 800;
-  color: var(--text-color)
+  font-family: 'Michroma';
+  color: var(--text-color);
+  font-size: 80px;
 }
 
 .bluebtn {
