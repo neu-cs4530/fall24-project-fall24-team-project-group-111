@@ -9,6 +9,7 @@
   --button-hover: rgb(73, 43, 137);
   --nav-selected: #2c2d5d;
   --border-color: #efefeff3;
+  --search-color: #58a49d;
   --order-button:#efefeff3;
   --tags-page-border: #6751ae;
   --comment-section-background: #2c2d5d; 
@@ -54,6 +55,7 @@
   --button-hover: #fc7676;
   --nav-selected: #a9e6a8;
   --border-color: #A5E3FF;
+  --search-color: #af0375;
   --order-button:#A79AFF;
   --tags-page-border: #1992cf;
   --comment-section-background: #a4f9bf;
@@ -76,6 +78,7 @@
   --button-hover: #C98133;
   --nav-selected: #550e0e;
   --border-color: #395A42;
+  --search-color: #C98133;
   --order-button:#D23735;
   --tags-page-border: #938A5D;
   --comment-section-background: #1b2E26;

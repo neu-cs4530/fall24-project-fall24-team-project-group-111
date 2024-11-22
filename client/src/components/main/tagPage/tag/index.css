@@ -1,15 +1,25 @@
 .tagNode {
   place-self: center;
-  border: var(--tags-page-border) 1px dashed;
+  border-radius: 8px;
   padding: 5%;
-  width: 30%;
+  gap: 10px;
+  max-width: 50%;
   display: flex;
   flex-direction: column;
   justify-items: center;
   align-items: center;
   background: var(--tag-background);
+  box-shadow: 0 0 4px var(--box-shadow);
+  transition: transform 0.2s, box-shadow 0.2s;
+  cursor: pointer;
+}
+
+.tagNode:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 6px 3px var(--box-shadow);
 }
 
 .tagName {
   color: var(--tag-label);
+  font-size: calc(var(--font-size) + 2px);
 }

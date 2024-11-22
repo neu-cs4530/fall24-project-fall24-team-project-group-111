@@ -29,7 +29,7 @@ const QuestionPage = () => {
       )}
       {qlist.length > 0 && (
         <div className='end_of_content'>
-          <p>No more questions</p>
+          <p>End of Results</p>
         </div>
       )}
     </>
