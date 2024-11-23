@@ -26,7 +26,7 @@ interface OrderButtonProps {
  */
 const OrderButton = ({ orderType, setQuestionOrder, isActive }: OrderButtonProps) => (
   <button
-    className={`btn ${isActive ? 'btn_selected' : ''}`}
+    className={`button ${isActive ? 'button_selected' : ''}`}
     onClick={() => {
       setQuestionOrder(orderType);
     }}>

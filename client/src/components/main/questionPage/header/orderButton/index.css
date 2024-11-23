@@ -1,4 +1,4 @@
-.btn {
+.button {
   background: transparent;
   border: none;
   border-radius: 4px;
@@ -22,11 +22,11 @@
   text-decoration: none;
 }
 
-.btn_selected {
-  background: var(--primary-color);
+.button_selected {
+  background: var(--order-button-selected);
   font-weight: bold;
 }
 
-.btn:not(.btn_selected):hover {
+.button:not(.button_selected):hover {
   background: var(--nav-selected);
 }

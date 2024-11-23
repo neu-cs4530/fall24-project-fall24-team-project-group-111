@@ -26,6 +26,7 @@ const useNewQuestion = () => {
   const [titleErr, setTitleErr] = useState<string>('');
   const [textErr, setTextErr] = useState<string>('');
   const [tagErr, setTagErr] = useState<string>('');
+  const [posting, setPosting] = useState(false);
 
   /**
    * Function to validate the form before submitting the question.
@@ -83,6 +84,7 @@ const useNewQuestion = () => {
    * @returns title - The current value of the title input.
    */
   const postQuestion = async () => {
+    setPosting(true);
     if (!validateForm()) return;
 
     const tagnames = tagNames.split(' ').filter(tagName => tagName.trim() !== '');
@@ -105,6 +107,7 @@ const useNewQuestion = () => {
     };
 
     const res = await addQuestion(question);
+    setPosting(false);
 
     if (res && res._id) {
       navigate('/home');
@@ -122,6 +125,8 @@ const useNewQuestion = () => {
     textErr,
     tagErr,
     postQuestion,
+    posting,
+    setPosting,
   };
 };
 

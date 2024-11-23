@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { getMetaData, handleHyperlink } from '../../../tool';
+import ReactMarkdown from 'react-markdown';
+import { getMetaData } from '../../../tool';
 import AnswerView from './answer';
 import AnswerHeader from './header';
 import { Comment } from '../../../types';
@@ -76,7 +77,7 @@ const AnswerPage = () => {
             <div className='answerText'>
               <HoverToPlayTTSWrapper text={aiAnswer}>
                 <div id='answerText' className=''>
-                  {handleHyperlink(aiAnswer)}
+                  <ReactMarkdown>{aiAnswer}</ReactMarkdown>
                 </div>
               </HoverToPlayTTSWrapper>
             </div>

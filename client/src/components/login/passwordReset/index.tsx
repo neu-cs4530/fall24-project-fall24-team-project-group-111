@@ -3,6 +3,7 @@ import './index.css';
 import LoginInput from '../inputComponent';
 import usePasswordResetPage from '../../../hooks/usePasswordResetPage';
 import HoverToPlayTTSWrapper from '../../textToSpeech/textToSpeechComponent';
+import ToggleTextToSpeech from '../../textToSpeech/toggleTSS';
 
 /**
  * PasswordResetPage Component contains a form that allows the user to submit a password reset request.
@@ -79,6 +80,7 @@ const PasswordResetPage = () => {
           <div className='success_message'>{successMessage}</div>
         </HoverToPlayTTSWrapper>
       )}
+      <ToggleTextToSpeech isThemed={false} />
     </div>
   );
 };

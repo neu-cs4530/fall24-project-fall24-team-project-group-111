@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import HoverToPlayTTSWrapper from '../../textToSpeech/textToSpeechComponent';
 import './index.css';
 
 /**
@@ -41,13 +42,19 @@ const UserMenu = ({ username, onLogout }: UserMenuProps) => {
 
   return (
     <div className='dropdown'>
-      <button className='menubtn' onClick={toggleDropdown}>
-        Hi, {username} <span className={`caret ${isOpen ? 'open' : ''}`}></span>
-      </button>
+      <HoverToPlayTTSWrapper text={`Hi, user`}>
+        <button className='menubtn' onClick={toggleDropdown}>
+          Hi, {username} <span className={`caret ${isOpen ? 'open' : ''}`}></span>
+        </button>
+      </HoverToPlayTTSWrapper>
       {isOpen && (
         <div className='dropdown-content'>
-          <a onClick={handleNavigateSettings}>Settings</a>
-          <a onClick={onLogout}>Logout</a>
+          <HoverToPlayTTSWrapper text='Settings'>
+            <a onClick={handleNavigateSettings}>Settings</a>
+          </HoverToPlayTTSWrapper>
+          <HoverToPlayTTSWrapper text='Logout'>
+            <a onClick={onLogout}>Logout</a>
+          </HoverToPlayTTSWrapper>
         </div>
       )}
     </div>
