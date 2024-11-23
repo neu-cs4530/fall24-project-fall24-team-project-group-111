@@ -1,10 +1,10 @@
 /* Container for centering the button */
 .toggle-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 30px;
-  }
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 30px;
+}
   
 /* Style for the entire button */
 .toggle-button {
@@ -18,7 +18,7 @@
   align-items: center;
   padding: 5px;
   transition: background-color 0.3s;
-  }
+}
   
 .circle {
   width: 25px;
