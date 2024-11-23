@@ -26,6 +26,9 @@ const Header = () => {
     case 'Autumn':
       logo = '/LightLogo.png';
       break;
+    case 'DarkMode':
+      logo = '/LightLogo.png';
+      break;
     default:
       logo = '/darkLogo.png'; // Optional default case
   }
