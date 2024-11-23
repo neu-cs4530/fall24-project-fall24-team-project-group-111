@@ -448,6 +448,9 @@ export const findOrSaveGoogleUser = async (
         textBoldness: 'normal',
         font: 'Arial',
         lineSpacing: '1',
+        backgroundColor: '#ffffff',
+        textColor: '#000000',
+        buttonColor: '#5c0707',
       },
       googleId,
     };
