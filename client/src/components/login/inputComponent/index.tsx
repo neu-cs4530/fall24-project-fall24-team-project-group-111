@@ -59,7 +59,7 @@ const LoginInput = ({
       </HoverToPlayTTSWrapper>
       {link && (
         <HoverToPlayTTSWrapper text={link}>
-          <button onClick={onLinkClick} className='input_header_link'>
+          <button type='button' onClick={onLinkClick} className='input_header_link'>
             {link}
           </button>
         </HoverToPlayTTSWrapper>

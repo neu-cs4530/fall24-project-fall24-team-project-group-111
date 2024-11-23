@@ -15,7 +15,7 @@ const ToggleTextToSpeech = ({ isThemed = true }: { isThemed?: boolean }) => {
 
   return (
     <div className={`${isThemed ? '' : 'toggle-container-top-right'}`}>
-      <div className={`ttsLabel ${isThemed ? 'styled-ttsLabel' : ''}`}>Enable text to speech</div>
+      <div className={`ttsLabel ${isThemed ? 'styled-ttsLabel' : ''}`}>Text to Speech</div>
       <div
         className={`toggle-container ${isThemed ? '' : 'toggle-container-background-color'}`}
         onClick={handleToggle}>

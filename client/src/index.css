@@ -5,7 +5,7 @@
 }
 
 [data-theme='DarkMode'] {
-  --primary-color: #bb86fc;
+  --primary-color: #9c6ada;
   --secondary-color: #03dac6;
   --header-background: #2c2d5d; 
   --background-color: #090822;
@@ -15,17 +15,21 @@
   --button-hover: rgb(73, 43, 137);
   --nav-selected: #2c2d5d;
   --border-color: #efefeff3;
+  --search-color: #58a49d;
   --order-button:#efefeff3;
+  --order-button-selected: #9c6ada;
   --tags-page-border: #6751ae;
   --comment-section-background: #2c2d5d; 
   --comment-item-background: #505180;
   --comment-text-area-color: #505180;
   --tag-label: #aebcf9;
+  --tag-background: #77538492;
   --answer-question-meta: #bbbbbb;
-  --question-author:red;
+  --question-background: rgba(138, 114, 200, 0.15);
+  --box-shadow: rgba(255, 255, 255, 0.1);
   --toggle-on:#03dac6;
-  --toggle-off: #bb86fc;
-  --toggle-font: #2c2d5d;
+  --toggle-off: #42394d;
+  --toggle-font: #efefeff3;
   --toggle-label: #efefeff3;
 }
 [data-theme='LightMode'] {
@@ -39,64 +43,76 @@
   --button-hover: #0056b3;
   --nav-selected: #cccccc;
   --border-color: #000000;
+  --search-color: #474747f3;
   --order-button:#ffffff;
+  --order-button-selected: #3089e8;
   --tags-page-border: #000000;
   --comment-section-background: #c2c2c2;
   --comment-item-background: #fff;
   --comment-text-area-color: #fff;
   --tag-label: #3c4776;
+  --tag-background: #397dc54b;
   --answer-question-meta: #bbbbbb;
-  --question-author:red;
+  --question-background: rgba(125, 126, 127, 0.1);
+  --box-shadow: rgba(0, 0, 0, 0.1);
   --toggle-on:#4caf50;
-  --toggle-off: #3090e2;
-  --toggle-font: #000000;
+  --toggle-off: #556069;
+  --toggle-font: #efefeff3;
   --toggle-label: #000000;
 }
 [data-theme='Pastel'] {
   --primary-color: #FFB5E8;
-  --secondary-color: #000000;
-  --header-background: #A5E3F8; 
-  --background-color: #f2a4f8;
+  --secondary-color: #af0375;
+  --header-background: #a8d1d1;
+  --background-color: #e5a8e9;
   --text-color: #000000;
   --button-background: #fda173;
   --nav-button: #000000;
   --button-hover: #fc7676;
-  --nav-selected: #99ff96;
+  --nav-selected: #a9e6a8;
   --border-color: #A5E3FF;
+  --search-color: #af0375;
   --order-button:#A79AFF;
+  --order-button-selected: #FFB5E8;
   --tags-page-border: #1992cf;
   --comment-section-background: #a4f9bf;
   --comment-item-background: #f483e5;
   --comment-text-area-color: #f2df9b;
   --tag-label: #890000;
+  --tag-background: #ff828292;
   --answer-question-meta: #09841d;
-  --question-author:rgb(153, 0, 0);
+  --question-background: rgba(184, 201, 225, 0.534);
+  --box-shadow: rgba(0, 0, 0, 0.1);
   --toggle-on:#fda173;
-  --toggle-off: #1992cf;
+  --toggle-off: #6f8883;
   --toggle-font: #000000;
   --toggle-label: #000000;
 }
 [data-theme='Autumn'] {
-  --primary-color: #842C5C;
-  --secondary-color: #E2BF84;
+  --primary-color: #bd1e13;
+  --secondary-color: #c15e20;
   --header-background: #4e1119; 
   --background-color: #7A1825;
   --text-color: #DDC084;
   --button-background: #E5AC3B;
   --nav-button: #e98644;
   --button-hover: #C98133;
-  --nav-selected: #2E0d33;
+  --nav-selected: #550e0e;
   --border-color: #395A42;
+  --search-color: #C98133;
   --order-button:#D23735;
+  --order-button-selected: #bd1e13;
   --tags-page-border: #938A5D;
   --comment-section-background: #1b2E26;
   --comment-item-background: #474c32;
   --comment-text-area-color: #474c32;
   --tag-label: #ffecec;
+  --tag-background: #eda75192;
   --answer-question-meta: #81ab88;
-  --question-author:rgb(255, 135, 135);
-  --toggle-on:#81ab88;
-  --toggle-off: #E2BF84;
+  --question-background: rgba(9, 8, 8, 0.236);
+  --box-shadow: rgba(0, 0, 0, 0.1);
+  --toggle-on:#88d094;
+  --toggle-off: #6c5f47;
   --toggle-font: #2E0d33;
   --toggle-label: #E2BF84;
 }
@@ -109,20 +125,29 @@
   --button-background: var(--custom-button-background);
   --nav-button: var(--custom-button-background);
   --button-hover: #cccccc;
-  --nav-selected: var(--custom-text-color);
+  --nav-selected: var(--custom-button-background);
   --border-color: #000000;
+  --search-color: var(--custom-text-color);
   --order-button:#ffffff;
+  --order-button-selected: var(--custom-button-background);
   --tags-page-border: #000000;
   --comment-section-background: #c2c2c2;
   --comment-item-background: #fff;
   --comment-text-area-color: #fff;
-  --tag-label: var(--custom-button-background);
+  --tag-label: var(--custom-text-color);
+  --tag-background: var(--custom-button-background);
+  --tag-border-color: var(--custom-text-color);
   --answer-question-meta: #bbbbbb;
-  --question-author:var(--custom-text-color);
+  --question-background: var(--custom-button-background);
+  --box-shadow: rgba(0, 0, 0, 0.1);
+  --toggle-on: #4caf50;
+  --toggle-off: #556069;
+  --toggle-font: #efefeff3;
+  --toggle-label: var(--custom-text-color);
 }
 
 * {
-  font-family: Arial, Times 'Times New Roman', Times, serif, 'Courier New', Courier, monospace;
+  font-family: Arial, Times, 'Times New Roman', Times, serif, 'Courier New', Courier, monospace;
 }
 
 html {
@@ -131,7 +156,7 @@ html {
 
 body,
 #root {
-  height: 100%;
+  height: 100vh;
   background-color: var(--background-color);
   font-family: var(--font-family);
   font-size: var(--font-size);

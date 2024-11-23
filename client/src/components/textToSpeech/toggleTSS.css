@@ -51,6 +51,10 @@
 .text.right {
   right: 35px;
 }
+
+.toggle-button.on {
+  background-color: #4caf50;
+}
    
 /* Styles with variables */
 .styled-button {

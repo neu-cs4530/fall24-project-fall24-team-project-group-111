@@ -2,10 +2,9 @@
   display: flex;
   flex-direction: column;
   width: 15%;
-  border-right: dashed;
+  border-right: 1px solid var(--header-background);
   padding: 4% 0 4% 0;
   align-items: center;
-  border-color: var(--text-color);
   gap: 50px;
 }
 
@@ -20,16 +19,15 @@
   border-radius: 5px;
   text-align: center;
   line-height: 40px;
-  color: var(--nav-button);
+  color: var(--secondary-color);
   font-family: var(--font-family);
-  font-size: var(--font-size);
-  font-weight: var(--font-weight);
+  font-size: calc(var(--font-size) + 2px);
+  text-decoration: none;
 }
 
 .menu_selected {
   background: var( --nav-selected);
   padding: 15px;
   font-family: var(--font-family);
-  font-size: var(--font-size);
-  font-weight: var(--font-weight);
+  font-weight: bold;
 }

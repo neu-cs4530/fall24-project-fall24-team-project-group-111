@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './index.css';
 import OrderButton from './orderButton';
 import { OrderType, orderTypeDisplayName } from '../../../../types';
@@ -28,6 +28,13 @@ interface QuestionHeaderProps {
  * @param setQuestionOrder - Function to set the order of questions based on input message.
  */
 const QuestionHeader = ({ titleText, qcnt, setQuestionOrder }: QuestionHeaderProps) => {
+  const [activeOrderType, setActiveOrderType] = useState<OrderType>('newest');
+
+  const handleSetQuestionOrder = (orderType: OrderType) => {
+    setActiveOrderType(orderType);
+    setQuestionOrder(orderType);
+  };
+
   const orderOptions = Object.values(orderTypeDisplayName).join(', ');
   return (
     <div>
@@ -49,7 +56,8 @@ const QuestionHeader = ({ titleText, qcnt, setQuestionOrder }: QuestionHeaderPro
               <OrderButton
                 key={idx}
                 orderType={order as OrderType}
-                setQuestionOrder={setQuestionOrder}
+                setQuestionOrder={handleSetQuestionOrder}
+                isActive={activeOrderType === (order as OrderType)}
               />
             ))}
           </div>

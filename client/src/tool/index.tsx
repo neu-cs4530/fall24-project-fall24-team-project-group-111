@@ -1,38 +1,6 @@
 import React from 'react';
 
 /**
- * List of all the months of the year.
- */
-const MONTHS: string[] = [
-  'Jan',
-  'Feb',
-  'Mar',
-  'Apr',
-  'May',
-  'Jun',
-  'Jul',
-  'Aug',
-  'Sep',
-  'Oct',
-  'Nov',
-  'Dec',
-];
-
-/**
- * Helper function to format the day of the month with leading zero if necessary.
- * It returns a string representing the day of the month with a leading zero if it's less than 10.
- *
- * @param date - The date object from which to extract the day.
- */
-const getDateHelper = (date: Date): string => {
-  const day = date.getDate();
-  if (day < 10) {
-    return `0${day}`;
-  }
-  return `${day}`;
-};
-
-/**
  * Function to get a human-readable metadata string representing the time difference
  * between now and the given date.
  *
@@ -40,26 +8,29 @@ const getDateHelper = (date: Date): string => {
  */
 const getMetaData = (date: Date): string => {
   const now = new Date();
-  const diffs = Math.floor(Math.abs(now.getTime() - date.getTime()) / 1000);
+  const diffs = Math.floor((now.getTime() - date.getTime()) / 1000);
 
   if (diffs < 60) {
-    return `${diffs} seconds ago`;
+    return 'just now';
   }
   if (diffs < 60 * 60) {
-    return `${Math.floor(diffs / 60)} minutes ago`;
+    const minutes = Math.floor(diffs / 60);
+    return `${minutes} minute${minutes !== 1 ? 's' : ''} ago`;
   }
   if (diffs < 60 * 60 * 24) {
-    const h = Math.floor(diffs / 3600);
-    return `${h} hours ago`;
+    const hours = Math.floor(diffs / 3600);
+    return `${hours} hour${hours !== 1 ? 's' : ''} ago`;
+  }
+  if (diffs < 60 * 60 * 24 * 30) {
+    const days = Math.floor(diffs / (60 * 60 * 24));
+    return `${days} day${days !== 1 ? 's' : ''} ago`;
   }
   if (diffs < 60 * 60 * 24 * 365) {
-    return `${MONTHS[date.getMonth()]} ${getDateHelper(date)} at ${date
-      .toTimeString()
-      .slice(0, 8)}`;
+    const months = Math.floor(diffs / (60 * 60 * 24 * 30));
+    return `${months} month${months !== 1 ? 's' : ''} ago`;
   }
-  return `${MONTHS[date.getMonth()]} ${getDateHelper(
-    date,
-  )}, ${date.getFullYear()} at ${date.toTimeString().slice(0, 8)}`;
+  const years = Math.floor(diffs / (60 * 60 * 24 * 365));
+  return `${years} year${years !== 1 ? 's' : ''} ago`;
 };
 
 /**
