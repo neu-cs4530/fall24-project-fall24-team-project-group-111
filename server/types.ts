@@ -226,6 +226,9 @@ export interface SettingsInfo {
   textBoldness: string;
   font: string;
   lineSpacing: string;
+  backgroundColor: string;
+  textColor: string;
+  buttonColor: string;
 }
 
 /**
@@ -325,6 +328,27 @@ export interface UpdateThemeRequest extends Request {
   body: {
     username: string;
     theme: string;
+  };
+}
+
+export interface UpdateBackgroundRequest extends Request {
+  body: {
+    username: string;
+    backgroundColor: string;
+  };
+}
+
+export interface UpdateTextColorRequest extends Request {
+  body: {
+    username: string;
+    textColor: string;
+  };
+}
+
+export interface UpdateButtonRequest extends Request {
+  body: {
+    username: string;
+    buttonColor: string;
   };
 }
 

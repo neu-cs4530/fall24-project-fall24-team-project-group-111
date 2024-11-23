@@ -11,6 +11,9 @@ import { Schema } from 'mongoose';
  * - `textBoldness`: The currently selected boldness of text. This field is required.
  * - `font`: The currently selected font style. This field is required.
  * - `lineSpacing`: The currently selected spacing of text. This field is required.
+ * - 'backgroundColor': The currently selected background color for CustomTheme mode. This field is required.
+ * - 'textColor': The currently selected text color for CustomTheme mode. This field is required.
+ * - 'buttonColor': The currently selected button color for CustomTheme mode. This field is required.
  */
 const settingsSchema: Schema = new Schema(
   {
@@ -27,6 +30,15 @@ const settingsSchema: Schema = new Schema(
       type: String,
     },
     lineSpacing: {
+      type: String,
+    },
+    backgroundColor: {
+      type: String,
+    },
+    textColor: {
+      type: String,
+    },
+    buttonColor: {
       type: String,
     },
   },
