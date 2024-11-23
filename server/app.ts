@@ -110,7 +110,7 @@ app.use('/tag', tagController());
 app.use('/answer', answerController(socket));
 app.use('/comment', commentController(socket));
 app.use('/user', userController(socket, JWT_SECRET));
-app.use('/api', googleAuthController());
+app.use('/api', googleAuthController(JWT_SECRET));
 
 // Export the app instance
 export { app, server, startServer, OPENAI_API_KEY };

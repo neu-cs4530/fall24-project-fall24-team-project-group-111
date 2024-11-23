@@ -1,8 +1,10 @@
 import express, { Response } from 'express';
 import { google } from 'googleapis';
+import jwt from 'jsonwebtoken';
 import { GoogleOAuthCallbackRequest } from '../types';
+import { findOrSaveGoogleUser } from '../models/userOperations';
 
-const googleAuthController = () => {
+const googleAuthController = (JWT_SECRET: string) => {
   const router = express.Router();
 
   const handleGoogleOAuthCallback = async (
@@ -14,7 +16,7 @@ const googleAuthController = () => {
     const oauth2Client = new google.auth.OAuth2(
       process.env.GMAIL_CLIENT_ID,
       process.env.GMAIL_CLIENT_SECRET,
-      process.env.GOOGLE_OAUTH_REDIRECT_URI,
+      `${process.env.CLIENT_URL}/auth/google/callback`,
     );
 
     try {
@@ -27,16 +29,18 @@ const googleAuthController = () => {
       });
 
       const { data } = await oauth2.userinfo.get();
+      if (!data || !data.id || !data.email) {
+        throw new Error('Invalid Google OAuth response');
+      }
 
-      // Handle user data (e.g., create or update user in your database)
-      // Example:
-      // const user = await User.findOrCreate({ googleId: data.id, ... });
-
-      res.redirect('/home'); // Redirect to your home page or wherever you want
+      const googleUserFromDb = await findOrSaveGoogleUser(data.id, data.email);
+      if ('error' in googleUserFromDb) {
+        throw new Error(googleUserFromDb.error);
+      }
+      const token = jwt.sign({ userId: googleUserFromDb._id }, JWT_SECRET, { expiresIn: '1h' });
+      res.json({ message: 'Authentication with Google successful', token, user: googleUserFromDb });
     } catch (err) {
-      // eslint-disable-next-line no-console
-      console.error('Error during Google OAuth callback:', err);
-      // res.status(500).send('Internal Server Error');
+      res.status(500).send('Internal Server Error');
     }
   };
 

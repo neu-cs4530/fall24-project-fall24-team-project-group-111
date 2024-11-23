@@ -238,7 +238,7 @@ export interface SettingsInfo {
  * - settings - The settings information saved for the user. Optional field.
  * - resetPasswordToken - The token used to reset the user's password. Optional field.
  * - resetPasswordExpires - The expiration date for the reset password token. Optional field.
- *
+ * - googleId - The Google ID of the user. Optional field.
  */
 export interface User {
   _id?: ObjectId;
@@ -249,6 +249,7 @@ export interface User {
   settings?: SettingsInfo;
   resetPasswordToken?: string;
   resetPasswordExpires?: Date;
+  googleId?: string;
 }
 
 /**
