@@ -132,7 +132,7 @@ const questionController = (socket: FakeSOSocket) => {
           {
             role: 'system',
             content:
-              'You are answering a question on a question and answer platform. Please provide brief answers written in only plain text.',
+              'You are answering a question on a question and answer platform. Please provide brief answers in markdown.',
           },
           {
             role: 'user',
