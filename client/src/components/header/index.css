@@ -19,3 +19,8 @@
   font-weight: var(--font-weight);
 }
 
+.SiteLogo {
+  height: 100px;
+  width: 110px;
+}
+

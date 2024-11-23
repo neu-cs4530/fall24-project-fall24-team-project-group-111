@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import useHeader from '../../hooks/useHeader';
 import './index.css';
 import HoverToPlayTTSWrapper from '../textToSpeech/textToSpeechComponent';
+import { useTheme } from '../../contexts/ThemeContext';
 
 /**
  * Header component that renders the main title and a search bar.
@@ -12,6 +13,7 @@ import HoverToPlayTTSWrapper from '../textToSpeech/textToSpeechComponent';
 const Header = () => {
   const { val, handleInputChange, handleKeyDown } = useHeader();
   const navigate = useNavigate();
+  const { theme } = useTheme();
 
   /**
    * Function to handle navigation to the "Settings" page.
@@ -19,10 +21,17 @@ const Header = () => {
   const handleNavigateSetting = () => {
     navigate('/settings');
   };
-
+  let logo: string;
+  switch (theme) {
+    case 'Autumn':
+      logo = '/LightLogo.png';
+      break;
+    default:
+      logo = '/darkLogo.png'; // Optional default case
+  }
   return (
     <div id='header' className='header'>
-      <div></div>
+      <img className='SiteLogo' src={logo} alt='Logo' />
       <HoverToPlayTTSWrapper text={'Code Flow'}>
         <div className='title'>Code Flow</div>
       </HoverToPlayTTSWrapper>
