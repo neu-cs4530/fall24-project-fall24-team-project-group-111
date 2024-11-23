@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import useVerifyUser from '../../../hooks/useVerifyUser';
 import LoginInput from '../inputComponent';
 import HoverToPlayTTSWrapper from '../../textToSpeech/textToSpeechComponent';
+import ToggleTextToSpeech from '../../textToSpeech/toggleTSS';
 
 /**
  * Component that allows for the verification of new users during signup.
@@ -104,6 +105,7 @@ const SignUp = ({ onSwitch }: { onSwitch: () => void }) => {
           </HoverToPlayTTSWrapper>
         </div>
       )}
+      <ToggleTextToSpeech isThemed={false} />
     </div>
   );
 };

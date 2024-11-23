@@ -6,6 +6,7 @@ import useUserContext from '../../hooks/useUserContext';
 import './index.css';
 import UserMenu from './userMenu';
 import HoverToPlayTTSWrapper from '../textToSpeech/textToSpeechComponent';
+import ToggleTextToSpeech from '../textToSpeech/toggleTSS';
 
 /**
  * Header component that renders the main title, a search bar, and a Sign In button
@@ -50,6 +51,7 @@ const Header = () => {
       ) : (
         <UserMenu username={user.username} onLogout={handleLogout} />
       )}
+      <ToggleTextToSpeech />
     </div>
   );
 };

@@ -4,6 +4,7 @@ import './index.css';
 import LoginInput from '../inputComponent';
 import useAccountRecoveryPage from '../../../hooks/useAccountRecoveryPage';
 import HoverToPlayTTSWrapper from '../../textToSpeech/textToSpeechComponent';
+import ToggleTextToSpeech from '../../textToSpeech/toggleTSS';
 
 /**
  * AccountRecoveryPage Component contains a form that allows the user to request a password reset email.
@@ -72,6 +73,7 @@ const AccountRecoveryPage = () => {
           </form>
         </div>
       )}
+      <ToggleTextToSpeech isThemed={false} />
     </div>
   );
 };

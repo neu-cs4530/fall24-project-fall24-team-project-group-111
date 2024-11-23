@@ -16,6 +16,7 @@ import AnswerPage from './main/answerPage';
 import SettingsPage from './main/settings';
 import { ThemeProvider } from '../contexts/ThemeContext';
 import { FontProvider } from '../contexts/FontContext';
+import { TTSProvider } from '../contexts/TTSContext';
 
 // note: any settings-related provider must be wrapped in proctected route
 // so that it may utilize User Context
@@ -44,34 +45,36 @@ const FakeStackOverflow = ({ socket }: { socket: FakeSOSocket | null }) => {
 
   return (
     <LoginContext.Provider value={{ setUser }}>
-      <Routes>
-        {/* Public Route */}
-        <Route path='/' element={<Login />} />
-        <Route path='/verify-email' element={<EmailVerificationPage />} />
-        <Route path='/account-recovery' element={<AccountRecoveryPage />} />
-        <Route path='/reset-password' element={<PasswordResetPage />} />
+      <TTSProvider>
+        <Routes>
+          {/* Public Route */}
+          <Route path='/' element={<Login />} />
+          <Route path='/verify-email' element={<EmailVerificationPage />} />
+          <Route path='/account-recovery' element={<AccountRecoveryPage />} />
+          <Route path='/reset-password' element={<PasswordResetPage />} />
 
-        {/* Protected Routes */}
-        {
-          <Route
-            element={
-              <ProtectedRoute user={user} socket={socket}>
-                <ThemeProvider>
-                  <FontProvider>
-                    <Layout />
-                  </FontProvider>
-                </ThemeProvider>
-              </ProtectedRoute>
-            }>
-            <Route path='/home' element={<QuestionPage />} />
-            <Route path='tags' element={<TagPage />} />
-            <Route path='/question/:qid' element={<AnswerPage />} />
-            <Route path='/new/question' element={<NewQuestionPage />} />
-            <Route path='/new/answer/:qid' element={<NewAnswerPage />} />
-            <Route path='/settings' element={<SettingsPage />} />
-          </Route>
-        }
-      </Routes>
+          {/* Protected Routes */}
+          {
+            <Route
+              element={
+                <ProtectedRoute user={user} socket={socket}>
+                  <ThemeProvider>
+                    <FontProvider>
+                      <Layout />
+                    </FontProvider>
+                  </ThemeProvider>
+                </ProtectedRoute>
+              }>
+              <Route path='/home' element={<QuestionPage />} />
+              <Route path='tags' element={<TagPage />} />
+              <Route path='/question/:qid' element={<AnswerPage />} />
+              <Route path='/new/question' element={<NewQuestionPage />} />
+              <Route path='/new/answer/:qid' element={<NewAnswerPage />} />
+              <Route path='/settings' element={<SettingsPage />} />
+            </Route>
+          }
+        </Routes>
+      </TTSProvider>
     </LoginContext.Provider>
   );
 };
