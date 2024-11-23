@@ -35,30 +35,34 @@ const Header = () => {
   }
   return (
     <div id='header' className='header'>
-      <img className='SiteLogo' src={logo} alt='Logo' />
-      <HoverToPlayTTSWrapper text={'Code Flow'}>
-        <div className='title'>Code Flow</div>
-      </HoverToPlayTTSWrapper>
-      <HoverToPlayTTSWrapper text={'Search bar'}>
-        <input
-          id='searchBar'
-          placeholder='Search ...'
-          type='text'
-          value={val}
-          onChange={handleInputChange}
-          onKeyDown={handleKeyDown}
-        />
-      </HoverToPlayTTSWrapper>
-      <HoverToPlayTTSWrapper text={'Button for settings page'}>
-        <button
-          className='bluebtn'
-          onClick={() => {
-            handleNavigateSetting();
-          }}>
-          Settings
-        </button>
-      </HoverToPlayTTSWrapper>
-      <ToggleTextToSpeech />
+      <div className='logo-title-container'>
+        <img className='SiteLogo' src={logo} alt='Logo' />
+        <HoverToPlayTTSWrapper text={'Code Flow'}>
+          <div className='title'>Code Flow</div>
+        </HoverToPlayTTSWrapper>
+      </div>
+      <div className='search-settings-TTS-container'>
+        <HoverToPlayTTSWrapper text={'Search bar'}>
+          <input
+            id='searchBar'
+            placeholder='Search ...'
+            type='text'
+            value={val}
+            onChange={handleInputChange}
+            onKeyDown={handleKeyDown}
+          />
+        </HoverToPlayTTSWrapper>
+        <HoverToPlayTTSWrapper text={'Button for settings page'}>
+          <button
+            className='bluebtn'
+            onClick={() => {
+              handleNavigateSetting();
+            }}>
+            Settings
+          </button>
+        </HoverToPlayTTSWrapper>
+        <ToggleTextToSpeech />
+      </div>
     </div>
   );
 };
