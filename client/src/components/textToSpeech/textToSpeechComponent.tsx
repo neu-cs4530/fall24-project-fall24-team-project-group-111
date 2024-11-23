@@ -2,12 +2,20 @@ import React, { useState, useEffect } from 'react';
 import textToSpeech from '../../utils/textToSpeech';
 import { useTTSEnabled } from '../../contexts/TTSContext';
 
+/**
+ * Text to speech component that users use to hear the text that it is on.
+ * isOnRight determines which side of the object it should show up on.
+ * is enabled/disabled by toggling the toggleTTS component.
+ */
 interface HoverToPlayTTSWrapperProps {
   children: React.ReactNode;
   text: string;
   isOnRight?: boolean;
 }
 
+/**
+ * Function to allow the option to select "play" when the user is hovering over the object.
+ */
 const HoverToPlayTTSWrapper = ({
   children,
   text,
