@@ -2,6 +2,7 @@ import { FontType, LineSpacingType, TextBoldnessType, TextSizeType, User } from 
 import api from './config';
 
 const USER_API_URL = `${process.env.REACT_APP_SERVER_URL}/user`;
+const GOOGLE_AUTH_API_CALLBACK_URL = `${process.env.REACT_APP_SERVER_URL}/api/auth/google/callback`;
 
 /**
  * Function to send an email verification to a new user, returning the recipient email address.
@@ -180,6 +181,20 @@ const changeLineSpacing = async (username: string, lineSpacing: LineSpacingType)
   return res.data;
 };
 
+/**
+ * Function to authenticate with Google.
+ *
+ * @param code - The code returned from Google OAuth.
+ * @throws Error if there is an issue authenticating with Google.
+ */
+const authenticateWithGoogle = async (code: string) => {
+  const res = await api.get(`${GOOGLE_AUTH_API_CALLBACK_URL}?code=${code}`);
+  if (res.status !== 200) {
+    throw new Error('Error while authenticating with Google');
+  }
+  return res.data;
+};
+
 export {
   sendEmailVerification,
   addUser,
@@ -191,4 +206,5 @@ export {
   changeTextBoldness,
   changeFont,
   changeLineSpacing,
+  authenticateWithGoogle,
 };

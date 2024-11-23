@@ -1,25 +1,24 @@
 import React from 'react';
 import './index.css';
 
+const { REACT_APP_REDIRECT_URI, REACT_APP_GOOGLE_CLIENT_ID } = process.env;
+
+if (!REACT_APP_REDIRECT_URI || !REACT_APP_GOOGLE_CLIENT_ID) {
+  throw new Error('Missing required environment variables');
+}
+
 /**
  * Component that allows users to sign in/up with their Google account.
  *
  * @param text - The text to display on the button to indicate whether the user is signing in or signing up.
  */
-const GoogleAuthButton = ({ text }: { text: 'Sign in' | 'Sign up' }) => {
-  const handleGoogleSignIn = () => {
-    // const googleOAuth = {
-    //   client_id: process.env.GMAIL_CLIENT_ID || '',
-    //   redirect_uri: process.env.NEXT_PUBLIC_GOOGLE_OAUTH_REDIRECT_URI || '',
-    //   endpoint: 'https://accounts.google.com/o/oauth2/v2/auth',
-    //   scopes:
-    //     'https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile',
-    // };
+const GoogleOAuthButton = ({ text }: { text: 'Sign in' | 'Sign up' }) => {
+  const handleGoogleSignIn = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
 
     const query = {
-      client_id: '754887347160-heegs5k0nngvon8gp9r9u3odmor5kkrt.apps.googleusercontent.com',
-      // client_id: process.env.GMAIL_CLIENT_ID || '',
-      redirect_uri: 'http://localhost:3000',
+      client_id: REACT_APP_GOOGLE_CLIENT_ID,
+      redirect_uri: REACT_APP_REDIRECT_URI,
       response_type: 'code',
       scope: 'https://www.googleapis.com/auth/userinfo.email',
     };
@@ -62,4 +61,4 @@ const GoogleAuthButton = ({ text }: { text: 'Sign in' | 'Sign up' }) => {
   );
 };
 
-export default GoogleAuthButton;
+export default GoogleOAuthButton;

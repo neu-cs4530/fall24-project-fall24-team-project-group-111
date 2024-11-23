@@ -2,7 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import useVerifyUser from '../../../hooks/useVerifyUser';
 import LoginInput from '../inputComponent';
-import GoogleAuthButton from '../google';
+import GoogleOAuthButton from '../google/oAuthButton';
 import HoverToPlayTTSWrapper from '../../textToSpeech/textToSpeechComponent';
 
 /**
@@ -96,7 +96,7 @@ const SignUp = ({ onSwitch }: { onSwitch: () => void }) => {
                 </HoverToPlayTTSWrapper>
                 <div className='divider'></div>
                 <HoverToPlayTTSWrapper text={'Sign up with Google button'}>
-                  <GoogleAuthButton text='Sign up' />
+                  <GoogleOAuthButton text='Sign up' />
                 </HoverToPlayTTSWrapper>
               </div>
             </form>
