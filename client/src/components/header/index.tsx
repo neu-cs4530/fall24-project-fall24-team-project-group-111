@@ -45,9 +45,11 @@ const Header = () => {
         />
       </div>
       {user.username === 'Guest' ? (
-        <button className='menubtn' onClick={handleLogout}>
-          Sign In
-        </button>
+        <HoverToPlayTTSWrapper text='Sign In'>
+          <button className='menubtn' onClick={handleLogout}>
+            Sign In
+          </button>
+        </HoverToPlayTTSWrapper>
       ) : (
         <UserMenu username={user.username} onLogout={handleLogout} />
       )}
