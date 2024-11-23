@@ -13,6 +13,9 @@ import {
   UpdateLineSpacingRequest,
   UpdateTextBoldnessRequest,
   UpdateTextSizeRequest,
+  UpdateBackgroundRequest,
+  UpdateTextColorRequest,
+  UpdateButtonRequest,
 } from '../types';
 import {
   sendEmailVerification,
@@ -25,6 +28,9 @@ import {
   changeLineSpacing,
   changeTextBoldness,
   changeTextSize,
+  changeBackgroundColor,
+  changeTextColor,
+  changeButtonColor,
 } from '../models/userOperations';
 import UserModel from '../models/users';
 
@@ -280,6 +286,105 @@ const userController = (socket: FakeSOSocket, JWT_SECRET: string) => {
   };
 
   /**
+   * Handles changing the background color on the custom theme of the logged in user. If successful, the
+   * most recently saved background color will be accessed when logged back in and custom theme is selected.
+   *
+   * @param req The UpdateBackgroundRequest object containing the query parameters `username` and `backgroundColor`.
+   * @param res The HTTP response object used to send back the result of the operation.
+   *
+   * @returns a Promise that resolves to void.
+   */
+  const changeBackgroundColorRoute = async (
+    req: UpdateBackgroundRequest,
+    res: Response,
+  ): Promise<void> => {
+    if (!req.body.username || !req.body.backgroundColor) {
+      res.status(400).send('Invalid request');
+      return;
+    }
+    const { username, backgroundColor } = req.body;
+
+    try {
+      const userFromDb = await changeBackgroundColor(username, backgroundColor);
+      if ('error' in userFromDb) {
+        throw new Error(userFromDb.error);
+      }
+      res.json({ message: 'Background color update successful', user: userFromDb });
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        res.status(500).send(`Error when updating background color: ${err.message}`);
+      } else {
+        res.status(500).send(`Error when updating background color`);
+      }
+    }
+  };
+
+  /**
+   * Handles changing the text color on the custom theme of the logged in user. If successful, the
+   * most recently saved text color will be accessed when logged back in and custom theme is selected.
+   *
+   * @param req The UpdateTextColorRequest object containing the query parameters `username` and `textColor`.
+   * @param res The HTTP response object used to send back the result of the operation.
+   *
+   * @returns A Promise that resolves to void.
+   */
+  const changeTextColorRoute = async (
+    req: UpdateTextColorRequest,
+    res: Response,
+  ): Promise<void> => {
+    if (!req.body.username || !req.body.textColor) {
+      res.status(400).send('Invalid request');
+      return;
+    }
+    const { username, textColor } = req.body;
+
+    try {
+      const userFromDb = await changeTextColor(username, textColor);
+      if ('error' in userFromDb) {
+        throw new Error(userFromDb.error);
+      }
+      res.json({ message: 'Text color update successful', user: userFromDb });
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        res.status(500).send(`Error when updating text color: ${err.message}`);
+      } else {
+        res.status(500).send(`Error when updating text color`);
+      }
+    }
+  };
+
+  /**
+   * Handles changing the button color on the custom theme of the logged in user. If successful, the
+   * most recently saved button color will be accessed when logged back in and custom theme is selected.
+   *
+   * @param req The UpdateButtonRequest object containing the query parameters `username` and `buttonColor`.
+   * @param res The HTTP response object used to send back the result of the operation.
+   *
+   * @returns A Promise that resolves to void.
+   */
+  const changeButtonColorRoute = async (req: UpdateButtonRequest, res: Response): Promise<void> => {
+    if (!req.body.username || !req.body.buttonColor) {
+      res.status(400).send('Invalid request');
+      return;
+    }
+    const { username, buttonColor } = req.body;
+
+    try {
+      const userFromDb = await changeButtonColor(username, buttonColor);
+      if ('error' in userFromDb) {
+        throw new Error(userFromDb.error);
+      }
+      res.json({ message: 'Button color update successful', user: userFromDb });
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        res.status(500).send(`Error when updating button color: ${err.message}`);
+      } else {
+        res.status(500).send(`Error when updating button color`);
+      }
+    }
+  };
+
+  /**
    * Handles changing the font style of the currently logged in user. If successful, the most
    * recently saved font style will be accessed when logged back in.
    *
@@ -449,6 +554,9 @@ const userController = (socket: FakeSOSocket, JWT_SECRET: string) => {
   router.post('/changeTextSize', changeTextSizeRoute);
   router.post('/changeTextBoldness', changeTextBoldnessRoute);
   router.post('/changeLineSpacing', changeLineSpacingRoute);
+  router.post('/changeBackgroundColor', changeBackgroundColorRoute);
+  router.post('/changeTextColor', changeTextColorRoute);
+  router.post('/changeButtonColor', changeButtonColorRoute);
 
   router.post('/getUserSettings/:username', getUserSettings);
 

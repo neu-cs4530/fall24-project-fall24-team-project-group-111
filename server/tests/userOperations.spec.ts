@@ -8,6 +8,11 @@ import {
   loginUser,
   sendPasswordReset,
   resetPassword,
+  changeTheme,
+  changeTextSize,
+  changeTextBoldness,
+  changeFont,
+  changeLineSpacing,
 } from '../models/userOperations';
 import UserModel from '../models/users';
 import UnverifiedUserModel from '../models/unverifiedUsers';
@@ -283,5 +288,86 @@ describe('User model', () => {
       const result = await resetPassword('fakeToken', 'newPassword');
       expect(result).toEqual({ error: 'Error resetting password' });
     });
+  });
+});
+describe('changeTheme', () => {
+  test('changeTheme should return error if username does not exist', async () => {
+    mockingoose(UserModel).toReturn(null, 'findOneAndUpdate');
+    const result = await changeTheme('nonExistentUser', 'darkMode');
+    expect(result).toEqual({ error: 'Username does not exist' });
+  });
+  test('changeTheme should return updated user on success', async () => {
+    const mockUser2 = {
+      _id: '65e9b58910afe6e94fc6e6dc',
+      creationDateTime: new Date('2024-06-03T00:00:00.000Z'),
+      email: 'fakeEmail@email.com',
+      password: 'fakepassword',
+      username: 'fakeUser',
+      settings: { theme: 'dark' },
+    };
+    mockingoose(UserModel).toReturn(mockUser2, 'findOneAndUpdate');
+    const result = await changeTheme('fakeUser', 'darkMode');
+    expect(result).toMatchObject({
+      username: 'fakeUser',
+      settings: { theme: 'dark' },
+    });
+  });
+  test('changeTheme should return error if an unexpected error occurs', async () => {
+    mockingoose(UserModel).toReturn(new Error('Database error'), 'findOneAndUpdate');
+    const result = await changeTheme('testUser', 'dark');
+    expect(result).toEqual({ error: 'Error changing user theme' });
+  });
+});
+describe('changeTextSize', () => {
+  test('changeTextSize should return an error if user is not found', async () => {
+    mockingoose(UserModel).toReturn(null, 'findOneAndUpdate');
+    const result = await changeTextSize('nonExistentUser', 'small');
+    expect(result).toEqual({ error: 'Username does not exist' });
+  });
+
+  test('changeTextSize should return an error if there is a database error', async () => {
+    mockingoose(UserModel).toReturn(new Error('Database error'), 'findOneAndUpdate');
+    const result = await changeTextSize('testUser', 'medium');
+    expect(result).toEqual({ error: 'Error changing user text size' });
+  });
+});
+
+describe('changeTextBoldness', () => {
+  test('should return error if username does not exist', async () => {
+    mockingoose(UserModel).toReturn(null, 'findOneAndUpdate');
+    const result = await changeTextBoldness('nonexistentUser', 'bold');
+    expect(result).toEqual({ error: 'Username does not exist' });
+  });
+});
+
+describe('changeFont', () => {
+  test('should return error if username does not exist', async () => {
+    mockingoose(UserModel).toReturn(null, 'findOneAndUpdate');
+
+    const result = await changeFont('nonexistentUser', 'Arial');
+    expect(result).toEqual({ error: 'Username does not exist' });
+  });
+
+  test('should return error if there is an error changing the font', async () => {
+    mockingoose(UserModel).toReturn(new Error('Database error'), 'findOneAndUpdate');
+
+    const result = await changeFont('existingUser', 'Arial');
+    expect(result).toEqual({ error: 'Error changing user font style' });
+  });
+});
+
+describe('changeLineSpacing', () => {
+  test('should return error if username does not exist', async () => {
+    mockingoose(UserModel).toReturn(null, 'findOneAndUpdate');
+
+    const result = await changeLineSpacing('nonexistentUser', '1.5');
+    expect(result).toEqual({ error: 'Username does not exist' });
+  });
+
+  test('should return error if there is an error changing the line spacing', async () => {
+    mockingoose(UserModel).toReturn(new Error('Database error'), 'findOneAndUpdate');
+
+    const result = await changeLineSpacing('existingUser', '1.5');
+    expect(result).toEqual({ error: 'Error changing user line spacing' });
   });
 });

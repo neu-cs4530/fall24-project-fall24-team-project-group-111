@@ -117,6 +117,54 @@ const changeTheme = async (username: string, theme: string) => {
 };
 
 /**
+ * Function to change a user's background color for the custom theme.
+ *
+ * @param username - the username of the person editing their settings
+ * @param backgroundColor - the background color to change to
+ * @throws Error if there is an issue changing background color
+ */
+const changeBackgroundColor = async (username: string, backgroundColor: string) => {
+  const data = { username, backgroundColor };
+  const res = await api.post(`${USER_API_URL}/changeBackgroundColor`, data);
+  if (res.status !== 200) {
+    throw new Error('Error while changing background color');
+  }
+  return res.data;
+};
+
+/**
+ * Function to change a user's text color for the custom theme.
+ *
+ * @param username - the username of the person editing their settings
+ * @param textColor - the text color to change to
+ * @throws Error if there is an issue changing text color
+ */
+const changeTextColor = async (username: string, textColor: string) => {
+  const data = { username, textColor };
+  const res = await api.post(`${USER_API_URL}/changeTextColor`, data);
+  if (res.status !== 200) {
+    throw new Error('Error while changing text color');
+  }
+  return res.data;
+};
+
+/**
+ * Function to change a user's button color for the custom theme.
+ *
+ * @param username - the username of the person editing their settings
+ * @param buttonColor - the button color to change to
+ * @throws Error if there is an issue changing button color
+ */
+const changeButtonColor = async (username: string, buttonColor: string) => {
+  const data = { username, buttonColor };
+  const res = await api.post(`${USER_API_URL}/changeButtonColor`, data);
+  if (res.status !== 200) {
+    throw new Error('Error while changing button color');
+  }
+  return res.data;
+};
+
+/**
  * Updates the text size setting for a specific user.
  *
  * @param username - The username of the user whose text size is being updated.
@@ -191,4 +239,7 @@ export {
   changeTextBoldness,
   changeFont,
   changeLineSpacing,
+  changeBackgroundColor,
+  changeTextColor,
+  changeButtonColor,
 };

@@ -1,7 +1,6 @@
 import './index.css';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
-import { useCallback, useEffect } from 'react';
+import { useState } from 'react';
 import {
   FontType,
   LineSpacingType,
@@ -16,6 +15,9 @@ import {
   changeTextBoldness,
   changeTextSize,
   changeTheme,
+  changeBackgroundColor,
+  changeTextColor,
+  changeButtonColor,
 } from '../../../services/userAuthService';
 import { useTheme } from '../../../contexts/ThemeContext';
 import HoverToPlayTTSWrapper from '../../textToSpeech/textToSpeechComponent';
@@ -28,7 +30,16 @@ import useAccountRecoveryPage from '../../../hooks/useAccountRecoveryPage';
  */
 const SettingsPage = () => {
   const { user } = useUserContext();
-  const { theme, setTheme } = useTheme();
+  const {
+    theme,
+    setTheme,
+    backgroundColor,
+    setBackgroundColor,
+    textColor,
+    setTextColor,
+    buttonColor,
+    setButtonColor,
+  } = useTheme();
   const {
     font,
     setFont,
@@ -42,6 +53,35 @@ const SettingsPage = () => {
   const navigate = useNavigate();
 
   const { username, setUsername, postSendPasswordReset } = useAccountRecoveryPage();
+
+  const [showSaveMessage, setShowSaveMessage] = useState(false);
+
+  /**
+   * Function to handle the custom theme change event.
+   *
+   */
+
+  const handleCustomTheme = async () => {
+    await changeBackgroundColor(user.username, backgroundColor);
+    await changeTextColor(user.username, textColor);
+    await changeButtonColor(user.username, buttonColor);
+    setShowSaveMessage(true);
+    setTimeout(() => {
+      setShowSaveMessage(false);
+    }, 3000);
+  };
+
+  const handleBackgroundColorChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setBackgroundColor(event.target.value);
+  };
+
+  const handleTextColorChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setTextColor(event.target.value);
+  };
+
+  const handleButtonColorChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setButtonColor(event.target.value);
+  };
 
   const handleThemeChange = async (Event: { target: { value: unknown } }) => {
     setTheme(Event.target.value as ThemeType);
@@ -69,48 +109,6 @@ const SettingsPage = () => {
   };
 
   /**
-   * Memoized function to load user settings.
-   *
-   * This function fetches user settings from the `/getUserSettings/{username}` endpoint,
-   * and upon a successful response, updates the state variables for theme, text size,
-   * text boldness, font, and line spacing.
-   *
-   * @param {string} username - The username of the user whose settings are to be loaded.
-   * @returns {Promise<void>} - This function does not return a value but performs state updates.
-   */
-  const loadSettings = useCallback(
-    async (_userUsername: string) => {
-      try {
-        const response = await axios.get(`/getUserSettings/${_userUsername}`);
-        const { settings } = response.data;
-
-        setTheme(settings.theme);
-        setTextSize(settings.textSize);
-        setTextBoldness(settings.textBoldness);
-        setFont(settings.font);
-        setLineSpacing(settings.lineSpacing);
-      } catch (error) {
-        // console.error('Failed to load user settings:', error);
-      }
-    },
-    [setFont, setLineSpacing, setTextBoldness, setTextSize, setTheme],
-  ); // Add the set functions as dependencies
-
-  /**
-   * Effect hook that triggers when the user object changes.
-   *
-   * This hook will call `loadSettings` to fetch and apply the settings of the newly
-   * logged-in user, or when the user object is updated.
-   *
-   * @effect This hook will re-run when the `user` object changes (e.g., after login).
-   */
-  useEffect(() => {
-    if (user) {
-      loadSettings(user.username);
-    }
-  }, [user, loadSettings]); // Now loadSettings has the correct dependencies
-
-  /**
    * Function to handle the form submission event.
    *
    * @param event - the form event object.
@@ -132,7 +130,7 @@ const SettingsPage = () => {
         <HoverToPlayTTSWrapper text={'Change theme'}>
           <div className='settings-row'>
             <label htmlFor='theme-select' className='theme-label'>
-              Change theme
+              Theme:
             </label>
             <select
               id='theme-select'
@@ -146,9 +144,63 @@ const SettingsPage = () => {
               <option value='DarkMode'>Dark Mode</option>
               <option value='Pastel'>Pastel Mode</option>
               <option value='Autumn'>Autumn Mode</option>
+              <option value='Custom'>Custom Mode</option>
             </select>
           </div>
         </HoverToPlayTTSWrapper>
+        {theme === 'Custom' && (
+          <div className='settings-row'>
+            <div>
+              <HoverToPlayTTSWrapper text={'Color selecter for Background Color'}>
+                <label>Background: </label>
+                <input
+                  className='input-color-picker'
+                  type='color'
+                  data-id='background-color'
+                  name='Background'
+                  value={backgroundColor}
+                  onChange={handleBackgroundColorChange}
+                />
+              </HoverToPlayTTSWrapper>
+            </div>
+            <div>
+              <HoverToPlayTTSWrapper text={'Color selecter for Accent Color 1'}>
+                <label>Accent Color 1: </label>
+                <input
+                  className='input-color-picker'
+                  type='color'
+                  data-id='text-color'
+                  name='Text'
+                  value={textColor}
+                  onChange={handleTextColorChange}
+                />
+              </HoverToPlayTTSWrapper>
+            </div>
+            <div>
+              <HoverToPlayTTSWrapper text={'Color selecter for Accent Color 2'}>
+                <label>Accent Color 2: </label>
+                <input
+                  className='input-color-picker'
+                  type='color'
+                  data-id='button-background'
+                  name='Button'
+                  value={buttonColor}
+                  onChange={handleButtonColorChange}
+                />
+              </HoverToPlayTTSWrapper>
+            </div>
+            <br />
+            <HoverToPlayTTSWrapper text={'Button to save custom theme.'}>
+              <button
+                type='submit'
+                className='reset-pwd-button'
+                onClick={() => handleCustomTheme()}>
+                Save Custom Theme!
+              </button>
+              {showSaveMessage && <div className='success-message'>Theme saved successfully!</div>}
+            </HoverToPlayTTSWrapper>
+          </div>
+        )}
         <HoverToPlayTTSWrapper text={'Adjust text size'}>
           <div className='settings-row'>
             <label htmlFor='text-size-select' style={{ marginRight: '10px' }}>
