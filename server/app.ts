@@ -88,7 +88,7 @@ app.post("/chat", async (req, res) => {
     messages: [
           {
             role: 'system',
-            content: 'You are helping a user brainstorm questions for a forum called "Fake Stack Overflow". Please only respond in plain text',
+            content: 'You are helping a user brainstorm questions. Based on the topic they provide, please list several questions that they can ask about the topic.',
           },
           {
             role: 'user',
