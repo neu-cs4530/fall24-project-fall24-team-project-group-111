@@ -119,6 +119,10 @@
   --tag-label: var(--custom-button-background);
   --answer-question-meta: #bbbbbb;
   --question-author:var(--custom-text-color);
+  --toggle-on:#4caf50;
+  --toggle-off: #3090e2;
+  --toggle-font: #000000;
+  --toggle-label: var(--text-color);
 }
 
 * {
