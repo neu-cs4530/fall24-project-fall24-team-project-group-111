@@ -83,7 +83,7 @@
 .question_tag_button {
   color: var(--tag-label);
   background: var(--tag-background);
-  border-width: 0;
+  border: 1px solid var(--tag-border-color);
   border-radius: 8px;
   margin: 2px 2px;
   padding: 5px 10px;

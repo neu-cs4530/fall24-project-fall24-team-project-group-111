@@ -23,7 +23,7 @@
 }
 
 .btn_selected {
-  background: var(--primary-color);
+  background: var(--order-button-selected);
   font-weight: bold;
 }
 

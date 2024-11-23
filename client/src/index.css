@@ -17,6 +17,7 @@
   --border-color: #efefeff3;
   --search-color: #58a49d;
   --order-button:#efefeff3;
+  --order-button-selected: #9c6ada;
   --tags-page-border: #6751ae;
   --comment-section-background: #2c2d5d; 
   --comment-item-background: #505180;
@@ -44,6 +45,7 @@
   --border-color: #000000;
   --search-color: #474747f3;
   --order-button:#ffffff;
+  --order-button-selected: #3089e8;
   --tags-page-border: #000000;
   --comment-section-background: #c2c2c2;
   --comment-item-background: #fff;
@@ -71,6 +73,7 @@
   --border-color: #A5E3FF;
   --search-color: #af0375;
   --order-button:#A79AFF;
+  --order-button-selected: #FFB5E8;
   --tags-page-border: #1992cf;
   --comment-section-background: #a4f9bf;
   --comment-item-background: #f483e5;
@@ -98,6 +101,7 @@
   --border-color: #395A42;
   --search-color: #C98133;
   --order-button:#D23735;
+  --order-button-selected: #bd1e13;
   --tags-page-border: #938A5D;
   --comment-section-background: #1b2E26;
   --comment-item-background: #474c32;
@@ -121,16 +125,25 @@
   --button-background: var(--custom-button-background);
   --nav-button: var(--custom-button-background);
   --button-hover: #cccccc;
-  --nav-selected: var(--custom-text-color);
+  --nav-selected: var(--custom-button-background);
   --border-color: #000000;
+  --search-color: var(--custom-text-color);
   --order-button:#ffffff;
+  --order-button-selected: var(--custom-button-background);
   --tags-page-border: #000000;
   --comment-section-background: #c2c2c2;
   --comment-item-background: #fff;
   --comment-text-area-color: #fff;
-  --tag-label: var(--custom-button-background);
+  --tag-label: var(--custom-text-color);
+  --tag-background: var(--custom-button-background);
+  --tag-border-color: var(--custom-text-color);
   --answer-question-meta: #bbbbbb;
-  --question-author:var(--custom-text-color);
+  --question-background: var(--custom-button-background);
+  --box-shadow: rgba(0, 0, 0, 0.1);
+  --toggle-on: #4caf50;
+  --toggle-off: #3090e2;
+  --toggle-font: #000000;
+  --toggle-label: var(--custom-text-color);
 }
 
 * {
