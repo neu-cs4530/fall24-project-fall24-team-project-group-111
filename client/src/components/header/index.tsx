@@ -4,6 +4,7 @@ import useHeader from '../../hooks/useHeader';
 import './index.css';
 import HoverToPlayTTSWrapper from '../textToSpeech/textToSpeechComponent';
 import { useTheme } from '../../contexts/ThemeContext';
+import ToggleTextToSpeech from '../textToSpeech/toggleTSS';
 
 /**
  * Header component that renders the main title and a search bar.
@@ -57,6 +58,7 @@ const Header = () => {
           Settings
         </button>
       </HoverToPlayTTSWrapper>
+      <ToggleTextToSpeech />
     </div>
   );
 };

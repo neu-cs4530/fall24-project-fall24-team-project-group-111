@@ -4,6 +4,7 @@ import useGuestLogin from '../../hooks/useGuestLogin';
 import SignIn from './signInComponent';
 import SignUp from './signUpComponent';
 import HoverToPlayTTSWrapper from '../textToSpeech/textToSpeechComponent';
+import ToggleTextToSpeech from '../textToSpeech/toggleTSS';
 
 /**
  * Login Component contains forms that allow the user sign in or sign up for a new account.
@@ -35,6 +36,7 @@ const Login = () => {
           </div>
         </HoverToPlayTTSWrapper>
       </form>
+      <ToggleTextToSpeech isThemed={false} />
     </div>
   );
 };
