@@ -29,8 +29,8 @@ const Header = () => {
   return (
     <div id='header' className='header'>
       <div></div>
-      <HoverToPlayTTSWrapper text={'Fake Stack Overflow'}>
-        <div className='title'>Fake Stack Overflow</div>
+      <HoverToPlayTTSWrapper text={'Code FLow'}>
+        <div className='title'>CodeFlow</div>
       </HoverToPlayTTSWrapper>
       <div className='search-container'>
         <i className='fas fa-search search-icon'></i>
