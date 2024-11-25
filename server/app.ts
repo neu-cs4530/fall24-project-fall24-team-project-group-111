@@ -15,6 +15,7 @@ import questionController from './controller/question';
 import tagController from './controller/tag';
 import commentController from './controller/comment';
 import userController from './controller/user';
+import googleAuthController from './controller/google';
 import { FakeSOSocket } from './types';
 import OpenAI from 'openai';
 
@@ -109,6 +110,7 @@ app.use('/tag', tagController());
 app.use('/answer', answerController(socket));
 app.use('/comment', commentController(socket));
 app.use('/user', userController(socket, JWT_SECRET));
+app.use('/api', googleAuthController(JWT_SECRET));
 
 // Export the app instance
 export { app, server, startServer, OPENAI_API_KEY };

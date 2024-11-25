@@ -415,3 +415,51 @@ export const changeLineSpacing = async (
     return { error: 'Error changing user line spacing' };
   }
 };
+
+/**
+ * Finds an existing or creates a new Google user in the database.
+ *
+ * @param {string} googleId - The Google ID of the user to find or save.
+ * @param {string} email - The email of the user save if the Google user does not exist.
+ *
+ * @returns {Promise<UserResponse>} - The existing or saved Google user, or an error message if the save failed
+ */
+export const findOrSaveGoogleUser = async (
+  googleId: string,
+  email: string,
+): Promise<UserResponse> => {
+  try {
+    const existingGoogleUser = await UserModel.findOne({ googleId });
+    if (existingGoogleUser) {
+      return existingGoogleUser;
+    }
+    const hash = crypto.createHash('md5').update(email).digest('hex').substring(0, 6);
+    const username = `${email.split('@')[0]}_${hash}`; // Ensure the username is unique
+    const randomPassword = crypto.randomBytes(16).toString('hex'); // Google users don't need a password for authentication
+
+    const newGoogleUser: User = {
+      username,
+      email,
+      password: randomPassword,
+      creationDateTime: new Date(),
+      settings: {
+        theme: 'LightMode',
+        textSize: 'medium',
+        textBoldness: 'normal',
+        font: 'Arial',
+        lineSpacing: '1',
+        backgroundColor: '#ffffff',
+        textColor: '#000000',
+        buttonColor: '#5c0707',
+      },
+      googleId,
+    };
+    const newGoogleUserFromDb = await UserModel.create(newGoogleUser);
+    return newGoogleUserFromDb;
+  } catch (error) {
+    if (isMongoDuplicateKeyError(error)) {
+      return { error: 'Username is already taken' };
+    }
+    return { error: 'Error when retrieving or creating a Google user' };
+  }
+};

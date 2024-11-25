@@ -11,6 +11,10 @@ import settingsSchema from './settings';
  * - `password`: The password of the user.
  * - `creationDateTime`: The date and time when the user was created.
  * - 'settings': The settings information saved for the user.
+ * Users optionally include the following fields:
+ * - `resetPasswordToken`: A token used to reset the user's password.
+ * - `resetPasswordExpires`: The expiration date for the reset password token.
+ * - `googleId`: The Google ID of the user if it was created using Google OAuth.
  */
 const userSchema: Schema = new Schema(
   {
@@ -35,6 +39,9 @@ const userSchema: Schema = new Schema(
     },
     resetPasswordExpires: {
       type: Date,
+    },
+    googleId: {
+      type: String,
     },
   },
   { collection: 'User' },
