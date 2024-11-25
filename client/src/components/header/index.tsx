@@ -14,15 +14,29 @@ const Header = () => {
   const { val, handleInputChange, handleKeyDown } = useHeader();
   const navigate = useNavigate();
   const { user } = useUserContext();
-  const { buttonColor } = useTheme();
+  const { theme, buttonColor } = useTheme();
 
   const lightLogoColor = '#FFFFFF';
   const darkLogoColor = '#3A3E45';
 
-  const lightLogoContrast = getContrastRatio(buttonColor, lightLogoColor);
-  const darkLogoContrast = getContrastRatio(buttonColor, darkLogoColor);
+  let logo: string;
 
-  const logo = darkLogoContrast > lightLogoContrast ? '/darkLogo.png' : '/LightLogo.png';
+  switch (theme) {
+    case 'LightMode':
+    case 'Pastel':
+      logo = '/darkLogo.png';
+      break;
+    case 'Autumn':
+    case 'DarkMode':
+      logo = '/LightLogo.png';
+      break;
+    default:
+      logo =
+        getContrastRatio(buttonColor, darkLogoColor) > getContrastRatio(buttonColor, lightLogoColor)
+          ? '/darkLogo.png'
+          : '/LightLogo.png';
+      break;
+  }
 
   /**
    * Function to handle navigation to the login page.
