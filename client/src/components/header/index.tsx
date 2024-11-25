@@ -7,17 +7,22 @@ import './index.css';
 import UserMenu from './userMenu';
 import HoverToPlayTTSWrapper from '../textToSpeech/textToSpeechComponent';
 import ToggleTextToSpeech from '../textToSpeech/toggleTSS';
+import { useTheme } from '../../contexts/ThemeContext';
+import getContrastRatio from '../../utils/color.utils';
 
-/**
- * Header component that renders the main title, a search bar, and a Sign In button
- * for guests or a User Menu for signed in users.
- * The search bar allows the user to input a query and navigate to the search results page
- * when they press Enter.
- */
 const Header = () => {
   const { val, handleInputChange, handleKeyDown } = useHeader();
   const navigate = useNavigate();
   const { user } = useUserContext();
+  const { buttonColor } = useTheme();
+
+  const lightLogoColor = '#FFFFFF';
+  const darkLogoColor = '#3A3E45';
+
+  const lightLogoContrast = getContrastRatio(buttonColor, lightLogoColor);
+  const darkLogoContrast = getContrastRatio(buttonColor, darkLogoColor);
+
+  const logo = darkLogoContrast > lightLogoContrast ? '/darkLogo.png' : '/LightLogo.png';
 
   /**
    * Function to handle navigation to the login page.
@@ -28,7 +33,10 @@ const Header = () => {
 
   return (
     <div id='header' className='header'>
-      <div></div>
+      <div className='logo-title-container'>
+        <img className='SiteLogo' src={logo} alt='Logo' />
+      </div>
+
       <HoverToPlayTTSWrapper text={'Code FLow'}>
         <div className='title'>CodeFlow</div>
       </HoverToPlayTTSWrapper>

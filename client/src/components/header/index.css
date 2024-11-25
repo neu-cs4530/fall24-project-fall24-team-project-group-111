@@ -1,17 +1,19 @@
 .header {
   display: flex;
   align-items: center;
-  justify-content: space-around;
-  height: 10%;
+  justify-content: space-between;
+  height: 105px;
   width: 100%;
   background: var(--header-background);
   box-shadow: 0 4px 8px var(--box-shadow);
+  padding-right: 20px;
 }
 
 .title {
-  font-size: 32px;
+  font-size: 60px;
   font-weight: 800;
-  color: var(--text-color)
+  color: var(--text-color);
+  margin-left: 40px;
 }
 
 .search-container {
@@ -67,4 +69,10 @@
 .menubtn:hover {
   text-decoration: underline;
 }
+
+.SiteLogo {
+  height: 100px;
+  width: 140px;
+}
+
 
