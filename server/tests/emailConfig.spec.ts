@@ -22,15 +22,46 @@ describe('Email Config', () => {
   beforeEach(() => {
     jest.resetModules();
     jest.clearAllMocks();
+    jest.resetAllMocks();
   });
 
   describe('sendMail', () => {
     test('sendMail should return the sent email info on success', async () => {
       const sendMailMock = jest.fn().mockResolvedValueOnce('Email sent');
       (nodemailer.createTransport as jest.Mock).mockReturnValueOnce({ sendMail: sendMailMock });
+      (nodemailer.createTransport as jest.Mock).mockImplementationOnce(() => ({
+        sendMail: sendMailMock,
+      }));
 
       const result = await sendMail('fakerecipient@email.com', 'Fake Subject', 'Fake Text');
       expect(result).toBe('Email sent');
+    });
+
+    test('sendMail should throw an error if nodemailer.createTransport throws an error', async () => {
+      // (nodemailer.createTransport as jest.Mock).mockRejectedValueOnce(
+      //   new Error('Error creating transporter'),
+      // );
+      (nodemailer.createTransport as jest.Mock).mockImplementationOnce(() => {
+        throw new Error('Error creating transporter');
+      });
+      // const rejectPromise = () => Promise.reject(new Error('Error creating transporter'));
+      // (nodemailer.createTransport as jest.Mock).mockReturnValueOnce(rejectPromise);
+
+      await expect(
+        sendMail('fakerecipient@email.com', 'Fake Subject', 'Fake Text'),
+      ).rejects.toThrow('Error sending email: Error creating transporter');
+    });
+
+    test('sendMail should throw an error if transporter.sendMail throws an error', async () => {
+      const sendMailMock = jest.fn().mockRejectedValueOnce(new Error('Error sending email'));
+      // (nodemailer.createTransport as jest.Mock).mockReturnValueOnce({ sendMail: sendMailMock });
+      (nodemailer.createTransport as jest.Mock).mockImplementationOnce(() => ({
+        sendMail: sendMailMock,
+      }));
+
+      await expect(
+        sendMail('fakerecipient@email.com', 'Fake Subject', 'Fake Text'),
+      ).rejects.toThrow('Error sending email: Error sending email');
     });
   });
 });
@@ -39,13 +70,17 @@ describe('Email Config', () => {
 //   beforeEach(() => {
 //     jest.resetModules();
 //     jest.clearAllMocks();
+//     jest.resetAllMocks();
 //   });
 
 //   describe('errors', () => {
 //     test('sendMail should throw an error if nodemailer.createTransport throws an error', async () => {
-//       (nodemailer.createTransport as jest.Mock).mockRejectedValueOnce(
-//         new Error('Error creating transporter'),
-//       );
+//       // (nodemailer.createTransport as jest.Mock).mockRejectedValueOnce(
+//       //   new Error('Error creating transporter'),
+//       // );
+//       (nodemailer.createTransport as jest.Mock).mockImplementationOnce(() => {
+//         throw new Error('Error creating transporter');
+//       });
 //       // const rejectPromise = () => Promise.reject(new Error('Error creating transporter'));
 //       // (nodemailer.createTransport as jest.Mock).mockReturnValueOnce(rejectPromise);
 
@@ -56,7 +91,10 @@ describe('Email Config', () => {
 
 //     test('sendMail should throw an error if transporter.sendMail throws an error', async () => {
 //       const sendMailMock = jest.fn().mockRejectedValueOnce(new Error('Error sending email'));
-//       (nodemailer.createTransport as jest.Mock).mockReturnValueOnce({ sendMail: sendMailMock });
+//       // (nodemailer.createTransport as jest.Mock).mockReturnValueOnce({ sendMail: sendMailMock });
+//       (nodemailer.createTransport as jest.Mock).mockImplementationOnce(() => ({
+//         sendMail: sendMailMock,
+//       }));
 
 //       await expect(
 //         sendMail('fakerecipient@email.com', 'Fake Subject', 'Fake Text'),
