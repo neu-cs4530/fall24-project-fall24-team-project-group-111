@@ -11,6 +11,10 @@ const googleAuthController = (JWT_SECRET: string) => {
     req: GoogleOAuthCallbackRequest,
     res: Response,
   ): Promise<void> => {
+    if (!req.query.code) {
+      res.status(400).send('Invalid request');
+      return;
+    }
     const { code } = req.query;
 
     const oauth2Client = new google.auth.OAuth2(

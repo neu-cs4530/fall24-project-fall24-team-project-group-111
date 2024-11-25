@@ -5,10 +5,6 @@ import { app } from '../app';
 import * as util from '../models/userOperations';
 import { User } from '../types';
 
-process.env.GMAIL_CLIENT_ID = 'fake-client-id';
-process.env.GMAIL_CLIENT_SECRET = 'fake-client-secret';
-process.env.CLIENT_URL = 'http://localhost:3000';
-
 const findOrSaveGoogleUserSpy = jest.spyOn(util, 'findOrSaveGoogleUser');
 const jwtSignSpy = jest.spyOn(jwt, 'sign');
 
@@ -50,12 +46,7 @@ jest.mock('googleapis', () => ({
 }));
 
 describe('GET /auth/google/callback', () => {
-  // beforeAll(() => {
-  //   app.use('/api', googleAuthController(JWT_SECRET));
-  // });
-
   afterEach(async () => {
-    // jest.clearAllMocks();
     await mongoose.connection.close(); // Ensure the connection is properly closed
   });
 
@@ -78,5 +69,53 @@ describe('GET /auth/google/callback', () => {
       ...mockGoogleUser,
       creationDateTime: mockGoogleUser.creationDateTime.toISOString(),
     });
+  });
+
+  it('should return a bad request error if the request query is missing', async () => {
+    const response = await supertest(app).get('/api/auth/google/callback');
+    expect(response.status).toBe(400);
+    expect(response.text).toBe('Invalid request');
+  });
+
+  it('should return bad request error if code is empty', async () => {
+    const response = await supertest(app).get('/api/auth/google/callback').query({ code: '' });
+    expect(response.status).toBe(400);
+    expect(response.text).toBe('Invalid request');
+  });
+
+  it('should return error in response if jwt.sign method throws an error', async () => {
+    findOrSaveGoogleUserSpy.mockResolvedValueOnce(mockGoogleUser);
+    (jwtSignSpy as jest.Mock).mockImplementationOnce(() => {
+      throw new Error('Error signing token');
+    });
+
+    const response = await supertest(app)
+      .get('/api/auth/google/callback')
+      .query({ code: 'fake-code' });
+    expect(response.status).toBe(500);
+    expect(response.text).toBe('Internal Server Error');
+  });
+
+  it('should return error in response if saveUser method throws an error', async () => {
+    findOrSaveGoogleUserSpy.mockResolvedValueOnce({
+      error: 'Error when retrieving or creating a Google user',
+    });
+
+    const response = await supertest(app)
+      .get('/api/auth/google/callback')
+      .query({ code: 'fake-code' });
+    expect(response.status).toBe(500);
+    expect(response.text).toBe('Internal Server Error');
+  });
+
+  it('should return a generic 500 error if an unknown error occurs', async () => {
+    findOrSaveGoogleUserSpy.mockRejectedValueOnce('Unexpected error');
+
+    const response = await supertest(app)
+      .get('/api/auth/google/callback')
+      .query({ code: 'fake-code' });
+
+    expect(response.status).toBe(500);
+    expect(response.text).toBe('Internal Server Error');
   });
 });
