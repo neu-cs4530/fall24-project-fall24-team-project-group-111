@@ -10,10 +10,10 @@
 }
 
 .title {
-  font-size: 60px;
+  font-size: 45px;
   font-weight: 800;
   color: var(--text-color);
-  margin-left: 40px;
+  margin-left: 20px;
 }
 
 .search-container {
