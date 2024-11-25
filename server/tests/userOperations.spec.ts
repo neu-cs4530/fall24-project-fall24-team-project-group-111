@@ -13,6 +13,7 @@ import {
   changeTextBoldness,
   changeFont,
   changeLineSpacing,
+  findOrSaveGoogleUser,
 } from '../models/userOperations';
 import UserModel from '../models/users';
 import UnverifiedUserModel from '../models/unverifiedUsers';
@@ -31,6 +32,16 @@ const mockUser = {
   username: 'fakeUser',
   email: 'fakeEmail@email.com',
   password: 'fakepassword',
+  creationDateTime: new Date('2024-06-03'),
+  resetPasswordToken: undefined,
+  resetPasswordExpires: undefined,
+};
+
+const mockGoogleUser = {
+  _id: new mongoose.Types.ObjectId('65e9b58910afe6e94fc6e6dc'),
+  username: 'fakeEmail_012345',
+  email: 'fakeEmail@email.com',
+  password: '313233343536',
   creationDateTime: new Date('2024-06-03'),
   resetPasswordToken: undefined,
   resetPasswordExpires: undefined,
@@ -369,6 +380,69 @@ describe('User model', () => {
 
       const result = await changeLineSpacing('existingUser', '1.5');
       expect(result).toEqual({ error: 'Error changing user line spacing' });
+    });
+  });
+
+  describe('findOrSaveGoogleUser', () => {
+    test('should return the user if it already exists', async () => {
+      mockingoose(UserModel).toReturn(mockGoogleUser, 'findOne');
+      const result = (await findOrSaveGoogleUser('12345', 'dummyEmail')) as User;
+      expect(result.username).toEqual(mockGoogleUser.username);
+      expect(result.email).toEqual(mockGoogleUser.email);
+      expect(result.password).toEqual(mockGoogleUser.password);
+      expect(result.creationDateTime).toEqual(mockGoogleUser.creationDateTime);
+    });
+
+    test('should return the user if it is successfully created', async () => {
+      mockingoose(UserModel).toReturn(null, 'findOne');
+      mockingoose(UserModel).toReturn(mockGoogleUser, 'create'); // Create a deep copy of mockGoogleUser
+      (crypto.createHash as jest.Mock).mockReturnValueOnce({
+        update: jest.fn().mockReturnThis(),
+        digest: jest.fn().mockReturnValueOnce('0123456789abcdef'),
+      });
+      (crypto.randomBytes as jest.Mock).mockReturnValueOnce(Buffer.from('313233343536', 'hex'));
+
+      const result = (await findOrSaveGoogleUser('12345', mockGoogleUser.email)) as User;
+      expect(result.username).toEqual(mockGoogleUser.username);
+      expect(result.email).toEqual(mockGoogleUser.email);
+      expect(result.password).toEqual(mockGoogleUser.password);
+    });
+
+    test('should return an object with error if findOne throws an error', async () => {
+      mockingoose(UserModel).toReturn(new Error('Error finding user'), 'findOne');
+
+      const result = await findOrSaveGoogleUser('12345', mockGoogleUser.email);
+      expect(result).toEqual({ error: 'Error when retrieving or creating a Google user' });
+    });
+
+    test('should return an object with error if create throws an error', async () => {
+      mockingoose(UserModel).toReturn(null, 'findOne');
+      jest.spyOn(UserModel, 'create').mockImplementationOnce(() => {
+        throw new Error('Error creating a Google user');
+      });
+
+      const result = await findOrSaveGoogleUser('12345', mockGoogleUser.email);
+      expect(result).toEqual({ error: 'Error when retrieving or creating a Google user' });
+    });
+
+    test('should return an object with error if crypto.randomBytes throws an error', async () => {
+      mockingoose(UserModel).toReturn(null, 'findOne');
+      (crypto.randomBytes as jest.Mock).mockImplementationOnce(() => {
+        throw new Error('Error generating random bytes');
+      });
+
+      const result = await findOrSaveGoogleUser('12345', mockGoogleUser.email);
+      expect(result).toEqual({ error: 'Error when retrieving or creating a Google user' });
+    });
+
+    test('should return an object with error if crypto.createHash throws an error', async () => {
+      mockingoose(UserModel).toReturn(null, 'findOne');
+      (crypto.createHash as jest.Mock).mockImplementationOnce(() => {
+        throw new Error('Error creating hash');
+      });
+
+      const result = await findOrSaveGoogleUser('12345', mockGoogleUser.email);
+      expect(result).toEqual({ error: 'Error when retrieving or creating a Google user' });
     });
   });
 });
