@@ -22,21 +22,21 @@ const Login = () => {
   };
 
   return (
-    <div className='container'>
-      <HoverToPlayTTSWrapper text={'welcome to Code Flow!'}>
-        <h2>Welcome to CodeFlow!</h2>
-      </HoverToPlayTTSWrapper>
-      {isSignIn ? <SignIn onSwitch={handleSwitch} /> : <SignUp onSwitch={handleSwitch} />}
-      <form onSubmit={handleSubmit}>
-        <HoverToPlayTTSWrapper text={'Button to continue as a guest.'}>
-          <div>
-            <button type='submit' className='link-button'>
-              Continue as a guest
-            </button>
-          </div>
-        </HoverToPlayTTSWrapper>
-      </form>
-      <ToggleTextToSpeech isThemed={false} />
+    <div className='loginContainer'>
+      <img className='loginLogo' src='/darkLogo.png' alt='Logo' />
+      <div className='loginRight'>
+        {isSignIn ? <SignIn onSwitch={handleSwitch} /> : <SignUp onSwitch={handleSwitch} />}
+        <form onSubmit={handleSubmit}>
+          <HoverToPlayTTSWrapper text={'Button to continue as a guest.'}>
+            <div>
+              <button type='submit' className='link-button'>
+                Continue as a guest
+              </button>
+            </div>
+          </HoverToPlayTTSWrapper>
+        </form>
+        <ToggleTextToSpeech isThemed={false} />
+      </div>
     </div>
   );
 };

@@ -28,13 +28,13 @@ const Header = () => {
       break;
     case 'Autumn':
     case 'DarkMode':
-      logo = '/LightLogo.png';
+      logo = '/lightLogo.png';
       break;
     default:
       logo =
         getContrastRatio(buttonColor, darkLogoColor) > getContrastRatio(buttonColor, lightLogoColor)
           ? '/darkLogo.png'
-          : '/LightLogo.png';
+          : '/lightLogo.png';
       break;
   }
 
@@ -47,13 +47,7 @@ const Header = () => {
 
   return (
     <div id='header' className='header'>
-      <div className='logo-title-container'>
-        <img className='SiteLogo' src={logo} alt='Logo' />
-      </div>
-
-      <HoverToPlayTTSWrapper text={'Code FLow'}>
-        <div className='title'>CodeFlow</div>
-      </HoverToPlayTTSWrapper>
+      <img className='SiteLogo' src={logo} alt='Logo' />
       <div className='search-container'>
         <i className='fas fa-search search-icon'></i>
         <input

@@ -44,7 +44,8 @@ const UserMenu = ({ username, onLogout }: UserMenuProps) => {
     <div className='dropdown'>
       <HoverToPlayTTSWrapper text={`Hi, user`}>
         <button className='menubtn' onClick={toggleDropdown}>
-          Hi, {username} <span className={`caret ${isOpen ? 'open' : ''}`}></span>
+          Hi, {username.length > 20 ? `${username.substring(0, 20)}...` : username}
+          <span className={`caret ${isOpen ? 'open' : ''}`}></span>
         </button>
       </HoverToPlayTTSWrapper>
       {isOpen && (

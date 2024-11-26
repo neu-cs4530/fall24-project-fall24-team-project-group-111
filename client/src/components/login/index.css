@@ -10,12 +10,35 @@
   color: #000000;
 }
 
+.loginContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  min-width: 100vw;
+  gap: 5%;
+  background-color: #f1f2f3;
+  color: #000000;
+}
+
+.loginLogo {
+  width: 350px;
+}
+
+.loginRight {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
 .nested-container {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 30px;
+  gap: 20px;
 }
 
 .container form {
