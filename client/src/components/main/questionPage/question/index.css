@@ -27,6 +27,7 @@
   align-items: flex-end;
   gap: 10px;
   cursor: pointer;
+  font-family: var(--font-family);
 }
 
 .fas {
@@ -69,6 +70,7 @@
   justify-content: space-between;
   align-items: center;
   width: 100%;
+  font-family: var(--font-family);
 }
 
 .question_tags {
@@ -108,11 +110,13 @@
   color: var(--secondary-color);
   font-weight: bold;
   font-size: calc(var(--font-size) - 2px);
+  font-family: var(--font-family);
 }
 
 .question_meta {
   color: var(--text-color);
   font-size: calc(var(--font-size) - 2px);
+  font-family: var(--font-family);
 }
 
 .titleTTS {
