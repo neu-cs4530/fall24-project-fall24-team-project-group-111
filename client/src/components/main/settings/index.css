@@ -54,6 +54,9 @@
     margin-bottom: 20px;
     margin-left: 20px;
     color: var(--text-color);
+    font-family: var(--font-family);
+    font-size: var(--font-size);
+    font-weight: var(--font-weight);
   }
 
   .settings-row {
@@ -86,6 +89,14 @@
     font-weight: var(--font-weight);
     padding: 10px 10px 10px 10px;
     margin-right: 5%;
+    border-radius: 10px;
+    transition: background 0.3s, border-color 0.3s, color 0.3s;
+  }
+
+  .reset-pwd-button:hover {
+    background: var(--button-hover-background);
+    color: var(--button-hover-color);
+    border-color: var(--button-hover-border-color);
   }
   
   body {

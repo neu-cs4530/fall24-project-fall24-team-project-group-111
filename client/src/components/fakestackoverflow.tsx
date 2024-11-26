@@ -5,6 +5,7 @@ import Login from './login';
 import EmailVerificationPage from './login/emailVerification';
 import AccountRecoveryPage from './login/accountRecovery';
 import PasswordResetPage from './login/passwordReset';
+import GoogleOAuthCallback from './login/google/oAuthCallback';
 import { FakeSOSocket, User } from '../types';
 import LoginContext from '../contexts/LoginContext';
 import UserContext from '../contexts/UserContext';
@@ -52,6 +53,7 @@ const FakeStackOverflow = ({ socket }: { socket: FakeSOSocket | null }) => {
           <Route path='/verify-email' element={<EmailVerificationPage />} />
           <Route path='/account-recovery' element={<AccountRecoveryPage />} />
           <Route path='/reset-password' element={<PasswordResetPage />} />
+          <Route path='/auth/google/callback' element={<GoogleOAuthCallback />} />
 
           {/* Protected Routes */}
           {

@@ -1,7 +1,7 @@
 :root {
-  --custom-background-color: #ffffff;
-  --custom-text-color: #000000;
-  --custom-button-background: #5c0707;
+  --custom-background-color: #d98c8c;
+  --custom-text-color: #ffffff;
+  --custom-button-background: #303030;
 }
 
 [data-theme='DarkMode'] {
@@ -124,20 +124,20 @@
   --text-color: var(--custom-text-color);
   --button-background: var(--custom-button-background);
   --nav-button: var(--custom-button-background);
-  --button-hover: #cccccc;
+  --button-hover: #fffcfc59;
   --nav-selected: var(--custom-button-background);
   --border-color: #000000;
   --search-color: var(--custom-text-color);
   --order-button:#ffffff;
   --order-button-selected: var(--custom-button-background);
   --tags-page-border: #000000;
-  --comment-section-background: #c2c2c2;
-  --comment-item-background: #fff;
-  --comment-text-area-color: #fff;
+  --comment-section-background: #ffffff50;
+  --comment-item-background:  #ababab5d;
+  --comment-text-area-color: #ababab5d;
   --tag-label: var(--custom-text-color);
   --tag-background: var(--custom-button-background);
   --tag-border-color: var(--custom-text-color);
-  --answer-question-meta: #bbbbbb;
+  --answer-question-meta: var(--custom-text-color);
   --question-background: var(--custom-button-background);
   --box-shadow: rgba(0, 0, 0, 0.1);
   --toggle-on: #4caf50;
