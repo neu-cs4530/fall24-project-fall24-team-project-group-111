@@ -254,17 +254,6 @@ const SettingsPage = () => {
           </div>
         </HoverToPlayTTSWrapper>
 
-        {/* preview for text */}
-        <div className='preview-container'>
-          <HoverToPlayTTSWrapper
-            text={
-              'This is an example preview text that says: This is how your selected settings will look!'
-            }>
-            <p>
-              Preview Text: <br /> This is how your selected settings will look!
-            </p>
-          </HoverToPlayTTSWrapper>
-        </div>
         {user.username !== 'Guest' && user.email && (
           <HoverToPlayTTSWrapper text={'Button to send password reset email.'}>
             <button
