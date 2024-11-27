@@ -7,17 +7,36 @@ import './index.css';
 import UserMenu from './userMenu';
 import HoverToPlayTTSWrapper from '../textToSpeech/textToSpeechComponent';
 import ToggleTextToSpeech from '../textToSpeech/toggleTSS';
+import { useTheme } from '../../contexts/ThemeContext';
+import getContrastRatio from '../../utils/color.utils';
 
-/**
- * Header component that renders the main title, a search bar, and a Sign In button
- * for guests or a User Menu for signed in users.
- * The search bar allows the user to input a query and navigate to the search results page
- * when they press Enter.
- */
 const Header = () => {
   const { val, handleInputChange, handleKeyDown } = useHeader();
   const navigate = useNavigate();
   const { user } = useUserContext();
+  const { theme, buttonColor } = useTheme();
+
+  const lightLogoColor = '#FFFFFF';
+  const darkLogoColor = '#3A3E45';
+
+  let logo: string;
+
+  switch (theme) {
+    case 'LightMode':
+    case 'Pastel':
+      logo = '/darkLogo.png';
+      break;
+    case 'Autumn':
+    case 'DarkMode':
+      logo = '/lightLogo.png';
+      break;
+    default:
+      logo =
+        getContrastRatio(buttonColor, darkLogoColor) > getContrastRatio(buttonColor, lightLogoColor)
+          ? '/darkLogo.png'
+          : '/lightLogo.png';
+      break;
+  }
 
   /**
    * Function to handle navigation to the login page.
@@ -28,10 +47,7 @@ const Header = () => {
 
   return (
     <div id='header' className='header'>
-      <div></div>
-      <HoverToPlayTTSWrapper text={'Fake Stack Overflow'}>
-        <div className='title'>Fake Stack Overflow</div>
-      </HoverToPlayTTSWrapper>
+      <img className='SiteLogo' src={logo} alt='Logo' />
       <div className='search-container'>
         <i className='fas fa-search search-icon'></i>
         <input

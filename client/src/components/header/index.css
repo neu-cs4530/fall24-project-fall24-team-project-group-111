@@ -2,25 +2,20 @@
   display: flex;
   align-items: center;
   justify-content: space-around;
-  height: 10%;
+  height: 80px;
   width: 100%;
   background: var(--header-background);
   box-shadow: 0 4px 8px var(--box-shadow);
+  padding-right: 20px;
   line-height: normal;
-}
-
-.title {
-  font-size: 32px;
-  font-weight: 800;
-  color: var(--text-color)
 }
 
 .search-container {
   position: relative;
   display: flex;
   align-items: center;
-  width: 40%;
-  height: 50%;
+  width: 50%;
+  height: 40%;
   color: var(--search-color);
 }
 
@@ -68,4 +63,9 @@
 .menubtn:hover {
   text-decoration: underline;
 }
+
+.SiteLogo {
+  height: 90%;
+}
+
 
