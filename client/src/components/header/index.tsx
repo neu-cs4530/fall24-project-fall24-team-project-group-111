@@ -28,13 +28,13 @@ const Header = () => {
       break;
     case 'Autumn':
     case 'DarkMode':
-      logo = '/lightLogo.png';
+      logo = '/LightLogo.png';
       break;
     default:
       logo =
         getContrastRatio(buttonColor, darkLogoColor) > getContrastRatio(buttonColor, lightLogoColor)
           ? '/darkLogo.png'
-          : '/lightLogo.png';
+          : '/LightLogo.png';
       break;
   }
 
